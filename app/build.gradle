@@ -24,7 +24,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
@@ -45,6 +45,12 @@ dependencies {
     implementation deps.rxjava.runtime
     implementation deps.rxjava.rxandroid
     implementation deps.rxjava.rxkotlin
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'io.reactivex:rxjava:1.1.0'
+    implementation 'io.reactivex:rxandroid:1.1.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation('com.squareup.retrofit2:converter-simplexml:2.1.0') {
         exclude group: 'xpp3', module: 'xpp3'
         exclude group: 'stax', module: 'stax-api'
