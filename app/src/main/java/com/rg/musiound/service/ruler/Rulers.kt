@@ -1,7 +1,7 @@
 package com.rg.musiound.service.ruler
 
 
-import com.rg.musiound.service.Song
+import com.rg.musiound.bean.Song
 import java.util.Random
 import java.util.Stack
 

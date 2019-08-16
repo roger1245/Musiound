@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationManagerCompat
+import com.rg.musiound.bean.Song
 import com.rg.musiound.service.ruler.Rulers
 
 
@@ -621,4 +622,3 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
     }
 }
 
-data class Song(val name: String, val url: String, val pic: String)

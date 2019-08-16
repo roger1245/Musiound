@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import com.rg.musiound.R
+import com.rg.musiound.bean.Song
 import com.rg.musiound.service.PlayManager
-import com.rg.musiound.service.Song
 import com.rg.musiound.service.PlayService
 import org.jetbrains.anko.find
 
