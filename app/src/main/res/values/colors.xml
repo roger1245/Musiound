@@ -7,6 +7,7 @@
     <color name="text_common_black">#333333</color>
     <color name="activity_play_detail_background">#211505</color>
     <color name="colorWhite">#ffffff</color>
+    <color name="colorGrey">#817c78</color>
 
 
 </resources>

@@ -11,7 +11,7 @@ import com.rg.musiound.util.SongCallback
  */
 class ActivityPlayDetailModel : BaseModel(), IActivityPlayDetailModel {
     override fun getData(callback: SongCallback) {
-        val song: Song = Song("abs", "https://m7.music.126.net/20190816172500/3b6ce34c5fe3f0365c7c310eb1c21563/ymusic/8972/6e6e/7b86/bddf788bf92e62d7c5c9aa457dd27bf5.mp3", "dd")
-        callback.onSuccess(song)
+//        val song: Song = Song("abs", "https://m7.music.126.net/20190816172500/3b6ce34c5fe3f0365c7c310eb1c21563/ymusic/8972/6e6e/7b86/bddf788bf92e62d7c5c9aa457dd27bf5.mp3", "dd")
+//        callback.onSuccess(song)
     }
 }

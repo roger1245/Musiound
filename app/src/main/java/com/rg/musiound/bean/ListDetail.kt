@@ -21,8 +21,13 @@ data class ListDetail(
 data class Track(
     val id: Long,
     val name: String,
-    val artists: List<Artist>
+    val artists: List<Artist>,
+    val album: Album
 )
 data class Artist(
     val name: String
+)
+data class Album(
+    val picUrl: String,
+    val blurPicUrl: String
 )

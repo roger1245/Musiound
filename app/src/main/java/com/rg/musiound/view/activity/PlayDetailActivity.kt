@@ -1,6 +1,7 @@
 package com.rg.musiound.view.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
@@ -11,6 +12,7 @@ import com.rg.musiound.service.PlayManager
 import com.rg.musiound.service.PlayService
 import com.rg.musiound.view.BaseActivity
 import org.jetbrains.anko.find
+import kotlinx.android.synthetic.main.activity_play_detail.*
 
 
 /**
@@ -25,10 +27,19 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     override fun onPlayStateChanged(state: Int, song: Song?) {
         when (state) {
             PlayService.STATE_INITIALIZED -> {
-//                showSong(song)
+                song?.let { showSong(song) }
             }
-            PlayService.STATE_STARTED -> playIV.setSelected(PlayManager.getInstance(this).isPlaying)
-            PlayService.STATE_PAUSED -> playIV.setSelected(PlayManager.getInstance(this).isPlaying)
+            PlayService.STATE_STARTED -> {
+                Log.d("roger", "state change$state + " + PlayManager.getInstance(this).isPlaying)
+
+                playIV.setSelected(PlayManager.getInstance(this).isPlaying)
+            }
+            PlayService.STATE_PAUSED -> {
+                Log.d("roger", "state change$state + pause")
+
+                playIV.setSelected(PlayManager.getInstance(this).isPlaying)
+            }
+
             PlayService.STATE_COMPLETED -> playIV.setSelected(PlayManager.getInstance(this).isPlaying)
             PlayService.STATE_STOPPED -> playIV.setSelected(PlayManager.getInstance(this).isPlaying)
             PlayService.STATE_RELEASED -> {
@@ -88,11 +99,12 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         backIV = find(R.id.iv_back)
         forwardIV = find(R.id.iv_forward)
         setListener()
-//        updateIV()
+        val song = PlayManager.getInstance(this).currentSong
+
         mSeekBar.setOnSeekBarChangeListener(mSeekListener)
         playIV.isSelected = PlayManager.getInstance(this).isPlaying
-        initToolbar()
-
+//        initToolbar()
+        song?.let { showSong(it) }
     }
 
     override fun onResume() {
@@ -117,7 +129,8 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
 
     private fun setListener() {
         playIV.setOnClickListener {
-            updateIV()
+            PlayManager.getInstance(this).dispatch()
+
         }
         backIV.setOnClickListener {
             PlayManager.getInstance(this).previous()
@@ -127,16 +140,16 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         }
     }
 
-    private fun updateIV() {
-        val isPlaying = PlayManager.getInstance(this).isPlaying
-        if (isPlaying) {
-            playIV.setImageResource(R.drawable.activity_play_detail_play_off)
-            PlayManager.getInstance(this).dispatch()
-        } else {
-            playIV.setImageResource(R.drawable.activity_play_detail_play_on)
-            PlayManager.getInstance(this).dispatch()
-
+    private fun showSong(song: Song) {
+        tv_toolbar_title.text = song.name
+        val stringBuilder = StringBuilder()
+        for (x in song.singer.withIndex()) {
+            stringBuilder.append(x.value.name)
+            if (x.index != (song.singer.size - 1)) {
+                stringBuilder.append("/")
+            }
         }
+        tv_toolbar_singer.text = stringBuilder
     }
 
 }

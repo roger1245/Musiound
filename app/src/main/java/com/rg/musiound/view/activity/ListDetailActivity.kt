@@ -52,8 +52,8 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
         description.text = songs.data.description
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
-                val id = songs.data.tracks[position].id
-                val song: Song = Song("1", "https://v1.itooi.cn/netease/url?id=${id}&quality=flac", "1")
+                val track = songs.data.tracks[position]
+                val song: Song = Song(track.name, "https://v1.itooi.cn/netease/url?id=${track.id}&quality=flac", track.album.picUrl, track.artists )
                 PlayManager.getInstance(this@ListDetailActivity).add(listOf(song))
                 PlayManager.getInstance(this@ListDetailActivity).dispatch(song)
                 val intent = Intent(this@ListDetailActivity, PlayDetailActivity::class.java)
