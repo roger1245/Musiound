@@ -7,12 +7,13 @@
         android:layout_height="match_parent"
         tools:context=".view.activity.SongListActivity">
 
-    <include layout="@layout/toolbar_common"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_activity_song_list"
             android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
+    <include layout="@layout/toolbar_common"/>
 
 </RelativeLayout>

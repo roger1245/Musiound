@@ -39,7 +39,6 @@ class ActivitySongListModel : BaseModel(), IActivitySongListModel {
                 },
                 onNext = {
                     callback.onSuccess(it.data)
-                    Log.d("roger", "getDataSongList" + it.toString())
 
                 }
             )

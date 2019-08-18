@@ -19,6 +19,7 @@ import com.rg.musiound.service.ruler.Rulers
  */
 class PlayManager private constructor(private val mContext: Context) : PlayService.PlayStateChangeListener {
 
+
     private val mConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             mService = (service as PlayService.PlayBinder).service
@@ -26,12 +27,11 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 //            startRemoteControl()
             if (!isPlaying) {
                 Log.d("roger", "this4")
-                dispatch(currentSong, "onServiceConnected")
+                dispatch(currentSong)
             }
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
-            Log.v(TAG, "onServiceDisconnected $name")
             mService!!.setPlayStateChangeListener(null)
             mService = null
 
@@ -90,6 +90,7 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
     private val mProgressCallbacks: MutableList<ProgressCallback>
     private var totalList: MutableList<Song> = mutableListOf()
     private var mCurrentList: MutableList<Song> = mutableListOf()
+    private var mPlayRule = Rulers.RULER_LIST_LOOP
     /**
      *
      * @return a song current playing or paused, may be null
@@ -249,19 +250,23 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
     }
 
 
-    fun dispatch(song: Song? = currentSong, by: String = "dispatch ()") {
-        if (mCurrentList.isEmpty()) {
+    fun dispatch(song: Song? = currentSong) {
+        Log.d("roger", "1")
+        if (mCurrentList.isEmpty() || song == null) {
+//            song?.let { mCurrentList.add(song) }
+//            song?.let{
+//                currentSong = song
+//                mService?.startPlayer(it.url)
+//            }
+            Log.d("roger", "2")
+
             return
         }
         if (mService != null) {
-            Log.d("roger", "this1")
-            if (song != null) {
-                Log.d("roger", "this2")
+            if (song == currentSong ) {
+                Log.d("roger", "3")
 
-                if (song == currentSong) {
-                    Log.d("roger", "this3" + song)
-
-                    if (mService!!.isStarted()) {
+                if (mService!!.isStarted()) {
                         //Do really this action by user
                         pause()
                     } else if (mService!!.isPaused()) {
@@ -270,24 +275,27 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
                         mService?.releasePlayer()
                         if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == requestAudioFocus()) {
                             currentSong = song
-                            mService!!.startPlayer(song.url)
+                            mService?.startPlayer(song.url)
                         }
                     }
-                } else {
-                    mService!!.releasePlayer()
-                    if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == requestAudioFocus()) {
-                        currentSong = song
-                        mService!!.startPlayer(song!!.url)
+            } else {
+                Log.d("roger", "4")
+
+                mService?.releasePlayer()
+                if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == requestAudioFocus()) {
+                    currentSong = song
+                    song.let{
+                        mService?.startPlayer(it.url)
                     }
                 }
             }
 
         } else {
+            Log.d("roger", "5")
 
-            Log.v(TAG, "dispatch mService == null")
-            currentSong = mCurrentList[0]
-            bindPlayService()
-            startPlayService()
+            currentSong = song
+               bindPlayService()
+               startPlayService()
         }
 
     }
@@ -305,8 +313,8 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
      */
     private fun next(isUserAction: Boolean) {
         var song: Song? = null
-        currentSong?.let { song = Rulers.RULER_SINGLE_LOOP.next(it, mCurrentList, isUserAction) }
-        song?.let { dispatch(it, "next(boolean isUserAction)") }
+        currentSong?.let { song = mPlayRule.next(it, mCurrentList, isUserAction) }
+        song?.let { dispatch(it) }
     }
 
     /**
@@ -318,8 +326,8 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 
     private fun previous(isUserAction: Boolean) {
         var song: Song? = null
-        currentSong?.let {  song = Rulers.RULER_SINGLE_LOOP.previous(it, mCurrentList, isUserAction) }
-        song?.let { dispatch(it, "previous (boolean isUserAction)") }
+        currentSong?.let {  song = mPlayRule.previous(it, mCurrentList, isUserAction) }
+        song?.let { dispatch(it) }
     }
 
     /**

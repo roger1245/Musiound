@@ -9,7 +9,8 @@ data class SongList(
     val id: Long,
     val tag: String,
     val copywriter: String,
-    val subscribers: List<Subscriber>
+    val subscribers: List<Subscriber>,
+    val coverImgUrl: String
 )
 data class Subscriber(
     val backgroundUrl: String,

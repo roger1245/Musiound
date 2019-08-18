@@ -1,13 +1,13 @@
 package com.rg.musiound.base
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.rg.musiound.view.BaseActivity
 
 /**
  * Create by yuanbing
  * on 2019/8/1
  */
-abstract class BaseActivity<V: IBaseView, P: IBasePresenter<V, M>, M: IBaseModel>: AppCompatActivity() {
+abstract class BaseActivity<V: IBaseView, P: IBasePresenter<V, M>, M: IBaseModel>: BaseActivity() {
     protected var presenter: P? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

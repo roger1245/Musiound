@@ -5,6 +5,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="activity_song_list_background">#d7d2cb</color>
     <color name="text_common_black">#333333</color>
+    <color name="activity_play_detail_background">#211505</color>
+    <color name="colorWhite">#ffffff</color>
 
 
 </resources>

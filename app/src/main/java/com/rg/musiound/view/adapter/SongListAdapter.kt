@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
 import com.rg.musiound.bean.SongList
+import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.setImageFromUrl
 import kotlinx.android.synthetic.main.recycler_item_activity_song_list_common.view.*
 import org.jetbrains.anko.find
@@ -69,7 +70,7 @@ class SongListAdapter(val list: List<SongList>, val ctx: Context) : RecyclerView
         when (holder) {
             is CardViewHolder -> {
                 val item = list[position - 1]
-                holder.imageView.setImageFromUrl(item.subscribers[0].backgroundUrl)
+                holder.imageView.setImageFromUrl(item.coverImgUrl)
                 holder.title.text = StringBuilder().append(item.tag).append("||").append(item.copywriter)
                 holder.itemView.setOnClickListener {
 
@@ -86,8 +87,4 @@ class SongListAdapter(val list: List<SongList>, val ctx: Context) : RecyclerView
             return ITEM_HEADER
         } else return ITEM_COMMON
     }
-}
-
-interface OnItemClickListener {
-    fun onItemClick(position: Int)
 }
