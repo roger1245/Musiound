@@ -16,6 +16,8 @@ import io.reactivex.schedulers.Schedulers
  */
 class FragmentSongListModel<T>: BaseModel(), IFragmentSongListModel<T> {
     override fun getData(callback: GenericPageCallback<T>, page: Int, category: String) {
+        Log.d("roger", category +"page = ${page}")
+
         APIGenerator.getApiService(SongListService::class.java)
             .getSongList(category, page)
             .subscribeOn(Schedulers.io())
@@ -30,7 +32,7 @@ class FragmentSongListModel<T>: BaseModel(), IFragmentSongListModel<T> {
 
                 },
                 onNext = {
-                    callback.onSuccess(it as T)
+                    callback.onSuccess(it as T, page)
 
                 }
             )

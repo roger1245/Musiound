@@ -23,11 +23,12 @@ class SongListActivity : BaseActivity<IActivitySongListView, IActivitySongListPr
     private lateinit var recyclerView: RecyclerView
 
     override fun setSongList(songList: List<SongList>) {
-        val adapter = SongListAdapter(songList, this)
+        val adapter = SongListAdapter(this)
+        adapter.list.addAll(songList)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
-                val id = songList[position - 1].id
+                val id = songList[position].id
                 val intent = Intent(this@SongListActivity, ListDetailActivity::class.java)
                 intent.putExtra("id", id)
                 startActivity(intent)
