@@ -1,0 +1,126 @@
+package com.rg.musiound.view.fragment
+
+import android.content.Context
+import android.content.Intent
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import androidx.lifecycle.Transformations.map
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.rg.musiound.R
+import com.rg.musiound.base.BaseFragment
+import com.rg.musiound.bean.*
+import com.rg.musiound.interfaces.generic.IActivityGenericModel
+import com.rg.musiound.interfaces.generic.IActivityGenericPresenter
+import com.rg.musiound.interfaces.generic.IActivityGenericView
+import com.rg.musiound.presenter.FragmentSongListSearchPresenter
+import com.rg.musiound.service.PlayManager
+import com.rg.musiound.util.OnItemClickListener
+import com.rg.musiound.view.activity.PlayDetailActivity
+import com.rg.musiound.view.adapter.ListDetailAdapter
+import com.rg.musiound.view.adapter.SongListAdapter
+import com.rg.musiound.view.widget.MessageEvent
+import kotlinx.android.synthetic.main.fragment_search_song.*
+import kotlinx.android.synthetic.main.fragment_search_song_list.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
+
+/**
+ * Create by roger
+ * on 2019/8/19
+ */
+class SearchSongListFragment :
+    BaseFragment<IActivityGenericView<SongListSearchRaw, String>, IActivityGenericPresenter<SongListSearchRaw, String>, IActivityGenericModel<SongListSearchRaw, String>>(),
+    IActivityGenericView<SongListSearchRaw, String> {
+
+
+    private lateinit var adapter: SongListAdapter
+    private var uri: String? = null
+
+    override fun onCreateView(view: View, savedInstanceState: Bundle?) {
+    }
+
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_search_song_list
+    }
+
+    override fun getViewToAttach(): IActivityGenericView<SongListSearchRaw, String> {
+        return this
+    }
+
+    override fun createPresenter(): IActivityGenericPresenter<SongListSearchRaw, String> {
+        return FragmentSongListSearchPresenter()
+    }
+
+    override fun setData(data: SongListSearchRaw, page: Int) {
+        val dataMapped = data.data.playlists.map {
+            SongList(it.description, it.id, "", it.name, listOf(), listOf(), it.coverImgUrl)
+        }
+        adapter.list.addAll(dataMapped)
+        adapter.page = page
+        adapter.let {
+            it.notifyItemRangeInserted(it.getCount() - dataMapped.size, dataMapped.size)
+
+        }
+    }
+
+    override fun showError() {
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        EventBus.getDefault().register(this)
+        initListener()
+
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onEditTextMessageEvent(event: MessageEvent) {/* Do something */
+        event.getMessage()?.let {
+            uri = it
+            presenter?.loadMoreData(it, 0)
+        }
+    }
+
+    private fun initListener() {
+        adapter = SongListAdapter(activity as Context)
+        rv_fragment_search_song_list.layoutManager = LinearLayoutManager(activity)
+        rv_fragment_search_song_list.adapter = adapter
+        adapter.setOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClick(position: Int) {
+
+            }
+
+        })
+        rv_fragment_search_song_list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+            }
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                    val lastPosition = layoutManager.findLastVisibleItemPosition()
+                    if (adapter.itemCount - 1 == lastPosition && adapter.isLoadingMore) {
+                        uri?.let {
+                            presenter?.loadMoreData(it, ++adapter.page)
+
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+}

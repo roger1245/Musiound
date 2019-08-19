@@ -7,6 +7,6 @@ import com.rg.musiound.util.GenericCallback
  * Create by roger
  * on 2019/8/18
  */
-interface IActivityGenericModel<T>: IBaseModel {
-    fun getData(id: Long, callback: GenericCallback<T>)
+interface IActivityGenericModel<T, P>: IBaseModel {
+    fun getData(uri: P, page: Int, callback: GenericCallback<T>)
 }

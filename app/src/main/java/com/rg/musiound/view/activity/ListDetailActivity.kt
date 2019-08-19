@@ -45,7 +45,8 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
     }
 
     override fun setSongs(songs: ListDetailRaw) {
-        val adapter = ListDetailAdapter(songs.data.tracks, this)
+        val adapter = ListDetailAdapter(this)
+        adapter.list.addAll(songs.data.tracks)
         cover.setImageFromUrl(songs.data.coverImgUrl)
         titleString = songs.data.name
         title.text = songs.data.name
@@ -54,7 +55,10 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
             override fun onItemClick(position: Int) {
                 val track = songs.data.tracks[position]
                 val song: Song = Song(track.name, "https://v1.itooi.cn/netease/url?id=${track.id}&quality=flac", track.album.picUrl, track.artists )
-                PlayManager.getInstance(this@ListDetailActivity).add(listOf(song))
+                val listSong = songs.data.tracks.map {
+                    Song(it.name, "https://v1.itooi.cn/netease/url?id=${it.id}&quality=flac", it.album.picUrl, it.artists )
+                }
+                PlayManager.getInstance(this@ListDetailActivity).add(listSong)
                 PlayManager.getInstance(this@ListDetailActivity).dispatch(song)
                 val intent = Intent(this@ListDetailActivity, PlayDetailActivity::class.java)
                 startActivity(intent)

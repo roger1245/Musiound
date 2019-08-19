@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.rg.musiound.R
 import kotlinx.android.synthetic.main.toolbar_common.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
+
 /**
  * Create by roger
  * on 2019/8/17
@@ -28,4 +32,18 @@ abstract class BaseActivity : AppCompatActivity() {
             setNavigationOnClickListener(listener)
         }
     }
+
+//    override fun onStart() {
+//        super.onStart()
+//        EventBus.getDefault().register(this)
+//    }
+//
+//    override fun onStop() {
+//        super.onStop()
+//        EventBus.getDefault().unregister(this)
+//    }
+//
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    open fun onEvent(event: LoginStateChangeEvent) {
+//    }
 }

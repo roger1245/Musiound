@@ -63,7 +63,7 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
         activity?.let {
             adapter.setOnItemClickListener(object : OnItemClickListener {
                 override fun onItemClick(position: Int) {
-                    val id = adapter.list[position].id
+                    val id = adapter.list[position - 1].id
                     val intent = Intent(activity, ListDetailActivity::class.java)
                     intent.putExtra("id", id)
                     startActivity(intent)
@@ -81,7 +81,6 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
         val grid = GridLayoutManager(activity, 3)
         grid.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
-                Log.d("roger", "${position}")
                 if (position == 0) {
                     return 3
                 } else if (position == adapter.itemCount - 1) {

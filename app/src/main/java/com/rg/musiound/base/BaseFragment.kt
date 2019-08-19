@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.rg.musiound.view.BaseFragment
 
 /**
  * Create by yuanbing
  * on 2019/8/1
  */
-abstract class BaseFragment<V: IBaseView, P: IBasePresenter<V, M>, M: IBaseModel>: Fragment() {
+abstract class BaseFragment<V: IBaseView, P: IBasePresenter<V, M>, M: IBaseModel>: BaseFragment() {
     protected var presenter: P? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -9,6 +9,10 @@
     <color name="colorWhite">#ffffff</color>
     <color name="colorGrey">#817c78</color>
     <color name="imageview_common_grey_place_holder">#f5f5f5</color>
+    <color name="activity_list_detail_background">#59302e</color>
 
-
+    <color name="translucent_scrim_top">#26000000</color>
+    <color name="translucent_scrim_top_center">#0C000000</color>
+    <color name="translucent_scrim_bottom">#2A000000</color>
+    <color name="translucent_scrim_bottom_center">#0D000000</color>
 </resources>

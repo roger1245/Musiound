@@ -54,6 +54,7 @@ class MVPlayActivity : IActivityMVPlayerView<MVDetailRaw, MVCommentRaw>,
     }
 
     override fun setMVDetail(t: MVDetailRaw) {
+        gsy_player.titleTextView.text = t.data.data.name
         adapter.detail = t.data.data
     }
 
@@ -131,7 +132,6 @@ class MVPlayActivity : IActivityMVPlayerView<MVDetailRaw, MVCommentRaw>,
             .setNeedLockFull(true)
             .setUrl(source)
             .setCacheWithPlay(false)
-            .setVideoTitle("测试视频")
             .setVideoAllCallBack(object : GSYSampleCallBack() {
                 override fun onPrepared(url: String?, vararg objects: Any) {
                     super.onPrepared(url, *objects)
@@ -154,6 +154,9 @@ class MVPlayActivity : IActivityMVPlayerView<MVDetailRaw, MVCommentRaw>,
                     orientationUtils.isEnable = !lock
                 }
             }.build(gsy_player)
+        gsy_player.backButton.setOnClickListener {
+            onBackPressed()
+        }
 
         gsy_player.getFullscreenButton().setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {

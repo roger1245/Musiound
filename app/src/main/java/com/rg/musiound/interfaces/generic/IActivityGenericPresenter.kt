@@ -8,9 +8,8 @@ import com.rg.musiound.interfaces.view.IActivityMVPlayerView
  * Create by roger
  * on 2019/8/18
  */
-interface IActivityGenericPresenter <T> : IBasePresenter<IActivityGenericView<T>, IActivityGenericModel<T>> {
-    fun onDataLoad(data: T)
+interface IActivityGenericPresenter <T, P> : IBasePresenter<IActivityGenericView<T, P>, IActivityGenericModel<T, P>> {
+    fun onDataLoad(data: T, page: Int)
     fun onDataNotAvailable()
-    fun populateData(id: Long)
-    fun start(id: Long)
+    fun loadMoreData(uri: P, page: Int)
 }

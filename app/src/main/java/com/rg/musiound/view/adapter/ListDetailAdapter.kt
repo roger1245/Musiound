@@ -16,10 +16,14 @@ import org.jetbrains.anko.find
  * Create by roger
  * on 2019/8/17
  */
-class ListDetailAdapter(val list: List<Track>, val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
+class ListDetailAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>()  {
 
     private val ITEM_COMMON = 1
     private var mOnItemClickListener: OnItemClickListener? = null
+    var isLoadingMore: Boolean = true
+    var list: MutableList<Track> = mutableListOf()
+    var page: Int = 0
+
     fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener
     }
@@ -75,5 +79,8 @@ class ListDetailAdapter(val list: List<Track>, val ctx: Context) : RecyclerView.
             }
         }
 
+    }
+    fun getCount(): Int {
+        return list.size
     }
 }

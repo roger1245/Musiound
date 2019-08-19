@@ -95,7 +95,7 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
     override fun getItemCount(): Int {
         return getCount()
     }
-    private fun getCount() : Int {
+    fun getCount() : Int {
         return list.size + 2
     }
 
@@ -104,7 +104,12 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
             is CardViewHolder -> {
                 val item = list[position - 1]
                 holder.imageView.setImageFromUrl(item.coverImgUrl)
-//                holder.title.text = StringBuilder().append(item.tags[0]).append("||").append(item.name)
+                if (item.tags.isNotEmpty()) {
+                    holder.title.text = StringBuilder().append(item.tags[0]).append("||").append(item.name)
+                } else if (item.tag != null) {
+                    //此处由于为反射，所以tag可能为null，编译器无法检查
+                    holder.title.text = StringBuilder().append(item.tag).append("||").append(item.name)
+                }
                 holder.itemView.setOnClickListener {
 
                     mOnItemClickListener?.onItemClick(position)

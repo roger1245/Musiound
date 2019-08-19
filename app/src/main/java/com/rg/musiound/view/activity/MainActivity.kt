@@ -37,6 +37,10 @@ class MainActivity : BaseActivity() {
         tabLayout = find(R.id.tl_activity_main)
         viewPager = find(R.id.vp_activity_main)
         initVP()
+        iv_search.setOnClickListener {
+            val intent = Intent(this@MainActivity, SearchActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initVP() {
