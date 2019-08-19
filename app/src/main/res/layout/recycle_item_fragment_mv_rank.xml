@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <androidx.cardview.widget.CardView
+            android:id="@+id/cd_cover"
+            android:layout_width="334dp"
+            android:layout_height="190dp">
+
+        <ImageView
+                android:id="@+id/iv_mv_cover"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+            android:id="@+id/tv_number"
+            android:layout_below="@id/cd_cover"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_mv_title"
+            android:layout_marginTop="15dp"
+            android:layout_alignStart="@id/tv_number"
+            android:layout_below="@id/cd_cover"
+            android:textColor="@color/text_common_black"
+            android:layout_marginStart="21dp"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/tv_mv_artist"
+            android:textSize="10sp"
+            android:layout_alignStart="@id/tv_mv_title"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@id/tv_mv_title"
+            android:textColor="@color/colorGrey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+</RelativeLayout>

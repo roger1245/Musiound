@@ -70,7 +70,7 @@ class ListDetailAdapter(val list: List<Track>, val ctx: Context) : RecyclerView.
         companion object {
             fun from(parent: ViewGroup): CommonViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.recycler_item_activity_list_detail_common, parent, false)
+                val view = layoutInflater.inflate(R.layout.recycle_item_activity_list_detail_common, parent, false)
                 return CommonViewHolder(view)
             }
         }

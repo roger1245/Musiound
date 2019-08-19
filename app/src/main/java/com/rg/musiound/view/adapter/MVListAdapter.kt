@@ -8,16 +8,16 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
-import com.rg.musiound.bean.SongList
+import com.rg.musiound.bean.MV
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.setImageFromUrl
 import org.jetbrains.anko.find
 
 /**
  * Create by roger
- * on 2019/8/16
+ * on 2019/8/18
  */
-class SongListAdapter(val list: List<SongList>, val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MVListAdapter(val list: List<MV>, val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val ITEM_HEADER = 0
     private val ITEM_COMMON = 1
     private var mOnItemClickListener: OnItemClickListener? = null
@@ -27,63 +27,61 @@ class SongListAdapter(val list: List<SongList>, val ctx: Context) : RecyclerView
     }
 
     class CardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val imageView: ImageView = view.find(R.id.iv_recycler_item_song_list)
-        val title: TextView = view.find(R.id.tv_recycler_item_song_list)
+        val imageView: ImageView = view.find(R.id.iv_mv_cover)
+        val title: TextView = view.find(R.id.tv_mv_title)
+        val artist: TextView = view.find(R.id.tv_mv_artist)
 
         companion object {
             fun from(parent: ViewGroup): CardViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.recycle_item_activity_song_list_common, parent, false)
+                val view = layoutInflater.inflate(R.layout.recycle_item_fragment_mv_rank, parent, false)
                 return CardViewHolder(view)
             }
         }
     }
 
-    class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        companion object {
-            fun from(parent: ViewGroup): HeaderViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.recycle_item_activity_song_list_header, parent, false)
-                return HeaderViewHolder(view)
-            }
-        }
-    }
+//    class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+//        companion object {
+//            fun from(parent: ViewGroup): HeaderViewHolder {
+//                val layoutInflater = LayoutInflater.from(parent.context)
+//                val view = layoutInflater.inflate(R.layout.recycle_item_activity_song_list_header, parent, false)
+//                return HeaderViewHolder(view)
+//            }
+//        }
+//    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             ITEM_COMMON -> CardViewHolder.from(
                 parent
             )
-            ITEM_HEADER -> HeaderViewHolder.from(
-                parent
-            )
+//            ITEM_HEADER -> HeaderViewHolder.from(
+//                parent
+//            )
             else -> throw ClassCastException("unknown type of viewholder")
         }
     }
 
     override fun getItemCount(): Int {
-        return list.size + 1
+        return list.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CardViewHolder -> {
-                val item = list[position - 1]
-                holder.imageView.setImageFromUrl(item.coverImgUrl)
-                holder.title.text = StringBuilder().append(item.tag).append("||").append(item.copywriter)
-                holder.itemView.setOnClickListener {
-
+                val item = list[position]
+                holder.imageView.setImageFromUrl(item.cover)
+                holder.title.text = list[position].name
+                holder.artist.text = list[position].artistName
+                holder.itemView.setOnClickListener{
                     mOnItemClickListener?.onItemClick(position)
                 }
             }
-            is HeaderViewHolder -> {}
         }
 
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (position == 0) {
-            return ITEM_HEADER
-        } else return ITEM_COMMON
+        return ITEM_COMMON
     }
 }

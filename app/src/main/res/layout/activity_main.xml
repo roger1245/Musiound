@@ -7,29 +7,46 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".view.activity.MainActivity">
-    <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tl_activity_main"
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_common"
             android:layout_width="match_parent"
-            app:tabBackground="@android:color/transparent"
-            app:tabRippleColor="@android:color/transparent"
-            android:layout_height="49dp"
-            app:tabSelectedTextColor="@color/text_common_black"
-            app:tabIndicatorHeight="0dp"
-            android:background="@color/colorWhite">
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            android:layout_height="?attr/actionBarSize">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tl_activity_main"
+                    android:layout_width="300dp"
+                    android:layout_height="49dp"
+                    app:tabBackground="@android:color/transparent"
+                    app:tabRippleColor="@android:color/transparent"
+                    app:tabSelectedTextColor="@color/text_common_black"
+                    app:tabIndicatorHeight="0dp">
+            </com.google.android.material.tabs.TabLayout>
+            <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_toEndOf="@id/tl_activity_main"
+                    android:src="@drawable/activity_main_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </RelativeLayout>
 
-    </com.google.android.material.tabs.TabLayout>
-    <!--<androidx.viewpager.widget.ViewPager-->
-            <!--android:id="@+id/vp_activity_main"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content" />-->
+    </androidx.appcompat.widget.Toolbar>
 
-    <Button
-            android:id="@+id/btn_play_detail_activity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <Button
-            android:id="@+id/btn_song_list_activity"
+
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vp_activity_main"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
+
+    <!--<Button-->
+            <!--android:id="@+id/btn_play_detail_activity"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+    <!--<Button-->
+            <!--android:id="@+id/btn_song_list_activity"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"/>-->
 
 </LinearLayout>

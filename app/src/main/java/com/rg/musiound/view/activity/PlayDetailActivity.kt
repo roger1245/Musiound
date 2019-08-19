@@ -5,14 +5,13 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
-import androidx.appcompat.app.AppCompatActivity
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.service.PlayService
 import com.rg.musiound.view.BaseActivity
-import org.jetbrains.anko.find
 import kotlinx.android.synthetic.main.activity_play_detail.*
+import org.jetbrains.anko.find
 
 
 /**
@@ -30,12 +29,10 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
                 song?.let { showSong(song) }
             }
             PlayService.STATE_STARTED -> {
-                Log.d("roger", "state change$state + " + PlayManager.getInstance(this).isPlaying)
 
                 playIV.setSelected(PlayManager.getInstance(this).isPlaying)
             }
             PlayService.STATE_PAUSED -> {
-                Log.d("roger", "state change$state + pause")
 
                 playIV.setSelected(PlayManager.getInstance(this).isPlaying)
             }
@@ -43,12 +40,10 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             PlayService.STATE_COMPLETED -> playIV.setSelected(PlayManager.getInstance(this).isPlaying)
             PlayService.STATE_STOPPED -> playIV.setSelected(PlayManager.getInstance(this).isPlaying)
             PlayService.STATE_RELEASED -> {
-//                mPlayPauseIv.setSelected(PlayManager.getInstance(this).isPlaying())
                 playIV.setSelected(PlayManager.getInstance(this).isPlaying)
                 mSeekBar.progress = 0
             }
             PlayService.STATE_ERROR -> {
-//                mPlayPauseIv.setSelected(PlayManager.getInstance(this).isPlaying())
                 playIV.setSelected(PlayManager.getInstance(this).isPlaying)
                 mSeekBar.progress = 0
             }

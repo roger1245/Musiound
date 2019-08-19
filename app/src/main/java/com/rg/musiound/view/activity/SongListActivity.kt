@@ -23,7 +23,6 @@ class SongListActivity : BaseActivity<IActivitySongListView, IActivitySongListPr
     private lateinit var recyclerView: RecyclerView
 
     override fun setSongList(songList: List<SongList>) {
-        Log.d("roger", songList.toString())
         val adapter = SongListAdapter(songList, this)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {

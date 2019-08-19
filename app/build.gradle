@@ -56,4 +56,7 @@ dependencies {
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'
     }
+
+    implementation 'com.shuyu:gsyVideoPlayer-java:7.0.2'
+    implementation 'com.shuyu:gsyVideoPlayer-armv7a:7.0.2'
 }

@@ -1,8 +1,6 @@
 package com.rg.musiound.util
 
-import com.rg.musiound.bean.ListDetailRaw
-import com.rg.musiound.bean.Song
-import com.rg.musiound.bean.SongList
+import com.rg.musiound.bean.*
 
 /**
  * Create by roger
@@ -18,6 +16,18 @@ interface SongListCallback {
 }
 interface SongsCallback {
     fun onSuccess(songs: ListDetailRaw)
+    fun onFailed()
+}
+interface MVListCallback {
+    fun onSuccess(songs: List<MV>)
+    fun onFailed()
+}
+interface  GenericCallback <T> {
+    fun onSuccess(data: T)
+    fun onFailed()
+}
+interface  GenericPageCallback <T> {
+    fun onSuccess(data: T, page: Int = 0)
     fun onFailed()
 }
 
