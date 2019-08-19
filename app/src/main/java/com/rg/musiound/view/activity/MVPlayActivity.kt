@@ -30,19 +30,32 @@ class MVPlayActivity : IActivityMVPlayerView<MVDetailRaw, MVCommentRaw>,
     private lateinit var adapter: MVCommentAdapter
 
     override fun onLoadMoreData(t: MVCommentRaw, page: Int) {
-        Log.d("roger", "page = $page")
+        adapter.comments.let {
+            if (page == 0 && it.isNotEmpty()) {
+                it.clear()
+            }
+            srl_play_comment.isRefreshing = false
+        }
         adapter.comments.addAll(t.data.comments)
         adapter.page = page
         adapter.isLoadingMore = t.data.more
         adapter.comments.let {
-            adapter.notifyItemRangeInserted(it.size - t.data.comments.size, t.data.comments.size)
+            if (page == 0) {
+                adapter.notifyDataSetChanged()
+            } else {
+                adapter.notifyItemRangeInserted(it.size - t.data.comments.size, t.data.comments.size - 1)
+
+            }
+
+        }
+        if (page == 0) {
+            rv_player_comment.scrollToPosition(0)
         }
     }
 
     override fun setMVDetail(t: MVDetailRaw) {
         adapter.detail = t.data.data
     }
-
 
     override fun showError() {
     }
@@ -91,6 +104,15 @@ class MVPlayActivity : IActivityMVPlayerView<MVDetailRaw, MVCommentRaw>,
                 }
             }
         })
+        id?.let {
+            initSwipe(it)
+        }
+    }
+
+    private fun initSwipe(id: Long) {
+        srl_play_comment.setOnRefreshListener {
+            presenter?.loadMoreData(id, 0)
+        }
     }
 
     private fun init(source: String) {

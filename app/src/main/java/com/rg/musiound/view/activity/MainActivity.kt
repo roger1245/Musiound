@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
@@ -29,6 +30,7 @@ class MainActivity : BaseActivity() {
         "发现",
         "MV"
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,8 +38,12 @@ class MainActivity : BaseActivity() {
         viewPager = find(R.id.vp_activity_main)
         initVP()
     }
+
     private fun initVP() {
-        val adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
+        val adapter = object : FragmentStatePagerAdapter(
+            supportFragmentManager,
+            FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+        ) {
             override fun getItem(position: Int): Fragment {
                 return fragments[position]
             }

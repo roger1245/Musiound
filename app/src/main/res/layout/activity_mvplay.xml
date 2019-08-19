@@ -6,14 +6,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.activity.MVPlayActivity">
+
     <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
             android:id="@+id/gsy_player"
             android:layout_width="match_parent"
             android:layout_height="200dp"/>
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_player_comment"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/srl_play_comment"
             android:layout_below="@id/gsy_player"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_player_comment"
+                android:layout_below="@id/gsy_player"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

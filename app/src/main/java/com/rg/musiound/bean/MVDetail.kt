@@ -15,8 +15,10 @@ data class MVDetailWrapper(
 data class MVDetail (
     val cover: String,
     val name: String,
+    val publishTime: String,
     val desc: String,
     val alias: List<String>,
     val artistName: String,
+    val playCount: Long,
     val id:  Long
 )
