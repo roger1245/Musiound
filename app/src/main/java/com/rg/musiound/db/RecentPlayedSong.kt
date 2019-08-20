@@ -2,48 +2,46 @@ package com.rg.musiound.db
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
 import com.rg.musiound.bean.Artist
 import com.rg.musiound.bean.Song
-import java.lang.StringBuilder
 
 /**
  * Create by roger
  * on 2019/8/20
  */
-const val NAME = "NAME"
-const val ARTIST = "ARTIST"
-const val URL = "URL"
-const val PIC = "PIC"
-const val PLAYING_SONG = "PLAYING_SONG"
-class PlayingSong {
+const val RECENT_NAME = "NAME"
+const val RECENT_ARTIST = "ARTIST"
+const val RECENT_URL = "URL"
+const val RECENT_PIC = "PIC"
+const val RECENT_PLAYING_SONG = "PLAYING_SONG"
+class RecentPlayedSong {
     companion object {
-        val instance: PlayingSong by lazy { PlayingSong() }
+        val instance: RecentPlayedSong by lazy { RecentPlayedSong() }
     }
 
     fun onCreate(db: SQLiteDatabase) {
         db.execSQL(
-            "CREATE TABLE IF NOT EXISTS " + PLAYING_SONG + "("
-                    + NAME + " TEXT, "
-                    + URL + " TEXT,"
-                    + PIC + " TEXT, "
-                    + ARTIST + " TEXT );"
+            "CREATE TABLE IF NOT EXISTS " + RECENT_PLAYING_SONG + "("
+                    + RECENT_NAME + " TEXT, "
+                    + RECENT_URL + " TEXT,"
+                    + RECENT_PIC + " TEXT, "
+                    + RECENT_ARTIST + " TEXT );"
         )
     }
 
     fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
 
     fun onDowngrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $PLAYING_SONG")
+        db.execSQL("DROP TABLE IF EXISTS $RECENT_PLAYING_SONG")
         onCreate(db)
     }
     fun addAll(songs: List<Song>) {
         for (x in songs) {
-            addPlayingSong(x)
+            addRecentPlayedSong(x)
         }
     }
 
-    fun  addPlayingSong(song: Song) {
+    fun  addRecentPlayedSong(song: Song) {
         val db = MusicDB.instance.writableDatabase
         db.beginTransaction()
 
@@ -51,9 +49,9 @@ class PlayingSong {
         try {
             val values: ContentValues = ContentValues(5)
             values.let {
-                it.put(NAME, song.name)
-                it.put(URL, song.url)
-                it.put(PIC, song.pic)
+                it.put(RECENT_NAME, song.name)
+                it.put(RECENT_URL, song.url)
+                it.put(RECENT_PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {
                     stringBuilder.append(x.value)
@@ -61,38 +59,38 @@ class PlayingSong {
                         stringBuilder.append(",")
                     }
                 }
-                it.put(ARTIST, stringBuilder.toString())
+                it.put(RECENT_ARTIST, stringBuilder.toString())
             }
-            db.insert(PLAYING_SONG, null, values)
+            db.insert(RECENT_PLAYING_SONG, null, values)
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
         }
     }
-    fun deletePlayingSong(songs: List<Song>) {
+    fun deleteRecentPlayedSong(songs: List<Song>) {
         for (x in songs) {
-            deletePlayingSong(x)
+            deleteRecentPlayedSong(x)
         }
     }
-    fun deletePlayingSong(song: Song) {
+    fun deleteRecentPlayedSong(song: Song) {
         val db = MusicDB.instance.writableDatabase
-        db.delete(PLAYING_SONG, "${URL} = ?", arrayOf(song.url))
+        db.delete(RECENT_PLAYING_SONG, "${RECENT_URL} = ?", arrayOf(song.url))
     }
     fun deleteAll() {
         val db = MusicDB.instance.writableDatabase
-        db.delete(PLAYING_SONG, null, null)
+        db.delete(RECENT_PLAYING_SONG, null, null)
     }
 
-    fun getPlayingSong(): MutableList<Song> {
+    fun getRecentPlayedSong(): MutableList<Song> {
         val list: MutableList<Song> = mutableListOf()
         val db = MusicDB.instance.writableDatabase
-        val cursor = db.query(PLAYING_SONG,  null, null, null, null, null, null, null)
+        val cursor = db.query(RECENT_PLAYING_SONG,  null, null, null, null, null, null, null)
         if (cursor.moveToFirst()) {
             do {
-                val name = cursor.getString(cursor.getColumnIndex(NAME))
-                val url = cursor.getString(cursor.getColumnIndex(URL))
-                val pic = cursor.getString(cursor.getColumnIndex(PIC))
-                val artist = cursor.getString(cursor.getColumnIndex(ARTIST))
+                val name = cursor.getString(cursor.getColumnIndex(RECENT_NAME))
+                val url = cursor.getString(cursor.getColumnIndex(RECENT_URL))
+                val pic = cursor.getString(cursor.getColumnIndex(RECENT_PIC))
+                val artist = cursor.getString(cursor.getColumnIndex(RECENT_ARTIST))
                 val artists = artist.split(",").map {
                     Artist(it)
                 }

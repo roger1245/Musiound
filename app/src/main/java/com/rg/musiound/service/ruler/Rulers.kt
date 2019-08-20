@@ -3,6 +3,7 @@ package com.rg.musiound.service.ruler
 
 import com.rg.musiound.bean.Song
 import com.rg.musiound.db.PlayingSong
+import com.rg.musiound.db.RecentPlayedSong
 import com.rg.musiound.service.PlayManager
 import java.util.Random
 import java.util.Stack
@@ -18,6 +19,7 @@ object Rulers {
     fun add(song: List<Song>) {
         mCurrentList.addAll(song)
         PlayingSong.instance.addAll(song)
+        RecentPlayedSong.instance.addAll(song)
         PlayManager.instance.onPlayListChanged(mCurrentList)
     }
 

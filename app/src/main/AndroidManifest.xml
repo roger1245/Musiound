@@ -36,6 +36,7 @@
         <activity android:name=".view.activity.PlayDetailActivity"/>
 
         <service android:name=".service.PlayService"/>
+        <activity android:name=".view.activity.RecentPlayedActivity" />
     </application>
 
 </manifest>

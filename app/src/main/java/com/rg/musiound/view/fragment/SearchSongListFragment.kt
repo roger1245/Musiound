@@ -148,7 +148,6 @@ class SearchSongListFragment :
             }
         })
         srl_search_song_list.setOnRefreshListener {
-            Log.d("roger", "uri == " + uri.toString())
             uri?.let {
                 presenter?.loadMoreData(it, 0)
             }
