@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import com.rg.musiound.BaseApp
 import com.rg.musiound.bean.Song
+import com.rg.musiound.db.PlayingSong
 import com.rg.musiound.service.ruler.Rulers
 
 
@@ -27,7 +28,6 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
             mService!!.setPlayStateChangeListener(this@PlayManager)
 //            startRemoteControl()
             if (!isPlaying) {
-                Log.d("roger", "this4")
                 dispatch(currentSong)
             }
         }
@@ -53,7 +53,6 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 //    }
 
     private val mAfListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
-        Log.v(TAG, "onAudioFocusChange = $focusChange")
         if ((focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT || focusChange == AudioManager.AUDIOFOCUS_LOSS)) {
             if (isPlaying) {
                 pause(false)
@@ -90,7 +89,7 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
     private val mCallbacks: MutableList<Callback>?
     private val mProgressCallbacks: MutableList<ProgressCallback>
     private var totalList: MutableList<Song> = mutableListOf()
-    private var mCurrentList: MutableList<Song> = mutableListOf()
+    private var mCurrentList: MutableList<Song> = PlayingSong.instance.getPlayingSong()
 
     var mPlayRule = Rulers.RULER_LIST_LOOP
     /**
@@ -628,6 +627,15 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 
     fun add(song: List<Song>) {
         mCurrentList.addAll(song)
+        PlayingSong.instance.addAll(song)
+    }
+    fun add(song: Song) {
+        mCurrentList.add(song)
+        PlayingSong.instance.addPlayingSong(song)
+    }
+    fun deleteSong(song: Song) {
+        mCurrentList.remove(song)
+        PlayingSong.instance.deletePlayingSong(song)
     }
 
     fun setDuration(time: Int) {
