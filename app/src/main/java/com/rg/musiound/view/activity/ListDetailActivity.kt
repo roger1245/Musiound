@@ -19,6 +19,7 @@ import com.rg.musiound.interfaces.presenter.IActivityListDetailPresenter
 import com.rg.musiound.interfaces.view.IActivityListDetailView
 import com.rg.musiound.presenter.ActivityListDetailPresenter
 import com.rg.musiound.service.PlayManager
+import com.rg.musiound.service.PlayManager.Companion.instance
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.setImageFromUrl
 import com.rg.musiound.view.adapter.ListDetailAdapter
@@ -58,8 +59,8 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
                 val listSong = songs.data.tracks.map {
                     Song(it.name, "https://v1.itooi.cn/netease/url?id=${it.id}&quality=flac", it.album.picUrl, it.artists )
                 }
-                PlayManager.getInstance(this@ListDetailActivity).add(listSong)
-                PlayManager.getInstance(this@ListDetailActivity).dispatch(song)
+                PlayManager.instance.add(listSong)
+                PlayManager.instance.dispatch(song)
                 val intent = Intent(this@ListDetailActivity, PlayDetailActivity::class.java)
                 startActivity(intent)
             }

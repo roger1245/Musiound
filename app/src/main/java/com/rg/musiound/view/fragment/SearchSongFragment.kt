@@ -120,8 +120,8 @@ class SearchSongFragment :
                         it.artists
                     )
                 }
-                PlayManager.getInstance(activity as Context).add(listSong)
-                PlayManager.getInstance(activity as Context).dispatch(song)
+                PlayManager.instance.add(listSong)
+                PlayManager.instance.dispatch(song)
                 val intent = Intent(activity as Context, PlayDetailActivity::class.java)
                 startActivity(intent)
 

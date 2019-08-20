@@ -30,21 +30,21 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
             PlayService.STATE_STARTED -> {
 
-                playIV.setSelected(PlayManager.getInstance(this).isPlaying)
+                playIV.setSelected(PlayManager.instance.isPlaying)
             }
             PlayService.STATE_PAUSED -> {
 
-                playIV.setSelected(PlayManager.getInstance(this).isPlaying)
+                playIV.setSelected(PlayManager.instance.isPlaying)
             }
 
-            PlayService.STATE_COMPLETED -> playIV.setSelected(PlayManager.getInstance(this).isPlaying)
-            PlayService.STATE_STOPPED -> playIV.setSelected(PlayManager.getInstance(this).isPlaying)
+            PlayService.STATE_COMPLETED -> playIV.setSelected(PlayManager.instance.isPlaying)
+            PlayService.STATE_STOPPED -> playIV.setSelected(PlayManager.instance.isPlaying)
             PlayService.STATE_RELEASED -> {
-                playIV.setSelected(PlayManager.getInstance(this).isPlaying)
+                playIV.setSelected(PlayManager.instance.isPlaying)
                 mSeekBar.progress = 0
             }
             PlayService.STATE_ERROR -> {
-                playIV.setSelected(PlayManager.getInstance(this).isPlaying)
+                playIV.setSelected(PlayManager.instance.isPlaying)
                 mSeekBar.progress = 0
             }
         }
@@ -81,7 +81,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
 
         override fun onStopTrackingTouch(seekBar: SeekBar?) {
             isSeeking = false
-            seekBar?.let { PlayManager.getInstance(seekBar.getContext()).seekTo(seekBar.progress) }
+            seekBar?.let { PlayManager.instance.seekTo(seekBar.progress) }
         }
 
     }
@@ -94,25 +94,25 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         backIV = find(R.id.iv_back)
         forwardIV = find(R.id.iv_forward)
         setListener()
-        val song = PlayManager.getInstance(this).currentSong
+        val song = PlayManager.instance.currentSong
 
         mSeekBar.setOnSeekBarChangeListener(mSeekListener)
-        playIV.isSelected = PlayManager.getInstance(this).isPlaying
+        playIV.isSelected = PlayManager.instance.isPlaying
 //        initToolbar()
         song?.let { showSong(it) }
     }
 
     override fun onResume() {
         super.onResume()
-        PlayManager.getInstance(this).registerCallback(this)
-        PlayManager.getInstance(this).registerProgressCallback(this)
+        PlayManager.instance.registerCallback(this)
+        PlayManager.instance.registerProgressCallback(this)
 
     }
 
     override fun onPause() {
         super.onPause()
-        PlayManager.getInstance(this).unregisterCallback(this)
-        PlayManager.getInstance(this).unregisterProgressCallback(this)
+        PlayManager.instance.unregisterCallback(this)
+        PlayManager.instance.unregisterProgressCallback(this)
     }
 
     private fun initToolbar() {
@@ -124,14 +124,14 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
 
     private fun setListener() {
         playIV.setOnClickListener {
-            PlayManager.getInstance(this).dispatch()
+            PlayManager.instance.dispatch()
 
         }
         backIV.setOnClickListener {
-            PlayManager.getInstance(this).previous()
+            PlayManager.instance.previous()
         }
         forwardIV.setOnClickListener {
-            PlayManager.getInstance(this).next()
+            PlayManager.instance.next()
         }
     }
 

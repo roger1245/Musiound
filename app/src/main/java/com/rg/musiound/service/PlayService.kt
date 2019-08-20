@@ -136,7 +136,7 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
         mPlayer?.start()
         Log.d("roger", "dostartPlayer")
         val time = mPlayer?.duration
-        time?.let { PlayManager.getInstance(this).setDuration(time) }
+        time?.let { PlayManager.instance.setDuration(time) }
         setPlayerState(STATE_STARTED)
     }
 
