@@ -2,11 +2,43 @@ package com.rg.musiound.service.ruler
 
 
 import com.rg.musiound.bean.Song
+import com.rg.musiound.db.PlayingSong
 import java.util.Random
 import java.util.Stack
 
 
 object Rulers {
+    //由rules类与数据库进行单向回调
+    var mCurrentList: MutableList<Song> = PlayingSong.instance.getPlayingSong()
+            private set
+    fun add(song: List<Song>) {
+        mCurrentList.addAll(song)
+        PlayingSong.instance.addAll(song)
+    }
+
+    fun add(song: Song) {
+        mCurrentList.add(song)
+        PlayingSong.instance.addPlayingSong(song)
+    }
+
+    fun delete(song: Song) {
+        mCurrentList.remove(song)
+        PlayingSong.instance.deletePlayingSong(song)
+    }
+
+    fun delete(songs: List<Song>) {
+        mCurrentList.removeAll(songs)
+        PlayingSong.instance.deletePlayingSong(songs)
+    }
+
+    fun deleteAll() {
+        mCurrentList.clear()
+        PlayingSong.instance.deleteAll()
+    }
+    fun getSongs(): List<Song> {
+        return PlayingSong.instance.getPlayingSong()
+    }
+
 
     val RULER_SINGLE_LOOP: Rule = SingleLoopRuler()
     val RULER_LIST_LOOP: Rule = ListLoopRuler()
@@ -34,7 +66,7 @@ object Rulers {
     class ListLoopRuler  constructor() : Rule {
 
         override fun previous(song: Song, songList: List<Song>, isUserAction: Boolean): Song {
-            if (!songList.isEmpty()) {
+            if (songList.isNotEmpty()) {
                 var index = songList.indexOf(song)
                 if (index < 0) {
                     return songList[0]

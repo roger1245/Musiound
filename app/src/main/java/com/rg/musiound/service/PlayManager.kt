@@ -13,6 +13,7 @@ import com.rg.musiound.BaseApp
 import com.rg.musiound.bean.Song
 import com.rg.musiound.db.PlayingSong
 import com.rg.musiound.service.ruler.Rulers
+import com.rg.musiound.service.ruler.Rulers.mCurrentList
 
 
 /**
@@ -20,8 +21,7 @@ import com.rg.musiound.service.ruler.Rulers
  * on 2019/8/15
  */
 class PlayManager private constructor(private val mContext: Context) : PlayService.PlayStateChangeListener {
-
-
+    
     private val mConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             mService = (service as PlayService.PlayBinder).service
@@ -89,7 +89,6 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
     private val mCallbacks: MutableList<Callback>?
     private val mProgressCallbacks: MutableList<ProgressCallback>
     private var totalList: MutableList<Song> = mutableListOf()
-    private var mCurrentList: MutableList<Song> = PlayingSong.instance.getPlayingSong()
 
     var mPlayRule = Rulers.RULER_LIST_LOOP
     /**
@@ -252,15 +251,12 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 
 
     fun dispatch(song: Song? = currentSong) {
-        Log.d("roger", "1")
         if (mCurrentList.isEmpty() || song == null) {
 //            song?.let { mCurrentList.add(song) }
 //            song?.let{
 //                currentSong = song
 //                mService?.startPlayer(it.url)
 //            }
-            Log.d("roger", "2")
-
             return
         }
         if (mService != null) {
@@ -280,7 +276,6 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
                     }
                 }
             } else {
-                Log.d("roger", "4")
 
                 mService?.releasePlayer()
                 if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == requestAudioFocus()) {
@@ -292,8 +287,6 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
             }
 
         } else {
-            Log.d("roger", "5")
-
             currentSong = song
             bindPlayService()
             startPlayService()
@@ -627,6 +620,9 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 
     fun add(song: List<Song>) {
         mCurrentList.addAll(song)
+        Log.d("roger", "1" + song.toString())
+        Log.d("roger", "mCurrentList = " + mCurrentList.toString())
+
         PlayingSong.instance.addAll(song)
     }
     fun add(song: Song) {
