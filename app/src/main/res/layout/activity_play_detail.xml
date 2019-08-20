@@ -18,26 +18,27 @@
 
             <TextView
                     android:id="@+id/tv_toolbar_title"
-                    android:layout_marginStart="83dp"
-                    android:layout_width="250dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginTop="3dp"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:layout_marginTop="12dp"
                     android:textColor="@color/colorWhite"
-                    android:textSize="29sp"
+                    android:textSize="20sp"
                     android:layout_height="wrap_content"/>
 
             <TextView
                     android:id="@+id/tv_toolbar_singer"
                     android:layout_alignStart="@id/tv_toolbar_title"
                     android:layout_below="@id/tv_toolbar_title"
-                    android:layout_width="250dp"
+                    android:layout_width="match_parent"
+                    android:layout_marginEnd="5dp"
                     android:maxLines="1"
                     android:ellipsize="end"
-                    android:layout_marginTop="12dp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="22sp"
-                    android:layout_height="match_parent"/>
+                    android:textColor="@color/colorGrey"
+                    android:textSize="17sp"
+                    android:layout_height="wrap_content"/>
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>
@@ -83,8 +84,10 @@
 
     <SeekBar
             android:id="@+id/sb_play_detail"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
+            android:max="100"
+            android:progressTint="@color/activity_playing_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@id/ll_bottom"/>
@@ -94,13 +97,16 @@
             android:layout_alignParentBottom="true"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="84dp">
 
         <ImageView
                 android:id="@+id/iv_loop"
                 android:src="@drawable/activity_play_detail_loop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"/>
 
         <ImageView
@@ -108,11 +114,15 @@
                 android:src="@drawable/activity_play_detail_move_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+
                 android:layout_weight="1"/>
 
         <ImageView
                 android:id="@+id/iv_play"
                 android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+
                 app:srcCompat="@drawable/activity_play_detail_play_sel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -120,6 +130,8 @@
         <ImageView
                 android:id="@+id/iv_forward"
                 android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+
                 android:src="@drawable/activity_play_detail_move_forward"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -127,6 +139,8 @@
         <ImageView
                 android:id="@+id/iv_info"
                 android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+
                 android:src="@drawable/activity_play_detail_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

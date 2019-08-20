@@ -1,5 +1,6 @@
 package com.rg.musiound.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,8 +53,9 @@ class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.title.text = list[position].name
                 val ar = list[position].singer.map { it.name }
                 val str = StringBuilder()
-                for (x in str.withIndex()) {
-                    str.append(x)
+                for (x in ar.withIndex()) {
+                    str.append(x.value)
+                    Log.d("roger", x.value.toString())
                     if (x.index != ar.size - 1) {
                         str.append(",")
                     }
@@ -65,8 +67,8 @@ class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 holder.title.text = list[position].name
                 val ar = list[position].singer.map { it.name }
                 val str = StringBuilder()
-                for (x in str.withIndex()) {
-                    str.append(x)
+                for (x in ar.withIndex()) {
+                    str.append(x.value)
                     if (x.index != ar.size - 1) {
                         str.append(",")
                     }

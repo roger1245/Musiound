@@ -3,43 +3,71 @@
                 android:orientation="vertical"
                 android:background="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="300dp">
+                android:layout_height="430dp">
 
-    <LinearLayout
-            android:id="@+id/ll_dialog_bottom"
+    <RelativeLayout
+            android:id="@+id/rl_dialog_bottom"
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="51dp">
 
         <ImageView
+                android:id="@+id/iv_loop"
                 android:src="@drawable/dialog_bottom_song_list_loop"
+                android:layout_marginStart="11dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <TextView
                 android:text="列表循环"
+                android:layout_marginStart="11dp"
+                android:textSize="15sp"
+                android:layout_toEndOf="@id/iv_loop"
+                android:textColor="@color/text_common_black"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <ImageView
+                android:layout_toStartOf="@id/tv_collect"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="11dp"
                 android:src="@drawable/dialog_bottom_song_list_collect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <TextView
+                android:id="@+id/tv_collect"
+                android:layout_toStartOf="@id/iv_delete"
+                android:layout_marginRight="27dp"
+                android:layout_centerVertical="true"
                 android:text="收藏全部"
+                android:textColor="@color/text_common_black"
+                android:textSize="15sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <ImageView
+                android:id="@+id/iv_delete"
+                android:layout_marginRight="11dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:src="@drawable/dialog_bottom_song_list_remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-    </LinearLayout>
+    </RelativeLayout>
+    <View
+            android:id="@+id/v_dialog_bottom"
+            android:layout_width="match_parent"
+            android:background="@color/dialog_bottom_song_list_view_divide"
+            android:layout_below="@id/rl_dialog_bottom"
+            android:layout_height="1dp" />
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_dialog_bottom"
-            android:layout_below="@id/ll_dialog_bottom"
+            android:layout_below="@id/v_dialog_bottom"
             android:layout_width="match_parent"
             android:layout_height="220dp">
 

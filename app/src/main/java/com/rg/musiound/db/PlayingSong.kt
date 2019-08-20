@@ -56,7 +56,7 @@ class PlayingSong {
                 it.put(PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {
-                    stringBuilder.append(x)
+                    stringBuilder.append(x.value)
                     if (x.index != ar.size - 1) {
                         stringBuilder.append(",")
                     }

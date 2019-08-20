@@ -7,11 +7,13 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.service.PlayService
+import com.rg.musiound.util.dp2px
 import com.rg.musiound.view.BaseActivity
 import com.rg.musiound.view.adapter.DialogBottomAdapter
 import kotlinx.android.synthetic.main.activity_play_detail.*
@@ -104,7 +106,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
 
         mSeekBar.setOnSeekBarChangeListener(mSeekListener)
         playIV.isSelected = PlayManager.instance.isPlaying
-//        initToolbar()
+        initToolbar()
         song?.let { showSong(it) }
     }
 
@@ -122,7 +124,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     }
 
     private fun initToolbar() {
-        common_toolbar.init(
+        toolbar_common.init(
             title = "歌曲",
             listener = View.OnClickListener { finish() }
         )
@@ -140,9 +142,11 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             PlayManager.instance.next()
         }
         iv_info.setOnClickListener {
-            val bottomDialog = BottomSheetDialog(this, R.style.DialogBottom)
+            val bottomDialog = BottomSheetDialog(this)
             val view = layoutInflater.inflate(R.layout.dialog_bottom_song_list, null)
             bottomDialog.setContentView(view)
+//            val mBehavior = BottomSheetBehavior.from(view.parent as View)
+//            mBehavior.peekHeight = dp2px(500)
             songList = view.find(R.id.rv_dialog_bottom)
             bottomAdapter = DialogBottomAdapter()
             songList.layoutManager = LinearLayoutManager(this)

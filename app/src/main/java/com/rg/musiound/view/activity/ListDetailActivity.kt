@@ -59,6 +59,7 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
                 val listSong = songs.data.tracks.map {
                     Song(it.name, "https://v1.itooi.cn/netease/url?id=${it.id}&quality=flac", it.album.picUrl, it.artists )
                 }
+                PlayManager.instance.deleteAll()
                 PlayManager.instance.add(listSong)
                 PlayManager.instance.dispatch(song)
                 val intent = Intent(this@ListDetailActivity, PlayDetailActivity::class.java)
