@@ -7,16 +7,20 @@ import android.widget.ImageView
 import android.widget.SeekBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.service.PlayService
-import com.rg.musiound.util.dp2px
+import com.rg.musiound.service.ruler.LIST_LOOP
+import com.rg.musiound.service.ruler.RANDOM
+import com.rg.musiound.service.ruler.Rulers
+import com.rg.musiound.service.ruler.SINGLE_LOOP
 import com.rg.musiound.view.BaseActivity
 import com.rg.musiound.view.adapter.DialogBottomAdapter
+import com.rg.musiound.view.adapter.OnBottomClickListener
 import kotlinx.android.synthetic.main.activity_play_detail.*
+import kotlinx.android.synthetic.main.dialog_bottom_song_list.*
 import org.jetbrains.anko.find
 
 
@@ -25,6 +29,33 @@ import org.jetbrains.anko.find
  * on 2019/8/16
  */
 class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.ProgressCallback {
+    private var bottom_loop: ImageView? = null
+    override fun onPlayListChanged(list: List<Song>) {
+        bottomAdapter.list = list
+        bottomAdapter.notifyDataSetChanged()
+    }
+
+    override fun onRuleChanged(rule: Int) {
+
+        when (rule) {
+            SINGLE_LOOP -> {
+                iv_loop?.let { it.setImageResource(R.drawable.activity_play_detail_single_loop) }
+                bottom_loop?.let { it.setImageResource(R.drawable.dialog_bottom_song_list_single_loop) }
+            }
+            LIST_LOOP -> {
+                iv_loop?.let { it.setImageResource(R.drawable.activity_play_detail_loop) }
+                bottom_loop?.let { it.setImageResource(R.drawable.dialog_bottom_song_list_loop) }
+
+
+            }
+            RANDOM -> {
+                iv_loop?.let { it.setImageResource(R.drawable.activity_play_detail_random) }
+                bottom_loop?.let { it.setImageResource(R.drawable.dialog_bottom_song_list_random) }
+            }
+        }
+    }
+
+
     override fun onPlayListPrepared(songs: List<Song>?) {
 
     }
@@ -46,7 +77,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             PlayService.STATE_COMPLETED -> playIV.setSelected(PlayManager.instance.isPlaying)
             PlayService.STATE_STOPPED -> playIV.setSelected(PlayManager.instance.isPlaying)
             PlayService.STATE_RELEASED -> {
-                playIV.setSelected(PlayManager.instance.isPlaying)
+                playIV.isSelected = PlayManager.instance.isPlaying
                 mSeekBar.progress = 0
             }
             PlayService.STATE_ERROR -> {
@@ -145,14 +176,46 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             val bottomDialog = BottomSheetDialog(this)
             val view = layoutInflater.inflate(R.layout.dialog_bottom_song_list, null)
             bottomDialog.setContentView(view)
+            setBottomClickListener(view)
+            Log.d("roger", "bottom_loop ${Rulers.rule.rule}  ")
+            PlayManager.instance.setRule(Rulers.rule.rule)
 //            val mBehavior = BottomSheetBehavior.from(view.parent as View)
 //            mBehavior.peekHeight = dp2px(500)
             songList = view.find(R.id.rv_dialog_bottom)
             bottomAdapter = DialogBottomAdapter()
             songList.layoutManager = LinearLayoutManager(this)
             songList.adapter = bottomAdapter
+            bottomAdapter.setBottomClickListener(object : OnBottomClickListener {
+                override fun onItemClick(position: Int) {
+                    PlayManager.instance.dispatch(bottomAdapter.list[position])
+                }
+
+                override fun onDeleteClick(position: Int) {
+                    PlayManager.instance.deleteSong(bottomAdapter.list[position])
+                }
+            })
+//            bottomAdapter.setOnItemClickListener(object : OnItemClickListener {
+//                override fun onItemClick(position: Int) {
+////                    PlayManager.instance.dispatch(bottomAdapter.list[position])
+//                }
+//            })
+//            bottomAdapter.setOnItemDeleteListener(object : OnItemClickListener {
+//                override fun onItemClick(position: Int) {
+//                }
+//            })
+
             bottomDialog.show()
         }
+        iv_loop.setOnClickListener {
+            if (Rulers.rule.rule == LIST_LOOP) {
+                PlayManager.instance.setRule(SINGLE_LOOP)
+            } else if (Rulers.rule.rule == SINGLE_LOOP) {
+                PlayManager.instance.setRule(RANDOM)
+            } else if (Rulers.rule.rule == RANDOM) {
+                PlayManager.instance.setRule(LIST_LOOP)
+            }
+        }
+
 
     }
 
@@ -166,6 +229,19 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
         }
         tv_toolbar_singer.text = stringBuilder
+    }
+
+    private fun setBottomClickListener(view: View) {
+        bottom_loop = view.find(R.id.iv_bottom_loop) as ImageView
+        bottom_loop?.setOnClickListener {
+            if (Rulers.rule.rule == LIST_LOOP) {
+                PlayManager.instance.setRule(SINGLE_LOOP)
+            } else if (Rulers.rule.rule == SINGLE_LOOP) {
+                PlayManager.instance.setRule(RANDOM)
+            } else if (Rulers.rule.rule == RANDOM) {
+                PlayManager.instance.setRule(LIST_LOOP)
+            }
+        }
     }
 
 }

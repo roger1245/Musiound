@@ -21,7 +21,7 @@ import com.rg.musiound.service.ruler.Rulers.mCurrentList
  * on 2019/8/15
  */
 class PlayManager private constructor(private val mContext: Context) : PlayService.PlayStateChangeListener {
-    
+
     private val mConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             mService = (service as PlayService.PlayBinder).service
@@ -90,7 +90,6 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
     private val mProgressCallbacks: MutableList<ProgressCallback>
     private var totalList: MutableList<Song> = mutableListOf()
 
-    var mPlayRule = Rulers.RULER_LIST_LOOP
     /**
      *
      * @return a song current playing or paused, may be null
@@ -307,7 +306,7 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
      */
     private fun next(isUserAction: Boolean) {
         var song: Song? = null
-        currentSong?.let { song = mPlayRule.next(it, mCurrentList, isUserAction) }
+        currentSong?.let { song = Rulers.rule.next(it, mCurrentList, isUserAction) }
         song?.let { dispatch(it) }
     }
 
@@ -320,7 +319,7 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 
     private fun previous(isUserAction: Boolean) {
         var song: Song? = null
-        currentSong?.let { song = mPlayRule.previous(it, mCurrentList, isUserAction) }
+        currentSong?.let { song = Rulers.rule.previous(it, mCurrentList, isUserAction) }
         song?.let { dispatch(it) }
     }
 
@@ -597,6 +596,8 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
         fun onPlayListPrepared(songs: List<Song>?)
         fun onPlayStateChanged(state: Int, song: Song?)
         fun onShutdown()
+        fun onPlayListChanged(list: List<Song>)
+        fun onRuleChanged(rule: Int)
     }
 
     interface ProgressCallback {
@@ -619,30 +620,49 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
     }
 
     fun add(song: List<Song>) {
-        mCurrentList.addAll(song)
-        Log.d("roger", "1" + song.toString())
-        Log.d("roger", "mCurrentList = " + mCurrentList.toString())
-
-        PlayingSong.instance.addAll(song)
+        Rulers.add(song)
+//        mCurrentList.addAll(song)
+//        PlayingSong.instance.addAll(song)
     }
     fun add(song: Song) {
-        mCurrentList.add(song)
-        PlayingSong.instance.addPlayingSong(song)
+        Rulers.add(song)
+//        mCurrentList.add(song)
+//        PlayingSong.instance.addPlayingSong(song)
     }
     fun deleteSong(song: Song) {
-        mCurrentList.remove(song)
-        PlayingSong.instance.deletePlayingSong(song)
+        Rulers.delete(song)
+//        mCurrentList.remove(song)
+//        PlayingSong.instance.deletePlayingSong(song)
     }
     fun deleteAll() {
-        mCurrentList.clear()
-        PlayingSong.instance.deleteAll()
+        Rulers.deleteAll()
+//        mCurrentList.clear()
+//        PlayingSong.instance.deleteAll()
     }
     fun getSongs(): List<Song> {
-        return PlayingSong.instance.getPlayingSong()
+        return Rulers.mCurrentList
+//        return PlayingSong.instance.getPlayingSong()
     }
 
     fun setDuration(time: Int) {
         duration = time
     }
+
+    fun setRule(RULE: Int) {
+        Rulers.setRule(RULE)
+    }
+
+    fun onPlayListChanged(list: List<Song>) {
+        for (callback in mCallbacks!!) {
+            callback.onPlayListChanged(list)
+        }
+    }
+    fun onRuleChanged(rule: Int) {
+        for (callback in mCallbacks!!) {
+            callback.onRuleChanged(rule)
+        }
+    }
+
+
 }
 

@@ -35,3 +35,5 @@ interface  GenericPageCallback <T> {
 interface OnItemClickListener {
     fun onItemClick(position: Int)
 }
+
+

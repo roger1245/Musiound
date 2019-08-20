@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
 import com.rg.musiound.service.PlayManager
+import com.rg.musiound.service.ruler.LIST_LOOP
 import com.rg.musiound.util.OnItemClickListener
 import org.jetbrains.anko.find
 import java.lang.StringBuilder
@@ -21,10 +22,10 @@ import java.lang.StringBuilder
 class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val ITEM_COMMON = 0
     private val ITEM_PLAYING = 1
-    private var mOnItemClickListener: OnItemClickListener? = null
-    private var list: List<Song> = PlayManager.instance.getSongs()
+    private var mOnItemClickListener: OnBottomClickListener? = null
+    var list: List<Song> = PlayManager.instance.getSongs()
 
-    fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener) {
+    fun setBottomClickListener(mOnItemClickListener: OnBottomClickListener) {
         this.mOnItemClickListener = mOnItemClickListener
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -55,12 +56,17 @@ class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val str = StringBuilder()
                 for (x in ar.withIndex()) {
                     str.append(x.value)
-                    Log.d("roger", x.value.toString())
                     if (x.index != ar.size - 1) {
                         str.append(",")
                     }
                 }
+                holder.delete.setOnClickListener {
+                    mOnItemClickListener?.onDeleteClick(position)
+                }
                 holder.artist.text = str.toString()
+                holder.itemView.setOnClickListener{
+                    mOnItemClickListener?.onItemClick(position)
+                }
 
             }
             is PlayingHolder -> {
@@ -102,4 +108,8 @@ class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
         }
     }
+}
+interface OnBottomClickListener {
+    fun onItemClick(position: Int)
+    fun onDeleteClick(position: Int)
 }
