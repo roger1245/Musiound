@@ -2,6 +2,7 @@ package com.rg.musiound.view.fragment
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -17,6 +18,8 @@ import com.rg.musiound.interfaces.generic.IActivityGenericView
 import com.rg.musiound.presenter.FragmentSongListSearchPresenter
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.util.OnItemClickListener
+import com.rg.musiound.util.extensions.dp2px
+import com.rg.musiound.view.activity.ListDetailActivity
 import com.rg.musiound.view.activity.PlayDetailActivity
 import com.rg.musiound.view.adapter.ListDetailAdapter
 import com.rg.musiound.view.adapter.SongListAdapter
@@ -56,13 +59,24 @@ class SearchSongListFragment :
     }
 
     override fun setData(data: SongListSearchRaw, page: Int) {
+
         val dataMapped = data.data.playlists.map {
-            SongList(it.description, it.id, "", it.name, listOf(), listOf(), it.coverImgUrl)
+            SongList(it.description?:"", it.id, "", it.name, listOf(""), listOf(Subscriber("", "")), it.coverImgUrl)
+        }
+        adapter.list.let {
+            if (page == 0 && it.isNotEmpty()) {
+                it.clear()
+            }
+            srl_search_song_list.isRefreshing = false
         }
         adapter.list.addAll(dataMapped)
         adapter.page = page
         adapter.let {
-            it.notifyItemRangeInserted(it.getCount() - dataMapped.size, dataMapped.size)
+            if (page == 0) {
+                it.notifyDataSetChanged()
+            } else {
+                it.notifyItemRangeInserted(it.getCount() - dataMapped.size, dataMapped.size)
+            }
 
         }
     }
@@ -94,11 +108,15 @@ class SearchSongListFragment :
 
     private fun initListener() {
         adapter = SongListAdapter(activity as Context)
+        adapter.isFromSearch = true
         rv_fragment_search_song_list.layoutManager = LinearLayoutManager(activity)
         rv_fragment_search_song_list.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
-
+                val id = adapter.list[position - 1].id
+                val intent = Intent(activity, ListDetailActivity::class.java)
+                intent.putExtra("id", id)
+                startActivity(intent)
             }
 
         })
@@ -115,12 +133,29 @@ class SearchSongListFragment :
                     if (adapter.itemCount - 1 == lastPosition && adapter.isLoadingMore) {
                         uri?.let {
                             presenter?.loadMoreData(it, ++adapter.page)
-
                         }
                     }
                 }
             }
         })
+        rv_fragment_search_song_list.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+                super.getItemOffsets(outRect, view, parent, state)
+                outRect.top = dp2px(6)
+                outRect.left = dp2px(10)
+                outRect.right = dp2px(10)
+                outRect.bottom = dp2px(6)
+            }
+        })
+        srl_search_song_list.setOnRefreshListener {
+            Log.d("roger", "uri == " + uri.toString())
+            uri?.let {
+                presenter?.loadMoreData(it, 0)
+            }
+            if (uri == null) {
+                srl_search_song_list.isRefreshing = false
+            }
+        }
     }
 
 }

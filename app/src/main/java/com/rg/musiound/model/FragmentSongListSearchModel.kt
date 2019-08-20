@@ -23,7 +23,7 @@ class FragmentSongListSearchModel<T, P> : IActivityGenericModel<T, P>, BaseModel
             .safeSubscribeBy(
                 onError = {
                     callback.onFailed()
-                    Log.d("roger", "onError" + it.toString())
+                    Log.d("roger2", "onError    " + it.toString())
 
                 },
                 onComplete = {

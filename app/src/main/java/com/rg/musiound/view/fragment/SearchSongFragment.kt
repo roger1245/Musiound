@@ -55,10 +55,20 @@ class SearchSongFragment :
         val dataMapped = data.data.songs.map {
             Track(it.id, it.name, it.ar.map { Artist(it.name) }, Album("", ""))
         }
+        adapter.list.let {
+            if (page == 0 && it.isNotEmpty()) {
+                it.clear()
+            }
+            srl_search_song.isRefreshing = false
+        }
         adapter.list.addAll(dataMapped)
         adapter.page = page
         adapter.let {
-            it.notifyItemRangeInserted(it.getCount() - dataMapped.size, dataMapped.size)
+            if (page == 0) {
+                it.notifyDataSetChanged()
+            } else {
+                it.notifyItemRangeInserted(it.getCount() - dataMapped.size, dataMapped.size)
+            }
 
         }
 
@@ -130,7 +140,6 @@ class SearchSongFragment :
                     val lastPosition = layoutManager.findLastVisibleItemPosition()
                     if (adapter.itemCount - 1 == lastPosition && adapter.isLoadingMore) {
                         uri?.let {
-                            Log.d("roger", "page ==   " + adapter.page)
 
                             presenter?.loadMoreData(it, ++adapter.page)
 
@@ -139,5 +148,14 @@ class SearchSongFragment :
                 }
             }
         })
+
+        srl_search_song.setOnRefreshListener {
+            uri?.let {
+                presenter?.loadMoreData(it, 0)
+            }
+            if (uri == null) {
+                srl_search_song.isRefreshing = false
+            }
+        }
     }
 }

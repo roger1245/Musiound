@@ -6,7 +6,6 @@ package com.rg.musiound.bean
  */
 //歌单
 data class SongListSearchRaw(
-    val code : Int,
     val data: SongListSearch
 )
 data class SongListSearch(
@@ -14,9 +13,9 @@ data class SongListSearch(
 )
 data class SongListSubSearch(
     val coverImgUrl: String,
-    val playCount: Int,
+//    val playCount: Int,
     val name: String,
-    val description: String,
+    val description: String?,
     val id: Long
 )
 //单曲

@@ -22,10 +22,12 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
     private val ITEM_COMMON = 1
     private val ITEM_LOADING_MORE_FOOTER = 2
     private val ITEM_LOADED_END_FOOTER = 3
+    private val ITEM_SEACH_SONG_LIST = 4
     private var mOnItemClickListener: OnItemClickListener? = null
     var page: Int = 0
     var list: MutableList<SongList> = mutableListOf()
     var isLoadingMore = true
+    var isFromSearch = false
 
     fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener
@@ -44,6 +46,20 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
         }
     }
 
+    class SearchSongListHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val iv: ImageView = view.find(R.id.iv_search_song_list)
+        val tv_title: TextView = view.find(R.id.tv_search_song_list_title)
+        val tv_artist: TextView = view.find(R.id.tv_search_song_list_artist)
+
+        companion object {
+            fun from(parent: ViewGroup): SearchSongListHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater.inflate(R.layout.recycle_item_fragment_search_song_list, parent, false)
+                return SearchSongListHolder(view)
+            }
+        }
+    }
+
     class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup): HeaderViewHolder {
@@ -53,6 +69,7 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
             }
         }
     }
+
     class LoadingMoreFootHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun from(parent: ViewGroup): LoadingMoreFootHolder {
@@ -88,6 +105,9 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
             ITEM_LOADING_MORE_FOOTER -> LoadingMoreFootHolder.from(
                 parent
             )
+            ITEM_SEACH_SONG_LIST -> SearchSongListHolder.from(
+                parent
+            )
             else -> throw ClassCastException("unknown type of viewholder")
         }
     }
@@ -95,7 +115,8 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
     override fun getItemCount(): Int {
         return getCount()
     }
-    fun getCount() : Int {
+
+    fun getCount(): Int {
         return list.size + 2
     }
 
@@ -115,9 +136,20 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
                     mOnItemClickListener?.onItemClick(position)
                 }
             }
-            is HeaderViewHolder -> {}
-            is LoadEndFooter -> {}
-            is LoadingMoreFootHolder -> {}
+            is SearchSongListHolder -> {
+                val item = list[position - 1]
+                holder.iv.setImageFromUrl(item.coverImgUrl)
+                holder.tv_title.text = item.name
+                holder.itemView.setOnClickListener {
+                    mOnItemClickListener?.onItemClick(position)
+                }
+            }
+            is HeaderViewHolder -> {
+            }
+            is LoadEndFooter -> {
+            }
+            is LoadingMoreFootHolder -> {
+            }
         }
 
     }
@@ -132,7 +164,11 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
         } else if (position == 0) {
             return ITEM_HEADER
         } else {
-            return ITEM_COMMON
+            if (isFromSearch) {
+                return ITEM_SEACH_SONG_LIST
+            } else {
+                return ITEM_COMMON
+            }
         }
     }
 }
