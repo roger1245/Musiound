@@ -637,6 +637,9 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
         mCurrentList.remove(song)
         PlayingSong.instance.deletePlayingSong(song)
     }
+    fun getSongs(): List<Song> {
+        return PlayingSong.instance.getPlayingSong()
+    }
 
     fun setDuration(time: Int) {
         duration = time

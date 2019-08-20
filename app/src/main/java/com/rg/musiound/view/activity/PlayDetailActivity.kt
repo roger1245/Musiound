@@ -5,11 +5,15 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.service.PlayService
 import com.rg.musiound.view.BaseActivity
+import com.rg.musiound.view.adapter.DialogBottomAdapter
 import kotlinx.android.synthetic.main.activity_play_detail.*
 import org.jetbrains.anko.find
 
@@ -71,6 +75,8 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     private lateinit var playIV: ImageView
     private lateinit var backIV: ImageView
     private lateinit var forwardIV: ImageView
+    private lateinit var songList: RecyclerView
+    private lateinit var bottomAdapter: DialogBottomAdapter
     private val mSeekListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
         }
@@ -133,6 +139,17 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         forwardIV.setOnClickListener {
             PlayManager.instance.next()
         }
+        iv_info.setOnClickListener {
+            val bottomDialog = BottomSheetDialog(this, R.style.DialogBottom)
+            val view = layoutInflater.inflate(R.layout.dialog_bottom_song_list, null)
+            bottomDialog.setContentView(view)
+            songList = view.find(R.id.rv_dialog_bottom)
+            bottomAdapter = DialogBottomAdapter()
+            songList.layoutManager = LinearLayoutManager(this)
+            songList.adapter = bottomAdapter
+            bottomDialog.show()
+        }
+
     }
 
     private fun showSong(song: Song) {
