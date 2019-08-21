@@ -4,8 +4,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorWhite</item>
-        <item name="colorPrimaryDark">@color/colorGrey</item>
-        <item name="colorAccent">@color/colorGrey</item>
+        <item name="colorPrimaryDark">@color/text_common_black_l</item>
+        <item name="colorAccent">@color/text_common_black_l</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

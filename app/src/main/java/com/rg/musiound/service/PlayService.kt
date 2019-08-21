@@ -24,6 +24,8 @@ import com.rg.musiound.view.activity.PlayDetailActivity
 import java.io.IOException
 import java.lang.StringBuilder
 import android.app.NotificationChannel
+import android.content.BroadcastReceiver
+import android.content.IntentFilter
 import androidx.annotation.RequiresApi
 
 
@@ -102,6 +104,7 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
         mStateListener?.onShutdown()
         super.onDestroy()
         stopForeground(true)
+        unregisterReceiver(notificationReceiver)
     }
 
     override fun onPrepared(mp: MediaPlayer?) {
@@ -241,6 +244,8 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
     private var mNotification: Notification? = null
     private val CHANNEL_ID = "musiound"
     private val CHANNEL_NAME = "MUSIOUND"
+    private lateinit var intentFilter: IntentFilter
+    private lateinit var notificationReceiver : NotificationReceiver
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -249,17 +254,16 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
         }
 
         startForeground(11, getNotification())
+        //注册广播
+        notificationReceiver = NotificationReceiver()
+        intentFilter = IntentFilter()
+        intentFilter.addAction(ACTION_DELETE)
+        intentFilter.addAction(ACTION_NEXT)
+        intentFilter.addAction(ACTION_PAUSE)
+        intentFilter.addAction(ACTION_PLAY_DETAIL)
+        registerReceiver(notificationReceiver, intentFilter)
     }
-//
-//    fun updateNotification() {
-//
-//    }
-//    fun cancelNotification() {
-//        stopForeground(true)
-//
-//
-//
-//    }
+
 
     private val pause = 0
     private val play_detail = 2
@@ -324,6 +328,13 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
             Context.NOTIFICATION_SERVICE
         ) as NotificationManager
         notificationManager.createNotificationChannel(channel)
+    }
+
+    class NotificationReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d("roger", intent?.action)
+        }
+
     }
 
 

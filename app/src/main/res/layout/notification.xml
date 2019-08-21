@@ -1,41 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="78dp">
+
     <ImageView
             android:id="@+id/iv_no_pic"
-            android:layout_width="65dp"
+            android:src="@color/text_common_black_l"
+            android:layout_alignParentStart="true"
+            android:layout_width="80dp"
             android:layout_height="match_parent"/>
+
     <TextView
             android:id="@+id/tv_no_name"
+            android:layout_marginStart="10dp"
+            android:textSize="16dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/iv_no_pic"
+            android:textColor="@color/text_common_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
     <TextView
             android:id="@+id/tv_no_artist"
-            android:layout_width="wrap_content"
+            android:textSize="13dp"
+            android:layout_alignStart="@id/tv_no_name"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="22dp"
+            android:textColor="@color/text_common_black_l"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:layout_width="121dp"
             android:layout_height="wrap_content"/>
+
     <ImageView
             android:id="@+id/iv_no_play"
             android:src="@drawable/notification_remote_play_off"
+            android:layout_toEndOf="@id/iv_no_pic"
+            android:layout_marginStart="140dp"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
     <ImageView
             android:id="@+id/iv_no_next"
             android:src="@drawable/notification_remote_next"
+            android:layout_toEndOf="@id/iv_no_play"
+            android:layout_marginStart="15dp"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
     <ImageView
             android:id="@+id/iv_no_lyric"
             android:src="@drawable/notification_remote_lyric"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/iv_no_next"
+            android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
     <ImageView
             android:id="@+id/iv_no_delete"
             android:src="@drawable/notification_remote_delete"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/iv_no_lyric"
+            android:layout_marginEnd="15dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -13,6 +13,7 @@
     <color name="dialog_bottom_song_list_view_divide">#f6f6f6</color>
     <color name="activity_playing_seekbar">#8f8b8c</color>
     <color name="activity_playing_seekbar_second">#585858</color>
+    <color name="text_common_black_l">#191919</color>
 
 
     <color name="translucent_scrim_top">#26000000</color>
