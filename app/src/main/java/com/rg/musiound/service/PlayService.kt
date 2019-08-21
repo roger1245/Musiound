@@ -10,15 +10,27 @@ import java.lang.annotation.RetentionPolicy
 import com.rg.musiound.service.PlayService.PlayStateChangeListener
 import android.telecom.VideoProfile.isPaused
 import android.R.attr.start
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
 import android.media.AudioManager
+import android.os.Build
 import android.util.Log
+import android.widget.RemoteViews
+import androidx.core.app.NotificationCompat
+import com.rg.musiound.R
 import java.io.IOException
+import java.lang.StringBuilder
 
 
 /**
  * Create by roger
  * on 2019/8/15
  */
+const val PAUSE_ACTION = "com.rg.musiound.pause"
+const val START_ACTION = "com.rg.musiound.start"
+const val ACTIVITY_ACTION = "com.rg.musiound.activity"
+const val NEXT__ACTION = "com.rg.musiound.next"
 class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener,
         MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener{
 
@@ -216,6 +228,57 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
     inner class PlayBinder : Binder() {
         val service: PlayService
             get() = this@PlayService
+    }
+
+    //notification
+    private lateinit var mNotificationManager: NotificationManager
+    private var mNotification: Notification? = null
+    override fun onCreate() {
+        super.onCreate()
+
+        mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    }
+
+    fun updateNotification() {
+
+    }
+    fun cancelNotification() {
+        stopForeground(true)
+
+        
+
+    }
+
+    private val FLAG = 3
+    private val FLAG_NEXT = 0
+    private val FLAG_PAUSE = 1
+    private val FLAG_PLAY = 2
+    private val FLAG_ACTIVITY = 4
+    private fun getNotification() : Notification {
+        val song = PlayManager.instance.currentSong
+        val remoteViews = RemoteViews(this.packageName, R.layout.notification)
+        song?.let {
+            val ar = it.singer.map { it.name}
+            val stringBuilder = StringBuilder()
+            for (x in ar.withIndex()) {
+                stringBuilder.append(x.value)
+                if (x.index != ar.size - 1) {
+                    stringBuilder.append(",")
+                }
+            }
+            remoteViews.setTextViewText(R.id.tv_no_name, it.name)
+            remoteViews.setTextViewText(R.id.tv_no_artist, stringBuilder)
+        }
+        val nextIntent = Intent(NEXT__ACTION)
+        if (mNotification == null) {
+            val builder = NotificationCompat.Builder(this).setContent(remoteViews)
+                .setSmallIcon(R.drawable.toolbar_common_ic_back)
+                .setWhen(System.currentTimeMillis())
+            mNotification = builder.build()
+        } else {
+        }
+        return mNotification as Notification
     }
 
 

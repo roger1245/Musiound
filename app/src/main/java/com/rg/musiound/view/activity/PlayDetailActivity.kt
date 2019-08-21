@@ -264,7 +264,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
 
             override fun getItemPosition(`object`: Any): Int {
-                return PagerAdapter.POSITION_NONE
+                return Rulers.mCurrentList.indexOf(PlayManager.instance.currentSong)
             }
 
             override fun getItem(position: Int): Fragment {
