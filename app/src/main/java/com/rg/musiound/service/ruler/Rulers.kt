@@ -64,6 +64,9 @@ object Rulers {
         RecentPlayedSong.instance.addRecentPlayedSong(song)
     }
 
+    fun getCurrentPos(): Int {
+        return  mCurrentList.indexOf(PlayManager.instance.currentSong)
+    }
 
     var rule: Rule = ListLoopRuler()
         private set

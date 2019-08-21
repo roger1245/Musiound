@@ -248,7 +248,6 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
         mContext.stopService(Intent(mContext, PlayService::class.java))
     }
 
-
     fun dispatch(song: Song? = currentSong) {
         if (mCurrentList.isEmpty() || song == null) {
 //            song?.let { mCurrentList.add(song) }
@@ -291,6 +290,21 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
         }
 
     }
+
+    fun startAsong(song: Song) {
+        if (currentSong == song && isPlaying) {
+
+        } else {
+            dispatch(song)
+        }
+    }
+
+    fun pauseAsong() {
+        if (isPlaying) {
+            dispatch(currentSong)
+        }
+    }
+
 
     /**
      * next song by user action
