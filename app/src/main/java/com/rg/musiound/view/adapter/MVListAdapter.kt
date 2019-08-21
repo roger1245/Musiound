@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
 import com.rg.musiound.bean.MV
+import com.rg.musiound.bean.SongList
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.setImageFromUrl
 import org.jetbrains.anko.find
@@ -17,10 +18,15 @@ import org.jetbrains.anko.find
  * Create by roger
  * on 2019/8/18
  */
-class MVListAdapter(val list: List<MV>, val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MVListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val ITEM_HEADER = 0
     private val ITEM_COMMON = 1
+    private val ITEM_LOADING_MORE_FOOTER = 2
+    private val ITEM_LOADED_END_FOOTER = 3
     private var mOnItemClickListener: OnItemClickListener? = null
+    var page: Int = 0
+    var list: MutableList<MV> = mutableListOf()
+    var isLoadingMore = true
 
     fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener
@@ -40,6 +46,27 @@ class MVListAdapter(val list: List<MV>, val ctx: Context) : RecyclerView.Adapter
         }
     }
 
+    class LoadingMoreFootHolder(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup): LoadingMoreFootHolder {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view =
+                    layoutInflater.inflate(R.layout.recycle_item_activity_mv_play_loading_more_footer, parent, false)
+                return LoadingMoreFootHolder(view)
+            }
+        }
+    }
+
+    class LoadEndFooter(view: View) : RecyclerView.ViewHolder(view) {
+        companion object {
+            fun from(parent: ViewGroup): LoadEndFooter {
+                val layoutInflater = LayoutInflater.from(parent.context)
+                val view = layoutInflater.inflate(R.layout.recycle_item_activity_mv_play_load_end_footer, parent, false)
+                return LoadEndFooter(view)
+            }
+        }
+    }
+
 //    class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 //        companion object {
 //            fun from(parent: ViewGroup): HeaderViewHolder {
@@ -52,18 +79,25 @@ class MVListAdapter(val list: List<MV>, val ctx: Context) : RecyclerView.Adapter
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            ITEM_COMMON -> CardViewHolder.from(
+            ITEM_COMMON -> MVListAdapter.CardViewHolder.from(
                 parent
             )
-//            ITEM_HEADER -> HeaderViewHolder.from(
-//                parent
-//            )
+            ITEM_LOADED_END_FOOTER -> MVListAdapter.LoadEndFooter.from(
+                parent
+            )
+            ITEM_LOADING_MORE_FOOTER -> MVListAdapter.LoadingMoreFootHolder.from(
+                parent
+            )
             else -> throw ClassCastException("unknown type of viewholder")
         }
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return getCount()
+    }
+
+    fun getCount(): Int {
+        return list.size + 1
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -77,11 +111,21 @@ class MVListAdapter(val list: List<MV>, val ctx: Context) : RecyclerView.Adapter
                     mOnItemClickListener?.onItemClick(position)
                 }
             }
+            is LoadingMoreFootHolder -> {}
+            is LoadEndFooter -> {}
         }
 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return ITEM_COMMON
+        if (position == getCount() - 1) {
+            if (isLoadingMore) {
+                return ITEM_LOADING_MORE_FOOTER
+            } else {
+                return ITEM_LOADED_END_FOOTER
+            }
+        }  else {
+            return ITEM_COMMON
+        }
     }
 }
