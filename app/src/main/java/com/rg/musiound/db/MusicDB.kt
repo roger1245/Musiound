@@ -18,17 +18,14 @@ class MusicDB : SQLiteOpenHelper(
 ) {
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        db?.let {
-            PlayingSong.instance.onCreate(db)
-            RecentPlayedSong.instance.onCreate(db)
-        }
+
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.let {
             PlayingSong.instance.onCreate(db)
             RecentPlayedSong.instance.onCreate(db)
-
+            CollectSong.instance.onCreate(db)
         }
     }
 
