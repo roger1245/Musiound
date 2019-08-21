@@ -52,7 +52,6 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
             adapter.notifyDataSetChanged()
         } else {
             adapter.notifyItemRangeInserted(adapter.itemCount - 1 - t.data.size, t.data.size - 1)
-
         }
 
 

@@ -260,8 +260,6 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
         }
         if (mService != null) {
             if (song == currentSong) {
-                Log.d("roger", "3")
-
                 if (mService!!.isStarted()) {
                     //Do really this action by user
                     pause()
@@ -278,6 +276,7 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 
                 mService?.releasePlayer()
                 if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == requestAudioFocus()) {
+                    Rulers.addRecentPlayedSong(song)
                     currentSong = song
                     song.let {
                         mService?.startPlayer(it.url)

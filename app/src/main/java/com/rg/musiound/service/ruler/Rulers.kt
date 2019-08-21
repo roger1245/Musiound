@@ -19,7 +19,6 @@ object Rulers {
     fun add(song: List<Song>) {
         mCurrentList.addAll(song)
         PlayingSong.instance.addAll(song)
-        RecentPlayedSong.instance.addAll(song)
         PlayManager.instance.onPlayListChanged(mCurrentList)
     }
 
@@ -59,6 +58,10 @@ object Rulers {
     }
     fun getSongs(): List<Song> {
         return PlayingSong.instance.getPlayingSong()
+    }
+
+    fun addRecentPlayedSong(song: Song) {
+        RecentPlayedSong.instance.addRecentPlayedSong(song)
     }
 
 

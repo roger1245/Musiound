@@ -13,7 +13,7 @@ const val RECENT_NAME = "NAME"
 const val RECENT_ARTIST = "ARTIST"
 const val RECENT_URL = "URL"
 const val RECENT_PIC = "PIC"
-const val RECENT_PLAYING_SONG = "PLAYING_SONG"
+const val RECENT_PLAYING_SONG = "RECENT_PLAYED_SONG"
 class RecentPlayedSong {
     companion object {
         val instance: RecentPlayedSong by lazy { RecentPlayedSong() }

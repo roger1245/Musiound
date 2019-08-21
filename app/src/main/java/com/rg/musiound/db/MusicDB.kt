@@ -8,7 +8,8 @@ import com.rg.musiound.BaseApp
  * Create by roger
  * on 2019/8/20
  */
-const val DATABASE_NAME  = "musiound.db"
+const val DATABASE_NAME = "musiound.db"
+
 class MusicDB : SQLiteOpenHelper(
     BaseApp.context,
     DATABASE_NAME,
@@ -19,12 +20,15 @@ class MusicDB : SQLiteOpenHelper(
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.let {
             PlayingSong.instance.onCreate(db)
+            RecentPlayedSong.instance.onCreate(db)
         }
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.let {
             PlayingSong.instance.onCreate(db)
+            RecentPlayedSong.instance.onCreate(db)
+
         }
     }
 
