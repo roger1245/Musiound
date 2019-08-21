@@ -12,6 +12,7 @@ import android.telecom.VideoProfile.isPaused
 import android.R.attr.start
 import android.app.Notification
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.media.AudioManager
 import android.os.Build
@@ -19,18 +20,25 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.rg.musiound.R
+import com.rg.musiound.view.activity.PlayDetailActivity
 import java.io.IOException
 import java.lang.StringBuilder
+import android.app.NotificationChannel
+import androidx.annotation.RequiresApi
+
+
+
+
 
 
 /**
  * Create by roger
  * on 2019/8/15
  */
-const val PAUSE_ACTION = "com.rg.musiound.pause"
-const val START_ACTION = "com.rg.musiound.start"
-const val ACTIVITY_ACTION = "com.rg.musiound.activity"
-const val NEXT__ACTION = "com.rg.musiound.next"
+const val ACTION_PAUSE = "com.rg.musiound.pause"
+const val ACTION_PLAY_DETAIL = "com.rg.musiound.play_detail"
+const val ACTION_NEXT = "com.rg.musiound.next"
+const val ACTION_DELETE = "com.rg.musiound.delete"
 class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener,
         MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener{
 
@@ -99,7 +107,6 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
     override fun onPrepared(mp: MediaPlayer?) {
         setPlayerState(STATE_PREPARED)
         doStartPlayer()
-        Log.d("roger", "start" + mPlayer?.duration)
     }
 
     override fun onCompletion(mp: MediaPlayer?) {
@@ -107,7 +114,6 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
     }
 
     override fun onError(mp: MediaPlayer?, what: Int, extra: Int): Boolean {
-        Log.d("roger", "onError")
         setPlayerState(STATE_ERROR)
         return false
     }
@@ -231,30 +237,34 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
     }
 
     //notification
-    private lateinit var mNotificationManager: NotificationManager
+//    private lateinit var mNotificationManager: NotificationManager
     private var mNotification: Notification? = null
+    private val CHANNEL_ID = "musiound"
+    private val CHANNEL_NAME = "MUSIOUND"
     override fun onCreate() {
         super.onCreate()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            createNotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
+        }
 
-        mNotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
+        startForeground(11, getNotification())
     }
+//
+//    fun updateNotification() {
+//
+//    }
+//    fun cancelNotification() {
+//        stopForeground(true)
+//
+//
+//
+//    }
 
-    fun updateNotification() {
-
-    }
-    fun cancelNotification() {
-        stopForeground(true)
-
-        
-
-    }
-
-    private val FLAG = 3
-    private val FLAG_NEXT = 0
-    private val FLAG_PAUSE = 1
-    private val FLAG_PLAY = 2
-    private val FLAG_ACTIVITY = 4
+    private val pause = 0
+    private val play_detail = 2
+    private val next = 3
+    private val delete = 4
     private fun getNotification() : Notification {
         val song = PlayManager.instance.currentSong
         val remoteViews = RemoteViews(this.packageName, R.layout.notification)
@@ -268,17 +278,52 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
                 }
             }
             remoteViews.setTextViewText(R.id.tv_no_name, it.name)
-            remoteViews.setTextViewText(R.id.tv_no_artist, stringBuilder)
+            remoteViews.setTextViewText(R.id.tv_no_artist, stringBuilder.toString())
         }
-        val nextIntent = Intent(NEXT__ACTION)
+        //pause
+        val pauseIntent = Intent(ACTION_PAUSE)
+        val pausePendingIntent = PendingIntent.getBroadcast(this, pause, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        remoteViews.setOnClickPendingIntent(R.id.iv_no_play, pausePendingIntent)
+        //next
+        val nextIntent = Intent(ACTION_NEXT)
+        val nextPendingIntent = PendingIntent.getBroadcast(this, next, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        remoteViews.setOnClickPendingIntent(R.id.iv_no_next, nextPendingIntent)
+
+        //delete
+        val deleteIntent = Intent(ACTION_DELETE)
+        val deletePendingIntent = PendingIntent.getBroadcast(this, delete, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        remoteViews.setOnClickPendingIntent(R.id.iv_no_delete, deletePendingIntent)
+
+        //PlayDetailActivity
+        val contentIntent = Intent(this, PlayDetailActivity::class.java)
+        val contentPendingIntent = PendingIntent.getActivity(this, play_detail, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+
         if (mNotification == null) {
-            val builder = NotificationCompat.Builder(this).setContent(remoteViews)
+            val builder = NotificationCompat.Builder(this, CHANNEL_ID).setContent(remoteViews)
                 .setSmallIcon(R.drawable.toolbar_common_ic_back)
-                .setWhen(System.currentTimeMillis())
+                .setContentTitle("这是标题")
+                .setContentText("这是内容")
+                .setAutoCancel(false)
+                .setContentIntent(contentPendingIntent)
+                .setContent(remoteViews)
             mNotification = builder.build()
         } else {
         }
         return mNotification as Notification
+    }
+
+
+    //channel id
+    //创建通知渠道
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private fun createNotificationChannel(channelId: String, channelName: String, importance: Int) {
+        val channel = NotificationChannel(channelId, channelName, importance)
+        val notificationManager = getSystemService(
+            Context.NOTIFICATION_SERVICE
+        ) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
     }
 
 
