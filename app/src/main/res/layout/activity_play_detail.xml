@@ -60,6 +60,7 @@
             android:layout_height="wrap_content">
 
         <ImageView
+                android:id="@+id/iv_activity_play_detail_like"
                 android:src="@drawable/activity_play_detail_like_off"
                 android:layout_weight="1"
                 android:scaleType="centerInside"

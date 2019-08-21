@@ -104,4 +104,16 @@ class CollectSong {
         cursor.close()
         return list
     }
+
+    fun queryIfExist(song: Song) : Boolean {
+        val db = MusicDB.instance.writableDatabase
+        val cursor = db.query(COLLECT_PLAYING_SONG, null, COLLECT_URL + " = ?", arrayOf(song.url), null, null, null)
+        if (cursor.moveToFirst()) {
+            cursor.close()
+            return true
+        } else {
+            cursor.close()
+            return false
+        }
+    }
 }

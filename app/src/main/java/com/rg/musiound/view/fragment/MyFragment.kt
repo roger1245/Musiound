@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.rg.musiound.R
+import com.rg.musiound.view.activity.CollectActivity
 import com.rg.musiound.view.activity.PlayDetailActivity
 import com.rg.musiound.view.activity.RecentPlayedActivity
 import org.jetbrains.anko.find
@@ -18,6 +19,7 @@ import org.jetbrains.anko.find
  */
 class MyFragment : Fragment() {
     private lateinit var llRecent: LinearLayout
+    private lateinit var llCollct: LinearLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_my, container, false)
         return view
@@ -27,6 +29,11 @@ class MyFragment : Fragment() {
         llRecent = view.find(R.id.ll_recent)
         llRecent.setOnClickListener {
             val intent = Intent(activity, RecentPlayedActivity::class.java)
+            startActivity(intent)
+        }
+        llCollct = view.find(R.id.ll_collect)
+        llCollct.setOnClickListener {
+            val intent = Intent(activity, CollectActivity::class.java)
             startActivity(intent)
         }
     }

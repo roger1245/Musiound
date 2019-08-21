@@ -15,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
+import com.rg.musiound.db.CollectSong
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.service.PlayService
 import com.rg.musiound.service.ruler.LIST_LOOP
@@ -40,7 +41,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         bottomAdapter.list = list
         bottomAdapter.notifyDataSetChanged()
         pagerAdapter.notifyDataSetChanged()
-        vp.setCurrentItem(Rulers.getCurrentPos(), true )
+        vp.setCurrentItem(Rulers.getCurrentPos(), true)
 
     }
 
@@ -74,7 +75,8 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
                 song?.let { showSong(song) }
             }
             PlayService.STATE_STARTED -> {
-                vp.setCurrentItem(Rulers.getCurrentPos(), true )
+                checkLike()
+                vp.setCurrentItem(Rulers.getCurrentPos(), true)
                 playIV.setSelected(PlayManager.instance.isPlaying)
             }
             PlayService.STATE_PAUSED -> {
@@ -93,6 +95,20 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
                 mSeekBar.progress = 0
             }
         }
+    }
+
+    private fun checkLike() {
+        if (getBoolean()) {
+            likeIV.setImageResource(R.drawable.activity_play_detail_like_on)
+        } else {
+            likeIV.setImageResource(R.drawable.activity_play_detail_like_off)
+        }
+    }
+
+    private fun getBoolean(): Boolean {
+        return PlayManager.instance.currentSong?.let {
+            CollectSong.instance.queryIfExist(it)
+        } ?: false
     }
 
     override fun onShutdown() {
@@ -118,6 +134,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     private lateinit var forwardIV: ImageView
     private lateinit var songList: RecyclerView
     private lateinit var vp: ViewPager
+    private lateinit var likeIV: ImageView
     private lateinit var bottomAdapter: DialogBottomAdapter
     private lateinit var pagerAdapter: FragmentPagerAdapter
     private val mSeekListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
@@ -138,6 +155,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play_detail)
+        likeIV = find(R.id.iv_activity_play_detail_like)
         mSeekBar = find(R.id.sb_play_detail)
         playIV = find(R.id.iv_play)
         backIV = find(R.id.iv_back)
@@ -148,6 +166,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         val song = PlayManager.instance.currentSong
         mSeekBar.setOnSeekBarChangeListener(mSeekListener)
         playIV.isSelected = PlayManager.instance.isPlaying
+        checkLike()
         initToolbar()
         song?.let { showSong(it) }
     }
@@ -173,6 +192,15 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     }
 
     private fun setListener() {
+        likeIV.setOnClickListener {
+            if (getBoolean()) {
+                likeIV.setImageResource(R.drawable.activity_play_detail_like_off)
+                PlayManager.instance.currentSong?.let { CollectSong.instance.deleteCollectSong(it) }
+            } else {
+                likeIV.setImageResource(R.drawable.activity_play_detail_like_on)
+                PlayManager.instance.currentSong?.let { CollectSong.instance.addCollectSong(it) }
+            }
+        }
         playIV.setOnClickListener {
             PlayManager.instance.dispatch()
 
@@ -254,6 +282,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
         }
     }
+
     private fun initVP() {
         pagerAdapter = object : FragmentPagerAdapter(
             supportFragmentManager,
@@ -294,7 +323,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
 
         })
-        vp.setCurrentItem(Rulers.getCurrentPos(), false )
+        vp.setCurrentItem(Rulers.getCurrentPos(), false)
     }
 
 

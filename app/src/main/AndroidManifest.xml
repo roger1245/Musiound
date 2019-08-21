@@ -38,6 +38,7 @@
 
         <service android:name=".service.PlayService"/>
         <activity android:name=".view.activity.RecentPlayedActivity"/>
+        <activity android:name=".view.activity.CollectActivity" />
     </application>
 
 </manifest>
