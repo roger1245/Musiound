@@ -13,29 +13,13 @@ import com.rg.musiound.view.fragment.PlayDetailImageFragment
  * Create by roger
  * on 2019/8/21
  */
-class PlayDetailViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
-
-
-    private var listFragment: List<Fragment> = mutableListOf()
-    private var listId: List<Int> = mutableListOf()
-
-    override fun getItemId(position: Int): Long {
-        return super.getItemId(position)
-    }
-
-    override fun getItemPosition(`object`: Any): Int {
-        return PagerAdapter.POSITION_NONE
-    }
+class PlayDetailViewPagerAdapter(val list: List<PlayDetailImageFragment>, fm: FragmentManager) : FragmentStatePagerAdapter(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
-        val fragment = PlayDetailImageFragment()
-        val bundle = Bundle()
-        bundle.putString("imgUrl", Rulers.mCurrentList[position].pic)
-        fragment.arguments = bundle
-        return fragment
+        return list[position]
     }
 
     override fun getCount(): Int {
-        return Rulers.mCurrentList.size
+        return list.size
     }
 }

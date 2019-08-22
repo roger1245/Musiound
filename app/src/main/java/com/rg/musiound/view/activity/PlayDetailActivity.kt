@@ -25,6 +25,7 @@ import com.rg.musiound.service.ruler.SINGLE_LOOP
 import com.rg.musiound.view.BaseActivity
 import com.rg.musiound.view.adapter.DialogBottomAdapter
 import com.rg.musiound.view.adapter.OnBottomClickListener
+import com.rg.musiound.view.adapter.PlayDetailViewPagerAdapter
 import com.rg.musiound.view.fragment.PlayDetailImageFragment
 import kotlinx.android.synthetic.main.activity_play_detail.*
 import kotlinx.android.synthetic.main.dialog_bottom_song_list.*
@@ -40,7 +41,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     override fun onPlayListChanged(list: List<Song>) {
         bottomAdapter.list = list
         bottomAdapter.notifyDataSetChanged()
-        pagerAdapter.notifyDataSetChanged()
+//        pagerAdapter.notifyDataSetChanged()
         vp.setCurrentItem(Rulers.getCurrentPos(), true)
 
     }
@@ -136,9 +137,10 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     private lateinit var vp: ViewPager
     private lateinit var likeIV: ImageView
     private lateinit var bottomAdapter: DialogBottomAdapter
-    private lateinit var pagerAdapter: FragmentPagerAdapter
+    private lateinit var pagerAdapter: FragmentStatePagerAdapter
     private val mSeekListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+
         }
 
         override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -284,30 +286,35 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     }
 
     private fun initVP() {
-        pagerAdapter = object : FragmentPagerAdapter(
-            supportFragmentManager,
-            BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
-        ) {
-            override fun getItemId(position: Int): Long {
-                return PlayManager.instance.currentSong?.url.hashCode().toLong()
-            }
-
-            override fun getItemPosition(`object`: Any): Int {
-                return Rulers.mCurrentList.indexOf(PlayManager.instance.currentSong)
-            }
-
-            override fun getItem(position: Int): Fragment {
-                val fragment = PlayDetailImageFragment()
-                val bundle = Bundle()
-                bundle.putString("imgUrl", Rulers.mCurrentList[position].pic)
-                fragment.arguments = bundle
-                return fragment
-            }
-
-            override fun getCount(): Int {
-                return Rulers.mCurrentList.size
-            }
+//        pagerAdapter = object : FragmentPagerAdapter(
+//            supportFragmentManager,
+//            BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+//        ) {
+//            override fun getItemId(position: Int): Long {
+//                return PlayManager.instance.currentSong?.url.hashCode().toLong()
+//            }
+//
+//            override fun getItemPosition(`object`: Any): Int {
+//                return Rulers.mCurrentList.indexOf(PlayManager.instance.currentSong)
+//            }
+//
+//            override fun getItem(position: Int): Fragment {
+//                val fragment = PlayDetailImageFragment()
+//                val bundle = Bundle()
+//                bundle.putString("imgUrl", Rulers.mCurrentList[position].pic)
+//                fragment.arguments = bundle
+//                return fragment
+//            }
+//
+//            override fun getCount(): Int {
+//                return Rulers.mCurrentList.size
+//            }
+//        }
+        val fList = mutableListOf<PlayDetailImageFragment>()
+        for (x in Rulers.mCurrentList) {
+            fList.add(PlayDetailImageFragment.newInstance(x.pic))
         }
+        pagerAdapter= PlayDetailViewPagerAdapter(fList, supportFragmentManager)
         vp.adapter = pagerAdapter
         vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {

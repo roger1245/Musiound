@@ -32,4 +32,14 @@ class PlayDetailImageFragment : Fragment() {
         Log.d("roger", imgUrl)
         iv_play_detail_image.setImageFromUrl(imgUrl)
     }
+
+    companion object {
+        fun newInstance(pic : String) : PlayDetailImageFragment {
+            val fragment = PlayDetailImageFragment()
+            val bundle = Bundle()
+            bundle.putString("imgUrl", pic)
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
 }
