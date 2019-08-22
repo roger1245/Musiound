@@ -81,8 +81,10 @@ class PlayDetailImageFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        trangleView.start()
-        objectAnimator.start()
+        if (PlayManager.instance.isPlaying) {
+            trangleView.start()
+            objectAnimator.start()
+        }
 
     }
 
