@@ -33,6 +33,21 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    protected fun Toolbar.initBlack(
+        title: String,
+        @DrawableRes icon: Int = R.drawable.toolbar_common_ic_back_white,
+        listener: View.OnClickListener? = View.OnClickListener { finish() }
+    ) {
+        this.title = title
+        setSupportActionBar(this)
+        if (listener == null) {
+            navigationIcon = null
+        } else {
+            setNavigationIcon(icon)
+            setNavigationOnClickListener(listener)
+        }
+    }
+
 //    override fun onStart() {
 //        super.onStart()
 //        EventBus.getDefault().register(this)

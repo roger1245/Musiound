@@ -77,7 +77,7 @@ class SongListActivity : BaseActivity<IActivitySongListView, IActivitySongListPr
     }
 
     private fun initToolbar() {
-        common_toolbar.init(
+        common_toolbar.initBlack(
             title = "歌单广场",
             listener = View.OnClickListener { finish() }
         )

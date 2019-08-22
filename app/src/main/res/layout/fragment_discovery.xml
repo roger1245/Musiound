@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
     <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_fragment_discovery"
+            android:layout_width="160dp"
+            android:layout_centerHorizontal="true"
+            app:tabTextAppearance="@style/DiscoveryTabTextAppearance"
+            app:tabSelectedTextColor="@color/fragment_discovery_red"
+            app:tabIndicatorColor="@color/fragment_discovery_red"
+            android:layout_height="wrap_content"/>
+    <View
+            android:id="@+id/v_place"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_below="@id/tl_fragment_discovery"
+            android:background="@color/imageview_common_grey_place_holder"
+            android:layout_height="1dp" />
+
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_fragment_discovery"
             android:layout_below="@id/tl_fragment_discovery"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
 </RelativeLayout>

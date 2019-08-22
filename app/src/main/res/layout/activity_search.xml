@@ -6,24 +6,45 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.activity.SearchActivity">
-    <EditText
-            android:id="@+id/et_search"
-            android:singleLine="true"
-            android:imeOptions="actionSearch"
+
+    <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tb_search"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
+
+        <EditText
+                android:id="@+id/et_search"
+                android:singleLine="true"
+                android:textSize="17dp"
+                android:imeOptions="actionSearch"
+                android:drawableEnd="@drawable/activity_search_cancel"
+                android:backgroundTint="@color/colorGrey"
+                android:layout_width="match_parent"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="26dp"
+                android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_search"
-            android:layout_below="@id/et_search"
+            android:layout_below="@id/tb_search"
+            app:tabTextAppearance="@style/DiscoveryTabTextAppearance"
+            app:tabSelectedTextColor="@color/fragment_discovery_red"
+            app:tabIndicatorColor="@color/fragment_discovery_red"
+            android:layout_width="300dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"/>
+    <View
+            android:layout_below="@id/tl_search"
+            android:background="@color/imageview_common_grey_place_holder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="1dp" />
+
     <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_search"
             android:layout_below="@id/tl_search"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
 </RelativeLayout>

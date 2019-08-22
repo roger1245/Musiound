@@ -1,10 +1,13 @@
 package com.rg.musiound.view.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.githang.statusbar.StatusBarCompat
+import com.rg.musiound.BaseApp
 import com.rg.musiound.R
 import com.rg.musiound.bean.Album
 import com.rg.musiound.bean.Song
@@ -57,6 +60,8 @@ class CollectActivity : com.rg.musiound.view.BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recent_played)
+        StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.colorWhite as Int)))
+
         initToolbar()
         recyclerView = find(R.id.rv_activity_recent_played)
         val layoutManager = LinearLayoutManager(this)

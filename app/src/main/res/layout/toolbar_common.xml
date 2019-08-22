@@ -16,5 +16,9 @@
             android:fitsSystemWindows="true"
             app:navigationIcon="@drawable/toolbar_common_ic_back"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+            app:theme="@style/ThemeOverlay.AppCompat.Light"/>
+    <View
+            android:background="@color/imageview_common_grey_place_holder"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
 </com.google.android.material.appbar.AppBarLayout>

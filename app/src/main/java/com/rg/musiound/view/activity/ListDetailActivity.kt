@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.rg.musiound.R
@@ -33,6 +35,7 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
     private lateinit var toolbar: Toolbar
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var collapsingLayout: CollapsingToolbarLayout
+    private lateinit var blur: ImageView
     private lateinit var state: Collapse
     private var titleString: String = "歌单"
     private val songStr = "歌单"
@@ -68,7 +71,9 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
         })
         recyclerView.adapter = adapter
 
+
     }
+
 
     override fun showError() {
     }
@@ -96,7 +101,7 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
     }
 
     private fun initToolbar() {
-        toolbar.init(
+        toolbar.initBlack(
             title = "",
             listener = View.OnClickListener { finish() }
         )

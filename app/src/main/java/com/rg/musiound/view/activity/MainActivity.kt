@@ -23,6 +23,7 @@ import android.view.Window
 import androidx.annotation.RequiresApi
 import com.githang.statusbar.StatusBarCompat
 import com.rg.musiound.BaseApp
+import kotlinx.android.synthetic.main.activity_main_tool_bar.*
 
 
 class MainActivity : BaseActivity() {

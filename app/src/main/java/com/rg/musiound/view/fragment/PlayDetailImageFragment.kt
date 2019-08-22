@@ -34,21 +34,6 @@ import org.jetbrains.anko.find
  * on 2019/8/21
  */
 class PlayDetailImageFragment : Fragment() {
-//    override fun onPlayListPrepared(songs: List<Song>?) {
-//    }
-//
-//    override fun onPlayStateChanged(state: Int, song: Song?) {
-
-//    }
-//
-//    override fun onShutdown() {
-//    }
-//
-//    override fun onPlayListChanged(list: List<Song>) {
-//    }
-//
-//    override fun onRuleChanged(rule: Int) {
-//    }
 
     private lateinit var imgUrl: String
     private lateinit var iv: ImageView
@@ -57,7 +42,6 @@ class PlayDetailImageFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_play_detail_image, container, false)
         imgUrl = arguments?.getString("imgUrl") as String
-        Log.d("roger", imgUrl)
         return view
     }
 
@@ -83,7 +67,11 @@ class PlayDetailImageFragment : Fragment() {
         super.onResume()
         if (PlayManager.instance.isPlaying) {
             trangleView.start()
-            objectAnimator.start()
+            if (objectAnimator.isPaused) {
+                objectAnimator.resume()
+            } else {
+                objectAnimator.start()
+            }
         }
 
     }
@@ -125,7 +113,11 @@ class PlayDetailImageFragment : Fragment() {
             }
             PlayService.STATE_STARTED -> {
                 trangleView.start()
-                objectAnimator.resume()
+                if (objectAnimator.isPaused) {
+                    objectAnimator.resume()
+                } else {
+                    objectAnimator.start()
+                }
 
             }
             PlayService.STATE_PAUSED -> {

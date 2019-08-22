@@ -12,26 +12,7 @@
             android:layout_width="match_parent"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             android:layout_height="?attr/actionBarSize">
-        <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tl_activity_main"
-                    android:layout_width="300dp"
-                    android:layout_height="49dp"
-                    app:tabBackground="@android:color/transparent"
-                    app:tabRippleColor="@android:color/transparent"
-                    app:tabSelectedTextColor="@color/text_common_black"
-                    app:tabIndicatorHeight="0dp">
-            </com.google.android.material.tabs.TabLayout>
-            <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_toEndOf="@id/tl_activity_main"
-                    android:src="@drawable/activity_main_search"
-                    android:layout_centerVertical="true"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-        </RelativeLayout>
+        <include layout="@layout/activity_main_tool_bar" />
 
     </androidx.appcompat.widget.Toolbar>
 

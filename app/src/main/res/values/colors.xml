@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#D81B60</color>
     <color name="activity_song_list_background">#d7d2cb</color>
     <color name="text_common_black">#333333</color>
@@ -15,6 +15,9 @@
     <color name="activity_playing_seekbar_second">#585858</color>
     <color name="text_common_black_l">#191919</color>
     <color name="activity_splash_red_background">#dc2c1f</color>
+    <color name="fragment_discovery_red">#fe2424</color>
+
+
 
 
     <color name="translucent_scrim_top">#26000000</color>

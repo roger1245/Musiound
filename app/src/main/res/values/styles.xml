@@ -20,4 +20,13 @@
         <item name="android:windowExitAnimation">@anim/translate_dialog_out</item>
     </style>
 
+    <style name="MainTabTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorGrey</item>
+    </style>
+    <style name="DiscoveryTabTextAppearance" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/text_common_black</item>
+    </style>
+
 </resources>

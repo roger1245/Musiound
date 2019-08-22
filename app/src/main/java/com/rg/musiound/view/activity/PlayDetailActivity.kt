@@ -36,6 +36,7 @@ import org.jetbrains.anko.find
  */
 class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.ProgressCallback {
     private var bottom_loop: ImageView? = null
+//    private lateinit var blurImageView: ImageView
     override fun onPlayListChanged(list: List<Song>) {
         bottomAdapter.list = list
         bottomAdapter.notifyDataSetChanged()
@@ -76,6 +77,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
             PlayService.STATE_STARTED -> {
                 checkLike()
+//                upDateBlur()
                 vp.setCurrentItem(Rulers.getCurrentPos(), true)
                 playIV.setSelected(PlayManager.instance.isPlaying)
             }
@@ -96,6 +98,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
         }
     }
+
 
     private fun checkLike() {
         if (getBoolean()) {
@@ -162,6 +165,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         backIV = find(R.id.iv_back)
         forwardIV = find(R.id.iv_forward)
         vp = find(R.id.vp_play_detail)
+//        blurImageView = find(R.id.iv_blur)
         initVP()
         setListener()
         val song = PlayManager.instance.currentSong
