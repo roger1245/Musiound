@@ -17,3 +17,16 @@ class MessageEvent internal constructor(message: String) {
         this.message = message
     }
 }
+
+class PlayStateChangeEvent internal constructor(message: Int) {
+    private var message: Int? = null
+    init {
+        this.message = message
+    }
+    internal fun getMessage(): Int? {
+        return message
+    }
+    fun setMessage(message: Int) {
+        this.message = message
+    }
+}

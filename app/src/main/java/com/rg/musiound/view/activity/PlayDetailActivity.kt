@@ -5,12 +5,9 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.rg.musiound.R
@@ -27,8 +24,9 @@ import com.rg.musiound.view.adapter.DialogBottomAdapter
 import com.rg.musiound.view.adapter.OnBottomClickListener
 import com.rg.musiound.view.adapter.PlayDetailViewPagerAdapter
 import com.rg.musiound.view.fragment.PlayDetailImageFragment
+import com.rg.musiound.view.widget.PlayStateChangeEvent
 import kotlinx.android.synthetic.main.activity_play_detail.*
-import kotlinx.android.synthetic.main.dialog_bottom_song_list.*
+import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.find
 
 
@@ -71,6 +69,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     }
 
     override fun onPlayStateChanged(state: Int, song: Song?) {
+        EventBus.getDefault().post(PlayStateChangeEvent(state))
         when (state) {
             PlayService.STATE_INITIALIZED -> {
                 song?.let { showSong(song) }

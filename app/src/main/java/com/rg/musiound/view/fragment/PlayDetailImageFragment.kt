@@ -16,9 +16,17 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.rg.musiound.R
+import com.rg.musiound.bean.Song
+import com.rg.musiound.service.PlayManager
+import com.rg.musiound.service.PlayService
+import com.rg.musiound.service.ruler.Rulers
 import com.rg.musiound.util.extensions.setImageFromUrl
+import com.rg.musiound.view.widget.PlayStateChangeEvent
 import com.rg.musiound.view.widget.TrangleView
 import kotlinx.android.synthetic.main.fragment_play_detail_image.*
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.jetbrains.anko.find
 
 /**
@@ -26,9 +34,26 @@ import org.jetbrains.anko.find
  * on 2019/8/21
  */
 class PlayDetailImageFragment : Fragment() {
+//    override fun onPlayListPrepared(songs: List<Song>?) {
+//    }
+//
+//    override fun onPlayStateChanged(state: Int, song: Song?) {
+
+//    }
+//
+//    override fun onShutdown() {
+//    }
+//
+//    override fun onPlayListChanged(list: List<Song>) {
+//    }
+//
+//    override fun onRuleChanged(rule: Int) {
+//    }
+
     private lateinit var imgUrl: String
     private lateinit var iv: ImageView
     private lateinit var trangleView: TrangleView
+    private lateinit var objectAnimator: ObjectAnimator
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_play_detail_image, container, false)
         imgUrl = arguments?.getString("imgUrl") as String
@@ -44,19 +69,31 @@ class PlayDetailImageFragment : Fragment() {
         clip()
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        EventBus.getDefault().unregister(this)
+        super.onStop()
+    }
+
     override fun onResume() {
         super.onResume()
         trangleView.start()
+        objectAnimator.start()
 
     }
 
     override fun onPause() {
         trangleView.stop()
+        objectAnimator.pause()
         super.onPause()
     }
 
     companion object {
-        fun newInstance(pic : String) : PlayDetailImageFragment {
+        fun newInstance(pic: String): PlayDetailImageFragment {
             val fragment = PlayDetailImageFragment()
             val bundle = Bundle()
             bundle.putString("imgUrl", pic)
@@ -68,25 +105,43 @@ class PlayDetailImageFragment : Fragment() {
     private fun clip() {
         Glide.with(this).load(imgUrl).apply(RequestOptions.circleCropTransform()).into(iv_play_detail_image)
 
-        //图片裁剪和旋转
-//        if (Build.VERSION.SDK_INT >= 21) {
-//            //裁剪
-//            iv.setOutlineProvider(object : ViewOutlineProvider() {
-//                override fun getOutline(view: View, outline: Outline) {
-//                    val width = iv.getWidth()
-//                    val height = iv.getHeight()
-//                    outline.setOval(0, 0, width, height)
-//                }
-//            })
-//            iv.setClipToOutline(true)
 
-            //属性动画让roundImage旋转起来
-            val objectAnimator = ObjectAnimator.ofFloat(iv, "rotation", 0F, 360F)
-            objectAnimator.setDuration(15000)
-            objectAnimator.setRepeatMode(ValueAnimator.RESTART)
-            objectAnimator.setInterpolator(LinearInterpolator())
-            objectAnimator.setRepeatCount(-1)
-            objectAnimator.start()
-//        }
+        //属性动画让roundImage旋转起来
+        objectAnimator = ObjectAnimator.ofFloat(iv, "rotation", 0F, 360F)
+        objectAnimator.setDuration(15000)
+        objectAnimator.setRepeatMode(ValueAnimator.RESTART)
+        objectAnimator.setInterpolator(LinearInterpolator())
+        objectAnimator.setRepeatCount(-1)
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onMessageEvent(event: PlayStateChangeEvent) {
+        val state = event.getMessage()
+        when (state) {
+            PlayService.STATE_INITIALIZED -> {
+            }
+            PlayService.STATE_STARTED -> {
+                trangleView.start()
+                objectAnimator.resume()
+
+            }
+            PlayService.STATE_PAUSED -> {
+                trangleView.stop()
+                objectAnimator.pause()
+
+            }
+
+            PlayService.STATE_COMPLETED -> {
+
+            }
+            PlayService.STATE_STOPPED -> {
+
+            }
+            PlayService.STATE_RELEASED -> {
+            }
+            PlayService.STATE_ERROR -> {
+            }
+        }
     }
 }

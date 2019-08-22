@@ -120,7 +120,6 @@ class TrangleView : View {
         val alphaX = 1 - abs(p.x.toDouble() - width / 2 ) / (width / 2)
         val alphaY = 1 - abs(p.y.toDouble() - height / 2) / (height / 2)
         val a = min(alphaX, alphaY)
-        Log.d("roger", "${a}")
         return a
     }
 
