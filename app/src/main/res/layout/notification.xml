@@ -7,7 +7,7 @@
             android:id="@+id/iv_no_pic"
             android:src="@color/text_common_black_l"
             android:layout_alignParentStart="true"
-            android:layout_width="80dp"
+            android:layout_width="0dp"
             android:layout_height="match_parent"/>
 
     <TextView
@@ -48,7 +48,7 @@
             android:id="@+id/iv_no_next"
             android:src="@drawable/notification_remote_next"
             android:layout_toEndOf="@id/iv_no_play"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="25dp"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -58,7 +58,7 @@
             android:src="@drawable/notification_remote_lyric"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/iv_no_next"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -68,7 +68,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/iv_no_lyric"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

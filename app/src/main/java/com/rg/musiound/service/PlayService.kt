@@ -1,36 +1,22 @@
 package com.rg.musiound.service
 
-import android.app.Service
+import android.app.*
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.media.MediaPlayer
 import android.os.Binder
-import android.os.IBinder
-import androidx.annotation.IntDef
-import java.lang.annotation.RetentionPolicy
-import com.rg.musiound.service.PlayService.PlayStateChangeListener
-import android.telecom.VideoProfile.isPaused
-import android.R.attr.start
-import android.app.Notification
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
-import android.media.AudioManager
 import android.os.Build
+import android.os.IBinder
 import android.util.Log
 import android.widget.RemoteViews
+import androidx.annotation.IntDef
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.rg.musiound.R
+import com.rg.musiound.bean.Song
 import com.rg.musiound.view.activity.PlayDetailActivity
 import java.io.IOException
-import java.lang.StringBuilder
-import android.app.NotificationChannel
-import android.content.BroadcastReceiver
-import android.content.IntentFilter
-import androidx.annotation.RequiresApi
-
-
-
-
 
 
 /**
@@ -41,8 +27,30 @@ const val ACTION_PAUSE = "com.rg.musiound.pause"
 const val ACTION_PLAY_DETAIL = "com.rg.musiound.play_detail"
 const val ACTION_NEXT = "com.rg.musiound.next"
 const val ACTION_DELETE = "com.rg.musiound.delete"
-class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener{
+const val NOTIFICATION_ID = 11
+
+
+class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPreparedListener,
+    MediaPlayer.OnCompletionListener,
+    MediaPlayer.OnErrorListener, MediaPlayer.OnSeekCompleteListener, PlayManager.Callback {
+    //PlayManager.Callback
+    override fun onPlayListPrepared(songs: List<Song>?) {
+    }
+
+    override fun onPlayStateChanged(state: Int, song: Song?) {
+        notificationManager.notify(NOTIFICATION_ID, upDateNotification())
+
+    }
+
+    override fun onShutdown() {
+    }
+
+    override fun onPlayListChanged(list: List<Song>) {
+    }
+
+    override fun onRuleChanged(rule: Int) {
+    }
+
 
     companion object {
         const val STATE_IDLE = 0
@@ -72,7 +80,8 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
         annotation class State
     }
 
-    private @State var mState = STATE_IDLE
+    private @State
+    var mState = STATE_IDLE
     private var mPlayer: MediaPlayer? = null
     private var mBinder: PlayBinder? = null
     private var mStateListener: PlayStateChangeListener? = null
@@ -105,6 +114,7 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
         super.onDestroy()
         stopForeground(true)
         unregisterReceiver(notificationReceiver)
+        PlayManager.instance.unregisterCallback(this)
     }
 
     override fun onPrepared(mp: MediaPlayer?) {
@@ -135,6 +145,7 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
         mPlayer?.setOnErrorListener(this)
         mPlayer?.setOnSeekCompleteListener(this)
     }
+
     fun startPlayer(path: String) {
         Log.d("roger", "start  player")
 //        mPlayer?.reset()
@@ -173,6 +184,7 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
             setPlayerState(STATE_PAUSED)
         }
     }
+
     fun stopPlayer() {
         if (isStarted() || isPaused()) {
             mPlayer?.stop()
@@ -229,10 +241,6 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
         mStateListener = listener
     }
 
-    interface PlayStateChangeListener {
-        fun onStateChanged(@State state: Int)
-        fun onShutdown()
-    }
 
     inner class PlayBinder : Binder() {
         val service: PlayService
@@ -245,7 +253,7 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
     private val CHANNEL_ID = "musiound"
     private val CHANNEL_NAME = "MUSIOUND"
     private lateinit var intentFilter: IntentFilter
-    private lateinit var notificationReceiver : NotificationReceiver
+    private lateinit var notificationReceiver: NotificationReceiver
     override fun onCreate() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -253,7 +261,7 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
             createNotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
         }
 
-        startForeground(11, getNotification())
+        startForeground(NOTIFICATION_ID, getNotification())
         //注册广播
         notificationReceiver = NotificationReceiver()
         intentFilter = IntentFilter()
@@ -262,6 +270,7 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
         intentFilter.addAction(ACTION_PAUSE)
         intentFilter.addAction(ACTION_PLAY_DETAIL)
         registerReceiver(notificationReceiver, intentFilter)
+        PlayManager.instance.registerCallback(this)
     }
 
 
@@ -269,11 +278,11 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
     private val play_detail = 2
     private val next = 3
     private val delete = 4
-    private fun getNotification() : Notification {
+    private fun getNotification(): Notification {
         val song = PlayManager.instance.currentSong
         val remoteViews = RemoteViews(this.packageName, R.layout.notification)
         song?.let {
-            val ar = it.singer.map { it.name}
+            val ar = it.singer.map { it.name }
             val stringBuilder = StringBuilder()
             for (x in ar.withIndex()) {
                 stringBuilder.append(x.value)
@@ -284,6 +293,12 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
             remoteViews.setTextViewText(R.id.tv_no_name, it.name)
             remoteViews.setTextViewText(R.id.tv_no_artist, stringBuilder.toString())
         }
+        if (isStarted()) {
+            remoteViews.setImageViewResource(R.id.iv_no_play, R.drawable.notification_remote_play_on)
+        } else {
+            remoteViews.setImageViewResource(R.id.iv_no_play, R.drawable.notification_remote_play_off)
+        }
+
         //pause
         val pauseIntent = Intent(ACTION_PAUSE)
         val pausePendingIntent = PendingIntent.getBroadcast(this, pause, pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT)
@@ -295,47 +310,47 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
 
         //delete
         val deleteIntent = Intent(ACTION_DELETE)
-        val deletePendingIntent = PendingIntent.getBroadcast(this, delete, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val deletePendingIntent =
+            PendingIntent.getBroadcast(this, delete, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.iv_no_delete, deletePendingIntent)
 
         //PlayDetailActivity
-        val contentIntent = Intent(this, PlayDetailActivity::class.java)
-        val contentPendingIntent = PendingIntent.getActivity(this, play_detail, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-
-
-
-        if (mNotification == null) {
-            val builder = NotificationCompat.Builder(this, CHANNEL_ID).setContent(remoteViews)
-                .setSmallIcon(R.drawable.toolbar_common_ic_back)
-                .setContentTitle("这是标题")
-                .setContentText("这是内容")
-                .setAutoCancel(false)
-                .setContentIntent(contentPendingIntent)
-                .setContent(remoteViews)
-            mNotification = builder.build()
-        } else {
+        val contentIntent = Intent(this, PlayDetailActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
+        val contentPendingIntent =
+            PendingIntent.getActivity(this, play_detail, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID).setContent(remoteViews)
+            .setSmallIcon(R.drawable.toolbar_common_ic_back)
+            .setContentTitle("这是标题")
+            .setContentText("这是内容")
+            .setAutoCancel(false)
+            .setContentIntent(contentPendingIntent)
+            .setContent(remoteViews)
+        mNotification = builder.build()
         return mNotification as Notification
     }
 
+    private lateinit var notificationManager: NotificationManager
 
     //channel id
     //创建通知渠道
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun createNotificationChannel(channelId: String, channelName: String, importance: Int) {
         val channel = NotificationChannel(channelId, channelName, importance)
-        val notificationManager = getSystemService(
+        notificationManager = getSystemService(
             Context.NOTIFICATION_SERVICE
         ) as NotificationManager
         notificationManager.createNotificationChannel(channel)
     }
 
-    class NotificationReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            Log.d("roger", intent?.action)
-        }
-
+    private fun upDateNotification(): Notification {
+        return getNotification()
     }
 
+}
 
+interface PlayStateChangeListener {
+    fun onStateChanged(@PlayService.Companion.State state: Int)
+    fun onShutdown()
 }

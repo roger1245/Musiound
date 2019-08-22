@@ -5,22 +5,25 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.media.AudioManager
+import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationManagerCompat
 import com.rg.musiound.BaseApp
 import com.rg.musiound.bean.Song
 import com.rg.musiound.db.PlayingSong
 import com.rg.musiound.service.ruler.Rulers
 import com.rg.musiound.service.ruler.Rulers.mCurrentList
+import org.jetbrains.anko.notificationManager
 
 
 /**
  * Create by roger
  * on 2019/8/15
  */
-class PlayManager private constructor(private val mContext: Context) : PlayService.PlayStateChangeListener {
+class PlayManager private constructor(private val mContext: Context) : PlayStateChangeListener {
 
     private val mConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -472,7 +475,7 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
         if (mCallbacks!!.contains(callback)) {
             return
         }
-        mCallbacks!!.add(callback)
+        mCallbacks.add(callback)
         if (updateOnceNow) {
             callback.onPlayListPrepared(totalList)
 //            callback.onPlayRuleChanged(rule)
@@ -482,7 +485,7 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
 
     fun unregisterCallback(callback: Callback) {
         if (mCallbacks!!.contains(callback)) {
-            mCallbacks!!.remove(callback)
+            mCallbacks.remove(callback)
         }
     }
 
@@ -673,6 +676,12 @@ class PlayManager private constructor(private val mContext: Context) : PlayServi
     fun onRuleChanged(rule: Int) {
         for (callback in mCallbacks!!) {
             callback.onRuleChanged(rule)
+        }
+    }
+
+    fun cancelNotification() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mService?.stopForeground(true)
         }
     }
 
