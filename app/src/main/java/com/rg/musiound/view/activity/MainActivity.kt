@@ -1,7 +1,10 @@
 package com.rg.musiound.view.activity
 
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -16,6 +19,11 @@ import com.rg.musiound.view.fragment.MyFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 import org.jetbrains.anko.find
+import android.view.Window
+import androidx.annotation.RequiresApi
+import com.githang.statusbar.StatusBarCompat
+import com.rg.musiound.BaseApp
+
 
 class MainActivity : BaseActivity() {
     private lateinit var tabLayout: TabLayout
@@ -34,6 +42,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.colorWhite as Int)))
         tabLayout = find(R.id.tl_activity_main)
         viewPager = find(R.id.vp_activity_main)
         initVP()

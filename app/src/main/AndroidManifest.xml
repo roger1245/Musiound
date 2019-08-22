@@ -16,31 +16,38 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
+        <activity android:name=".view.activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <activity
                 android:name=".view.activity.SearchActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleTop">
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".view.activity.MVPlayActivity"
-                android:launchMode="singleTop"
                 android:configChanges="orientation|keyboardHidden|screenSize"
+                android:launchMode="singleTop"
                 android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".view.activity.ListDetailActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleTop">
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".view.activity.SongListActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleTop">
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".view.activity.MainActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleTop">
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -49,19 +56,19 @@
         </activity>
         <activity
                 android:name=".view.activity.PlayDetailActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleTop"/>
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"/>
 
         <service android:name=".service.PlayService"/>
 
         <activity
                 android:name=".view.activity.RecentPlayedActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleTop"/>
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"/>
         <activity
                 android:name=".view.activity.CollectActivity"
-                android:screenOrientation="portrait"
-                android:launchMode="singleTop"/>
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
