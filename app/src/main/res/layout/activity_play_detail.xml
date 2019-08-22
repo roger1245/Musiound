@@ -97,10 +97,13 @@
             android:id="@+id/sb_play_detail"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="5dp"
-            android:max="100"
-            android:progressTint="@color/activity_playing_seekbar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:maxHeight="8dp"
+            android:minHeight="8dp"
+            android:progressDrawable="@drawable/play_detail_seekbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:thumb="@drawable/activity_play_detail_seekbar_thumb"
             android:layout_above="@id/ll_bottom"/>
 
     <LinearLayout
