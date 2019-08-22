@@ -42,14 +42,21 @@
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>
-    <androidx.viewpager.widget.ViewPager
-            android:id="@+id/vp_play_detail"
+
+    <FrameLayout
             android:layout_below="@id/toolbar_common"
             android:layout_above="@id/ll_icon"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-    </androidx.viewpager.widget.ViewPager>
+        <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vp_play_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        </androidx.viewpager.widget.ViewPager>
+
+    </FrameLayout>
+
 
     <LinearLayout
             android:layout_above="@id/sb_play_detail"
