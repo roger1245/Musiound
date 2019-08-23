@@ -31,8 +31,14 @@ class RecentPlayedActivity : com.rg.musiound.view.BaseActivity() {
     private fun setSongs(song: List<Song>) {
         val tracks: MutableList<Track> = mutableListOf()
         for (x in song) {
-            val id = x.url.substring(x.url.indexOf("id=") + 3, x.url.indexOf("&"))
-            tracks.add(Track(id.toLong(), x.name, x.singer, Album("", "")))
+//            var id: String? = null
+//            if (x.url.startsWith("/storage/")) {
+//                id = x.url
+//            } else {
+//                id = x.url.substring(x.url.indexOf("id=") + 3, x.url.indexOf("&"))
+//            }
+
+            tracks.add(Track(1L, x.name, x.singer, Album("", "")))
         }
         val adapter = ListDetailAdapter(this)
         adapter.list.addAll(tracks)
