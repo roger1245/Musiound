@@ -1,6 +1,7 @@
 package com.rg.musiound.view.activity
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -59,8 +60,8 @@ class CollectActivity : com.rg.musiound.view.BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkIsDay()
         setContentView(R.layout.activity_recent_played)
-        StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.colorWhite as Int)))
 
         initToolbar()
         recyclerView = find(R.id.rv_activity_recent_played)
@@ -75,5 +76,14 @@ class CollectActivity : com.rg.musiound.view.BaseActivity() {
             title = "我的收藏",
             listener = View.OnClickListener { finish() }
         )
+    }
+
+    fun checkIsDay()  {
+        val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (mode == Configuration.UI_MODE_NIGHT_YES) {
+            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_black as Int)))
+        } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
+            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_white as Int)))
+        }
     }
 }

@@ -48,8 +48,8 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkIsDay()
         setContentView(R.layout.activity_main)
-        StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.colorWhite as Int)))
         tabLayout = find(R.id.tl_activity_main)
         viewPager = find(R.id.vp_activity_main)
         nightSwitch = find(R.id.iv_night_switch)
@@ -94,5 +94,14 @@ class MainActivity : BaseActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
         recreate()
+    }
+
+    fun checkIsDay()  {
+        val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (mode == Configuration.UI_MODE_NIGHT_YES) {
+            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_black as Int)))
+        } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
+            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_white as Int)))
+        }
     }
 }

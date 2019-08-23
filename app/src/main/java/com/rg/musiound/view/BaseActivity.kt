@@ -1,9 +1,11 @@
 package com.rg.musiound.view
 
+import android.graphics.Color
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.rg.musiound.BaseApp
 import com.rg.musiound.R
 import kotlinx.android.synthetic.main.toolbar_common.*
 import org.greenrobot.eventbus.EventBus

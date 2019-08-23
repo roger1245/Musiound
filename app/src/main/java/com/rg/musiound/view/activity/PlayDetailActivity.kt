@@ -1,5 +1,6 @@
 package com.rg.musiound.view.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,8 +10,10 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.githang.statusbar.StatusBarCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.rg.musiound.BaseApp
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
 import com.rg.musiound.db.CollectSong
@@ -158,6 +161,11 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        StatusBarCompat.setStatusBarColor(
+            this,
+            Color.parseColor(BaseApp.context.getString(R.color.accent_always_black as Int))
+        )
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_play_detail)
         likeIV = find(R.id.iv_activity_play_detail_like)
@@ -241,7 +249,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
                         PlayManager.instance.deleteSong(it.list[position])
                     }
                 })
-        }
+            }
 
             bottomDialog.show()
         }
@@ -323,6 +331,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             override fun onPageScrollStateChanged(state: Int) {
 
             }
+
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }

@@ -17,7 +17,6 @@
     <color name="activity_splash_red_background">#dc2c1f</color>
     <color name="fragment_discovery_red">#fe2424</color>
 
-    <color name="background_common">#000000</color>
 
 
 
@@ -25,4 +24,21 @@
     <color name="translucent_scrim_top_center">#0C000000</color>
     <color name="translucent_scrim_bottom">#2A000000</color>
     <color name="translucent_scrim_bottom_center">#0D000000</color>
+
+    <!--夜间模式-->
+    <color name="background_common">#ffffff</color>
+    <color name="text_night_mode">#333333</color>
+
+    <!--listDetailActivity-->
+    <color name="activity_list_detail_banner_background">#152022</color>
+    <color name="activity_list_detail_banner_title">#ffffff</color>
+    <color name="activity_play_detail_toolbar_title">#ffffff</color>
+
+    <color name="accent_day_black">#000000</color>
+    <color name="accent_day_white">#ffffff</color>
+
+    <color name="accent_always_white">#ffffff</color>
+    <color name="accent_always_black">#000000</color>
+
+
 </resources>

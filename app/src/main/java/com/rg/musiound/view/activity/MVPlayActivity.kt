@@ -1,12 +1,16 @@
 package com.rg.musiound.view.activity
 
 import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.githang.statusbar.StatusBarCompat
+import com.rg.musiound.BaseApp
+import com.rg.musiound.R
 import com.rg.musiound.base.BaseActivity
 import com.rg.musiound.bean.MVComment
 import com.rg.musiound.bean.MVCommentRaw
@@ -74,7 +78,12 @@ class MVPlayActivity : IActivityMVPlayerView<MVDetailRaw, MVCommentRaw>,
     private var isPause: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        checkIsDay()
         super.onCreate(savedInstanceState)
+//        StatusBarCompat.setStatusBarColor(
+//            this,
+//            Color.parseColor(BaseApp.context.getString(R.color.accent_day_white as Int))
+//        )
         setContentView(com.rg.musiound.R.layout.activity_mvplay)
 
         val id = intent.extras?.getLong("id")
@@ -207,6 +216,14 @@ class MVPlayActivity : IActivityMVPlayerView<MVDetailRaw, MVCommentRaw>,
         //如果旋转了就全屏
         if (isPlay && !isPause) {
             gsy_player.onConfigurationChanged(this, newConfig, orientationUtils, true, true)
+        }
+    }
+    fun checkIsDay()  {
+        val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (mode == Configuration.UI_MODE_NIGHT_YES) {
+            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_black as Int)))
+        } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
+            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_white as Int)))
         }
     }
 }

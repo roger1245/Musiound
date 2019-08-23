@@ -20,7 +20,7 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:contentScrim="@color/text_common_black"
-                android:background="@color/text_common_black"
+                android:background="@color/activity_list_detail_banner_background"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <View
                     android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                         android:maxLines="2"
                         android:ellipsize="end"
                         android:layout_marginEnd="16dp"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/activity_list_detail_banner_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
@@ -100,7 +100,7 @@
                         android:maxLines="1"
                         android:ellipsize="end"
                         android:gravity="center_vertical"
-                        android:textColor="@color/colorWhite"
+                        android:textColor="@color/activity_list_detail_banner_title"
                         android:textSize="18sp"
                         android:layout_height="match_parent"/>
 

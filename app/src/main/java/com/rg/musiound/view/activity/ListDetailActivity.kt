@@ -1,6 +1,7 @@
 package com.rg.musiound.view.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.githang.statusbar.StatusBarCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.rg.musiound.BaseApp
 import com.rg.musiound.R
 import com.rg.musiound.base.BaseActivity
 import com.rg.musiound.bean.ListDetailRaw
@@ -79,6 +82,7 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_black as Int)))
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_detail)
         recyclerView = find(R.id.rv_activity_list_detail)

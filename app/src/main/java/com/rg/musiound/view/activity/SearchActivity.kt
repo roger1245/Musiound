@@ -1,6 +1,7 @@
 package com.rg.musiound.view.activity
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -28,8 +29,8 @@ import android.view.MotionEvent
 class SearchActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        checkIsDay()
         super.onCreate(savedInstanceState)
-        StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.colorWhite as Int)))
         setContentView(R.layout.activity_search)
         initVP()
         initListener()
@@ -121,6 +122,15 @@ class SearchActivity : BaseActivity() {
             return !isInEt
         }
         return false
+    }
+
+    private fun checkIsDay()  {
+        val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (mode == Configuration.UI_MODE_NIGHT_YES) {
+            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_black as Int)))
+        } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
+            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_white as Int)))
+        }
     }
 
 
