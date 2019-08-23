@@ -93,9 +93,12 @@ class PlayDetailImageFragment : Fragment() {
     }
 
     private fun clip() {
-        Glide.with(this).load(imgUrl).apply(RequestOptions.circleCropTransform()).into(iv_play_detail_image)
+////        iv_play_detail_image.setImageFromUrl(imgUrl).apply { RequestOptions.circleCropTransform() }
+//        Glide.with(this).load(imgUrl).apply(RequestOptions.circleCropTransform()).into(iv_play_detail_image)
 
-
+        val options = RequestOptions().placeholder(R.drawable.fragment_play_detail_image_place_holder)
+            .error(R.drawable.fragment_play_detail_image_place_holder).apply(RequestOptions.circleCropTransform())
+        Glide.with(this).load(imgUrl).apply(options).into(iv_play_detail_image)
         //属性动画让roundImage旋转起来
         objectAnimator = ObjectAnimator.ofFloat(iv, "rotation", 0F, 360F)
         objectAnimator.setDuration(15000)

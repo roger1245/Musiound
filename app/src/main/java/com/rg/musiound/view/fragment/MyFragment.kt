@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.rg.musiound.R
-import com.rg.musiound.view.activity.CSLActivity
-import com.rg.musiound.view.activity.CollectActivity
-import com.rg.musiound.view.activity.PlayDetailActivity
-import com.rg.musiound.view.activity.RecentPlayedActivity
+import com.rg.musiound.view.activity.*
 import org.jetbrains.anko.find
 
 /**
@@ -22,6 +19,7 @@ class MyFragment : Fragment() {
     private lateinit var llRecent: LinearLayout
     private lateinit var llCollct: LinearLayout
     private lateinit var llCollectSongList: LinearLayout
+    private lateinit var llLocal: LinearLayout
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_my, container, false)
         return view
@@ -41,6 +39,11 @@ class MyFragment : Fragment() {
         llCollectSongList = view.find(R.id.ll_collect_song_list)
         llCollectSongList.setOnClickListener {
             val intent = Intent(activity, CSLActivity::class.java)
+            startActivity(intent)
+        }
+        llLocal = view.find(R.id.ll_song_local)
+        llLocal.setOnClickListener {
+            val intent = Intent(activity, SongLocalActivity::class.java)
             startActivity(intent)
         }
     }

@@ -176,7 +176,6 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         backIV = find(R.id.iv_back)
         forwardIV = find(R.id.iv_forward)
         vp = find(R.id.vp_play_detail)
-//        blurImageView = find(R.id.iv_blur)
         initVP()
         setListener()
         val song = PlayManager.instance.currentSong
