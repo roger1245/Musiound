@@ -97,7 +97,6 @@
             android:background="@color/dialog_bottom_song_list_view_divide"
             android:layout_width="match_parent"
             android:layout_height="6dp"/>
-dp
     <LinearLayout
             android:orientation="horizontal"
             android:layout_width="wrap_content"

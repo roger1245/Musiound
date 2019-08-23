@@ -3,6 +3,7 @@ package com.rg.musiound
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import androidx.appcompat.app.AppCompatDelegate
 import com.billy.android.swipe.SmartSwipeBack
 import com.rg.musiound.view.activity.MainActivity
 import com.rg.musiound.view.activity.SplashActivity
@@ -20,6 +21,7 @@ class BaseApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         SmartSwipeBack.activityBezierBack(this) {
             (it !is MainActivity ) && (it !is SplashActivity)
         }

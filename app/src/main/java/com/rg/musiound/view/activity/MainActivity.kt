@@ -20,15 +20,21 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 import org.jetbrains.anko.find
 import android.view.Window
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import com.githang.statusbar.StatusBarCompat
 import com.rg.musiound.BaseApp
 import kotlinx.android.synthetic.main.activity_main_tool_bar.*
+import android.content.res.Configuration
+import android.content.res.Configuration.*
+import android.util.Log
+import androidx.appcompat.app.AppCompatDelegate
 
 
 class MainActivity : BaseActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager
+    private lateinit var nightSwitch: ImageView
     private val fragments = listOf(
         MyFragment(),
         DiscoveryFragment(),
@@ -46,10 +52,14 @@ class MainActivity : BaseActivity() {
         StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.colorWhite as Int)))
         tabLayout = find(R.id.tl_activity_main)
         viewPager = find(R.id.vp_activity_main)
+        nightSwitch = find(R.id.iv_night_switch)
         initVP()
         iv_search.setOnClickListener {
             val intent = Intent(this@MainActivity, SearchActivity::class.java)
             startActivity(intent)
+        }
+        nightSwitch.setOnClickListener {
+            setNightMode()
         }
     }
 
@@ -72,5 +82,17 @@ class MainActivity : BaseActivity() {
         }
         viewPager.adapter = adapter
         tabLayout.setupWithViewPager(viewPager)
+    }
+
+    //动态设置夜间模式
+    private fun setNightMode() {
+        val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        if (mode == UI_MODE_NIGHT_YES) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else if (mode == UI_MODE_NIGHT_NO) {
+            Log.d("roger", "NIGHT_NO")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        recreate()
     }
 }

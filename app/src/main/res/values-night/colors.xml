@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#D81B60</color>
     <color name="activity_song_list_background">#d7d2cb</color>
-    <color name="text_common_black">#333333</color>
+    <color name="text_common_black">#ffffff</color>
     <color name="activity_play_detail_background">#211505</color>
-    <color name="colorWhite">#ffffff</color>
+    <color name="colorWhite">#000000</color>
     <color name="colorGrey">#817c78</color>
     <color name="imageview_common_grey_place_holder">#f5f5f5</color>
     <color name="activity_list_detail_background">#59302e</color>
-    <color name="dialog_bottom_song_list_view_divide">#f6f6f6</color>
+    <color name="dialog_bottom_song_list_view_divide">#17181a</color>
     <color name="activity_playing_seekbar">#8f8b8c</color>
     <color name="activity_playing_seekbar_second">#585858</color>
     <color name="text_common_black_l">#191919</color>
