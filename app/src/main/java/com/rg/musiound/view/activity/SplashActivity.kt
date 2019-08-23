@@ -14,6 +14,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(R.style.AppTheme)
         setContentView(R.layout.activity_splash)
         StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.activity_splash_red_background as Int)))
         Handler().postDelayed({

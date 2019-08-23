@@ -29,4 +29,8 @@
         <item name="android:textColor">@color/text_common_black</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@color/activity_splash_red_background</item>
+    </style>
+
 </resources>

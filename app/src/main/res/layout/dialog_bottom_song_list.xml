@@ -3,7 +3,7 @@
                 android:orientation="vertical"
                 android:background="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:layout_height="430dp">
+                android:layout_height="match_parent">
 
     <RelativeLayout
             android:id="@+id/rl_dialog_bottom"
@@ -70,7 +70,7 @@
             android:id="@+id/rv_dialog_bottom"
             android:layout_below="@id/v_dialog_bottom"
             android:layout_width="match_parent"
-            android:layout_height="220dp">
+            android:layout_height="match_parent">
 
     </androidx.recyclerview.widget.RecyclerView>
 

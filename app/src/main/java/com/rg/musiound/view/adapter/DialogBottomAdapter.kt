@@ -38,6 +38,7 @@ class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
         if (list[position] == PlayManager.instance.currentSong) {
+            Log.d("roger", "is playing hoder")
             return ITEM_PLAYING
         } else {
             return ITEM_COMMON
@@ -60,9 +61,9 @@ class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         str.append(",")
                     }
                 }
-                holder.delete.setOnClickListener {
-                    mOnItemClickListener?.onDeleteClick(position)
-                }
+//                holder.delete.setOnClickListener {
+//                    mOnItemClickListener?.onDeleteClick(position)
+//                }
                 holder.artist.text = str.toString()
                 holder.itemView.setOnClickListener{
                     mOnItemClickListener?.onItemClick(position)
@@ -87,7 +88,7 @@ class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class CommonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.find(R.id.tv_dialog_bottom_title)
         val artist: TextView = view.find(R.id.tv_dialog_bottom_artist)
-        val delete: ImageView = view.find(R.id.iv_dialog_bottom_delete)
+//        val delete: ImageView = view.find(R.id.iv_dialog_bottom_delete)
         companion object {
             fun from(parent: ViewGroup): CommonViewHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -99,7 +100,7 @@ class DialogBottomAdapter:RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class PlayingHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.find(R.id.tv_dialog_bottom_title)
         val artist: TextView = view.find(R.id.tv_dialog_bottom_artist)
-        val delete: ImageView = view.find(R.id.iv_dialog_bottom_delete)
+//        val delete: ImageView = view.find(R.id.iv_dialog_bottom_delete)
         companion object {
             fun from(parent: ViewGroup): PlayingHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)

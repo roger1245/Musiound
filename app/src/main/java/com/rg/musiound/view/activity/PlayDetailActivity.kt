@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
@@ -19,6 +20,7 @@ import com.rg.musiound.service.ruler.LIST_LOOP
 import com.rg.musiound.service.ruler.RANDOM
 import com.rg.musiound.service.ruler.Rulers
 import com.rg.musiound.service.ruler.SINGLE_LOOP
+import com.rg.musiound.util.dp2px
 import com.rg.musiound.view.BaseActivity
 import com.rg.musiound.view.adapter.DialogBottomAdapter
 import com.rg.musiound.view.adapter.OnBottomClickListener
@@ -28,6 +30,7 @@ import com.rg.musiound.view.widget.PlayStateChangeEvent
 import kotlinx.android.synthetic.main.activity_play_detail.*
 import org.greenrobot.eventbus.EventBus
 import org.jetbrains.anko.find
+import org.jetbrains.anko.toast
 
 
 /**
@@ -36,11 +39,9 @@ import org.jetbrains.anko.find
  */
 class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.ProgressCallback {
     private var bottom_loop: ImageView? = null
-//    private lateinit var blurImageView: ImageView
     override fun onPlayListChanged(list: List<Song>) {
-        bottomAdapter.list = list
-        bottomAdapter.notifyDataSetChanged()
-//        pagerAdapter.notifyDataSetChanged()
+        bottomAdapter?.list = list
+        bottomAdapter?.notifyDataSetChanged()
         vp.setCurrentItem(Rulers.getCurrentPos(), true)
 
     }
@@ -77,9 +78,9 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
             PlayService.STATE_STARTED -> {
                 checkLike()
-//                upDateBlur()
                 vp.setCurrentItem(Rulers.getCurrentPos(), true)
                 playIV.setSelected(PlayManager.instance.isPlaying)
+                bottomAdapter?.notifyDataSetChanged()
             }
             PlayService.STATE_PAUSED -> {
 
@@ -138,7 +139,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     private lateinit var songList: RecyclerView
     private lateinit var vp: ViewPager
     private lateinit var likeIV: ImageView
-    private lateinit var bottomAdapter: DialogBottomAdapter
+    private var bottomAdapter: DialogBottomAdapter? = null
     private lateinit var pagerAdapter: FragmentStatePagerAdapter
     private val mSeekListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
@@ -190,7 +191,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     }
 
     private fun initToolbar() {
-        toolbar_common.init(
+        toolbar_common.initBlack(
             title = "歌曲",
             listener = View.OnClickListener { finish() }
         )
@@ -220,8 +221,9 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             val bottomDialog = BottomSheetDialog(this)
             val view = layoutInflater.inflate(R.layout.dialog_bottom_song_list, null)
             bottomDialog.setContentView(view)
+            val mBehavior = BottomSheetBehavior.from(view.parent as View)
+            mBehavior.setPeekHeight(dp2px(450))
             setBottomClickListener(view)
-            Log.d("roger", "bottom_loop ${Rulers.rule.rule}  ")
             PlayManager.instance.setRule(Rulers.rule.rule)
 //            val mBehavior = BottomSheetBehavior.from(view.parent as View)
 //            mBehavior.peekHeight = dp2px(500)
@@ -229,34 +231,32 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             bottomAdapter = DialogBottomAdapter()
             songList.layoutManager = LinearLayoutManager(this)
             songList.adapter = bottomAdapter
-            bottomAdapter.setBottomClickListener(object : OnBottomClickListener {
-                override fun onItemClick(position: Int) {
-                    PlayManager.instance.dispatch(bottomAdapter.list[position])
-                }
+            bottomAdapter?.let {
+                it.setBottomClickListener(object : OnBottomClickListener {
+                    override fun onItemClick(position: Int) {
+                        PlayManager.instance.dispatch(it.list[position])
+                    }
 
-                override fun onDeleteClick(position: Int) {
-                    PlayManager.instance.deleteSong(bottomAdapter.list[position])
-                }
-            })
-//            bottomAdapter.setOnItemClickListener(object : OnItemClickListener {
-//                override fun onItemClick(position: Int) {
-////                    PlayManager.instance.dispatch(bottomAdapter.list[position])
-//                }
-//            })
-//            bottomAdapter.setOnItemDeleteListener(object : OnItemClickListener {
-//                override fun onItemClick(position: Int) {
-//                }
-//            })
+                    override fun onDeleteClick(position: Int) {
+                        PlayManager.instance.deleteSong(it.list[position])
+                    }
+                })
+        }
 
             bottomDialog.show()
         }
         iv_loop.setOnClickListener {
             if (Rulers.rule.rule == LIST_LOOP) {
                 PlayManager.instance.setRule(SINGLE_LOOP)
+                toast("单曲循环")
             } else if (Rulers.rule.rule == SINGLE_LOOP) {
                 PlayManager.instance.setRule(RANDOM)
+                toast("随机播放")
+
             } else if (Rulers.rule.rule == RANDOM) {
                 PlayManager.instance.setRule(LIST_LOOP)
+                toast("列表循环")
+
             }
         }
 
@@ -317,13 +317,12 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         for (x in Rulers.mCurrentList) {
             fList.add(PlayDetailImageFragment.newInstance(x.pic))
         }
-        pagerAdapter= PlayDetailViewPagerAdapter(fList, supportFragmentManager)
+        pagerAdapter = PlayDetailViewPagerAdapter(fList, supportFragmentManager)
         vp.adapter = pagerAdapter
         vp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
-
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
 
             }
