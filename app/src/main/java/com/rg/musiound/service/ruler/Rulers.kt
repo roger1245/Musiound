@@ -2,6 +2,7 @@ package com.rg.musiound.service.ruler
 
 
 import com.rg.musiound.bean.Song
+import com.rg.musiound.db.CSList
 import com.rg.musiound.db.PlayingSong
 import com.rg.musiound.db.RecentPlayedSong
 import com.rg.musiound.service.PlayManager
@@ -16,6 +17,8 @@ object Rulers {
     //由rules类与数据库进行单向回调
     var mCurrentList: MutableList<Song> = PlayingSong.instance.getPlayingSong()
             private set
+
+    var mCSL: CSList? = null
     fun add(song: List<Song>) {
         mCurrentList.addAll(song)
         PlayingSong.instance.addAll(song)

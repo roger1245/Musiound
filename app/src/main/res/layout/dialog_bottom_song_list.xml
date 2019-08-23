@@ -32,9 +32,10 @@
                 android:layout_height="wrap_content"/>
 
         <ImageView
+                android:id="@+id/iv_collect"
                 android:layout_toStartOf="@id/tv_collect"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="11dp"
+                android:layout_marginEnd="11dp"
                 android:src="@drawable/dialog_bottom_song_list_collect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -42,7 +43,7 @@
         <TextView
                 android:id="@+id/tv_collect"
                 android:layout_toStartOf="@id/iv_delete"
-                android:layout_marginRight="27dp"
+                android:layout_marginEnd="27dp"
                 android:layout_centerVertical="true"
                 android:text="收藏全部"
                 android:textColor="@color/text_common_black"
@@ -52,7 +53,7 @@
 
         <ImageView
                 android:id="@+id/iv_delete"
-                android:layout_marginRight="11dp"
+                android:layout_marginEnd="11dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/dialog_bottom_song_list_remove"

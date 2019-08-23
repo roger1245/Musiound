@@ -12,10 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
 import com.rg.musiound.base.BaseFragment
 import com.rg.musiound.bean.SongListRaw
+import com.rg.musiound.db.CSList
 import com.rg.musiound.interfaces.model.IFragmentSongListModel
 import com.rg.musiound.interfaces.presenter.IFragmentSongListPresenter
 import com.rg.musiound.interfaces.view.IFragmentSongListView
 import com.rg.musiound.presenter.FragmentSongListPresenter
+import com.rg.musiound.service.ruler.Rulers
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.dp2px
 import com.rg.musiound.view.activity.ListDetailActivity
@@ -62,6 +64,8 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
         activity?.let {
             adapter.setOnItemClickListener(object : OnItemClickListener {
                 override fun onItemClick(position: Int) {
+                    val item = adapter.list[position]
+                    Rulers.mCSL = CSList(item.name, item.id, item.coverImgUrl)
                     val id = adapter.list[position - 1].id
                     val intent = Intent(activity, ListDetailActivity::class.java)
                     intent.putExtra("id", id)

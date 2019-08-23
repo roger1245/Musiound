@@ -26,6 +26,7 @@ class MusicDB : SQLiteOpenHelper(
             PlayingSong.instance.onCreate(db)
             RecentPlayedSong.instance.onCreate(db)
             CollectSong.instance.onCreate(db)
+            CollectSongList.instance.onCreate(db)
         }
     }
 

@@ -17,6 +17,11 @@
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
         <activity
+                android:name=".view.activity.CSLActivity"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
                 android:name=".view.activity.SplashActivity"
                 android:launchMode="singleTop"
                 android:screenOrientation="portrait"

@@ -17,6 +17,7 @@ import com.rg.musiound.BaseApp
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
 import com.rg.musiound.db.CollectSong
+import com.rg.musiound.db.CollectSongList
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.service.PlayService
 import com.rg.musiound.service.ruler.LIST_LOOP
@@ -142,6 +143,7 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
     private lateinit var songList: RecyclerView
     private lateinit var vp: ViewPager
     private lateinit var likeIV: ImageView
+    private var collectSongList: ImageView? = null
     private var bottomAdapter: DialogBottomAdapter? = null
     private lateinit var pagerAdapter: FragmentStatePagerAdapter
     private val mSeekListener: SeekBar.OnSeekBarChangeListener = object : SeekBar.OnSeekBarChangeListener {
@@ -236,6 +238,8 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
 //            val mBehavior = BottomSheetBehavior.from(view.parent as View)
 //            mBehavior.peekHeight = dp2px(500)
             songList = view.find(R.id.rv_dialog_bottom)
+            collectSongList = view.find(R.id.iv_collect)
+            setCSLListener()
             bottomAdapter = DialogBottomAdapter()
             songList.layoutManager = LinearLayoutManager(this)
             songList.adapter = bottomAdapter
@@ -270,6 +274,17 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
 
 
     }
+    //收藏歌单
+    private fun setCSLListener() {
+        collectSongList?.setOnClickListener {
+            Rulers.mCSL?.let {
+                Log.d("roger", it.toString())
+                CollectSongList.instance.addCSL(it)
+                toast("歌单已收藏")
+            }
+        }
+    }
+
 
     private fun showSong(song: Song) {
         tv_toolbar_title.text = song.name
