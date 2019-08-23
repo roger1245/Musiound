@@ -29,6 +29,9 @@ import android.content.res.Configuration
 import android.content.res.Configuration.*
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import com.rg.musiound.BaseApp.Companion.context
+import com.rg.musiound.util.extensions.editor
+import com.rg.musiound.util.extensions.sharedPreferences
 
 
 class MainActivity : BaseActivity() {
@@ -89,9 +92,14 @@ class MainActivity : BaseActivity() {
         val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (mode == UI_MODE_NIGHT_YES) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            context.sharedPreferences("IsDay").editor {
+                putBoolean("IsDay", true)
+            }
         } else if (mode == UI_MODE_NIGHT_NO) {
-            Log.d("roger", "NIGHT_NO")
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            context.sharedPreferences("IsDay").editor {
+                putBoolean("IsDay", false)
+            }
         }
         recreate()
     }

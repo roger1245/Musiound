@@ -61,9 +61,9 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val track = songs.data.tracks[position]
-                val song: Song = Song(track.name, "https://v1.itooi.cn/netease/url?id=${track.id}&quality=flac", track.album.picUrl, track.artists )
+                val song: Song = Song(track.name, "https://v1.itooi.cn/netease/url?id=${track.id}&quality=192", track.album.picUrl, track.artists )
                 val listSong = songs.data.tracks.map {
-                    Song(it.name, "https://v1.itooi.cn/netease/url?id=${it.id}&quality=flac", it.album.picUrl, it.artists )
+                    Song(it.name, "https://v1.itooi.cn/netease/url?id=${it.id}&quality=192", it.album.picUrl, it.artists )
                 }
                 PlayManager.instance.deleteAll()
                 PlayManager.instance.add(listSong)

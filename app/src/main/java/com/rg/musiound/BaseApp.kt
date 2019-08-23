@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import com.billy.android.swipe.SmartSwipeBack
+import com.rg.musiound.util.extensions.sharedPreferences
 import com.rg.musiound.view.activity.MainActivity
 import com.rg.musiound.view.activity.SplashActivity
 
@@ -23,9 +24,16 @@ class BaseApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         SmartSwipeBack.activityBezierBack(this) {
             (it !is MainActivity) && (it !is SplashActivity)
+        }
+        val shared = context.sharedPreferences("IsDay")
+        if (shared.getBoolean("IsDay", true)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            Log.d("roger", "isDay")
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
         }
     }
 

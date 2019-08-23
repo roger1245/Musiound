@@ -108,14 +108,14 @@ class SearchSongFragment :
                 val track = adapter.list[position]
                 val song: Song = Song(
                     track.name,
-                    "https://v1.itooi.cn/netease/url?id=${track.id}&quality=flac",
+                    "https://v1.itooi.cn/netease/url?id=${track.id}&quality=192",
                     track.album.picUrl,
                     track.artists
                 )
                 val listSong = adapter.list.map {
                     Song(
                         it.name,
-                        "https://v1.itooi.cn/netease/url?id=${it.id}&quality=flac",
+                        "https://v1.itooi.cn/netease/url?id=${it.id}&quality=192",
                         it.album.picUrl,
                         it.artists
                     )
