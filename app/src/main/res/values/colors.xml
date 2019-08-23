@@ -29,6 +29,7 @@
     <!--夜间模式-->
     <color name="background_common">#ffffff</color>
     <color name="text_night_mode">#333333</color>
+    <color name="activity_main_tool_bar_text">#747474</color>
 
     <!--listDetailActivity-->
     <color name="activity_list_detail_banner_background">#152022</color>

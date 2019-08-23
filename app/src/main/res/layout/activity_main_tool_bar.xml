@@ -23,6 +23,7 @@
             android:layout_width="205dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            app:tabTextColor="@color/activity_main_tool_bar_text"
             app:tabTextAppearance="@style/MainTabTextAppearance"
             app:tabBackground="@android:color/transparent"
             app:tabRippleColor="@android:color/transparent"
