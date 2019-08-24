@@ -1,18 +1,23 @@
 package com.rg.musiound.view.adapter
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.AnimationDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.rg.musiound.BaseApp
 import com.rg.musiound.R
 import com.rg.musiound.bean.MV
 import com.rg.musiound.bean.SongList
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.setImageFromUrl
 import org.jetbrains.anko.find
+import org.jetbrains.anko.image
+import org.jetbrains.anko.textColor
 
 /**
  * Create by roger
@@ -36,6 +41,7 @@ class MVListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHo
         val imageView: ImageView = view.find(R.id.iv_mv_cover)
         val title: TextView = view.find(R.id.tv_mv_title)
         val artist: TextView = view.find(R.id.tv_mv_artist)
+        val number: TextView = view.find(R.id.tv_number)
 
         companion object {
             fun from(parent: ViewGroup): CardViewHolder {
@@ -47,6 +53,7 @@ class MVListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     class LoadingMoreFootHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val loadImage: ImageView = view.find(R.id.iv_anim_image)
         companion object {
             fun from(parent: ViewGroup): LoadingMoreFootHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -107,11 +114,22 @@ class MVListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.ViewHo
                 holder.imageView.setImageFromUrl(item.cover)
                 holder.title.text = list[position].name
                 holder.artist.text = list[position].artistName
+                holder.number.let {
+                    it.text = (position + 1).toString()
+                    if (position < 3) {
+                        it.textColor = Color.parseColor(BaseApp.context.getString(R.color.fragment_discovery_red as Int))
+                    } else {
+                        it.textColor = Color.parseColor(BaseApp.context.getString(R.color.fragment_mv_rank_number_grey as Int))
+                    }
+                }
+
                 holder.itemView.setOnClickListener{
                     mOnItemClickListener?.onItemClick(position)
                 }
             }
-            is LoadingMoreFootHolder -> {}
+            is LoadingMoreFootHolder -> {
+                (holder.loadImage.drawable as AnimationDrawable).start()
+            }
             is LoadEndFooter -> {}
         }
 

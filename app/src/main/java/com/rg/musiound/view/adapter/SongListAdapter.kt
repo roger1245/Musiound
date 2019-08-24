@@ -1,6 +1,7 @@
 package com.rg.musiound.view.adapter
 
 import android.content.Context
+import android.graphics.drawable.AnimationDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,6 +72,7 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
     }
 
     class LoadingMoreFootHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val image: ImageView = view.find(R.id.iv_anim_image)
         companion object {
             fun from(parent: ViewGroup): LoadingMoreFootHolder {
                 val layoutInflater = LayoutInflater.from(parent.context)
@@ -149,6 +151,7 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
             is LoadEndFooter -> {
             }
             is LoadingMoreFootHolder -> {
+                (holder.image.drawable as AnimationDrawable).start()
             }
         }
 

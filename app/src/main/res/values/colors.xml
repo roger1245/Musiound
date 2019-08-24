@@ -17,6 +17,7 @@
     <color name="text_common_black_l">#191919</color>
     <color name="activity_splash_red_background">#dc2c1f</color>
     <color name="fragment_discovery_red">#fe2424</color>
+    <color name="fragment_mv_rank_number_grey">#999999</color>
 
 
 

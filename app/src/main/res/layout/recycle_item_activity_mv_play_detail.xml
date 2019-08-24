@@ -33,6 +33,7 @@
             android:orientation="vertical"
             android:layout_below="@id/tv_mv_title"
             android:layout_marginTop="15dp"
+            android:layout_alignEnd="@id/iv_mv_arrow"
             android:layout_alignStart="@id/tv_mv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
