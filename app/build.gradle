@@ -17,6 +17,10 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            //Zipalign优化
+            zipAlignEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -45,24 +49,25 @@ dependencies {
     implementation deps.rxjava.runtime
     implementation deps.rxjava.rxandroid
     implementation deps.rxjava.rxkotlin
+
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'io.reactivex:rxjava:1.1.0'
     implementation 'io.reactivex:rxandroid:1.1.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
+
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta4'
     implementation 'com.google.code.gson:gson:2.8.5'
+
     implementation('com.squareup.retrofit2:converter-simplexml:2.1.0') {
         exclude group: 'xpp3', module: 'xpp3'
         exclude group: 'stax', module: 'stax-api'
         exclude group: 'stax', module: 'stax'
     }
+
     implementation 'com.githang:status-bar-compat:0.7'
     implementation 'com.billy.android:smart-swipe:1.0.6'
     implementation 'com.shuyu:gsyVideoPlayer-java:7.0.2'
-
     implementation 'com.shuyu:gsyVideoPlayer-armv7a:7.0.2'
-
     implementation 'org.greenrobot:eventbus:3.1.1'
-
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 }
