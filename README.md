@@ -34,9 +34,9 @@
 
 <img src="https://github.com/roger1245/Musiound/blob/master/get/gif/20190824_192545.gif" style="zoom:50%" />
 <img src="https://github.com/roger1245/Musiound/blob/master/get/gif/20190824_192653.gif" style="zoom:50%" />
-<img src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192137.jpg" style="zoom:50%" />
-<img src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192144.jpg" style="zoom:50%" />
-<img src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192153.jpg" style="zoom:50%" />
+<img src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192137.jpg" style="zoom:25%" />
+<img src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192144.jpg" style="zoom:25%" />
+<img src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192153.jpg" style="zoom:25%" />
 
 
 ### 免责声明
