@@ -1,6 +1,7 @@
 package com.rg.musiound.view.widget
 
 import android.graphics.Point
+import com.rg.musiound.util.dp2px
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -10,7 +11,7 @@ import kotlin.math.sin
  */
 class Trangle(val p1: Point, val p2 : Point, val p3: Point, val angle: Int, val imageR: Int) {
     init {
-        move(imageR.toDouble())
+        move((imageR - dp2px(20)).toDouble())
     }
 
     fun move(distance: Double) {
