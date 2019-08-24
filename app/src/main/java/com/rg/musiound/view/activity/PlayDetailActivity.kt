@@ -233,6 +233,9 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             val mBehavior = BottomSheetBehavior.from(view.parent as View)
             mBehavior.peekHeight = dp2px(450)
             setBottomClickListener(view)
+
+
+
             PlayManager.instance.setRule(Rulers.rule.rule)
             songList = view.find(R.id.rv_dialog_bottom)
             collectSongList = view.find(R.id.iv_collect)
@@ -253,6 +256,8 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
             }
 
             bottomDialog.show()
+
+            setPositionRVBottom(view)
         }
         iv_loop.setOnClickListener {
             if (Rulers.rule.rule == LIST_LOOP) {
@@ -356,5 +361,12 @@ class PlayDetailActivity : BaseActivity(), PlayManager.Callback, PlayManager.Pro
         vp.setCurrentItem(Rulers.getCurrentPos(), false)
     }
 
+
+    //让bottomsheet滚动到红色item的位置，并尝试置顶
+    private fun setPositionRVBottom(view: View) {
+        val recyclerView: RecyclerView = view.find(R.id.rv_dialog_bottom)
+        (recyclerView.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(Rulers.getCurrentPos(), 0)
+        Log.d("roger", "currentpos === ${Rulers.getCurrentPos()}")
+    }
 
 }

@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_search.*
 import org.greenrobot.eventbus.EventBus
 import android.widget.EditText
 import android.view.MotionEvent
+import com.rg.musiound.view.widget.OnEditEndClickListener
 
 
 class SearchActivity : BaseActivity() {
@@ -52,6 +53,12 @@ class SearchActivity : BaseActivity() {
             }
 
         })
+//        et_search.setDropEndClickListener(object : OnEditEndClickListener {
+//            override fun onClick() {
+//                et_search.setText("")
+//            }
+//
+//        })
     }
 
     private val fragments = listOf<Fragment>(
