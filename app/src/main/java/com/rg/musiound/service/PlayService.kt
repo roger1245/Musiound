@@ -13,6 +13,8 @@ import android.widget.RemoteViews
 import androidx.annotation.IntDef
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.NotificationTarget
 import com.rg.musiound.R
 import com.rg.musiound.bean.Song
 import com.rg.musiound.view.activity.PlayDetailActivity
@@ -328,6 +330,14 @@ class PlayService : Service(), MediaPlayer.OnInfoListener, MediaPlayer.OnPrepare
             .setContentIntent(contentPendingIntent)
             .setContent(remoteViews)
         mNotification = builder.build()
+
+
+        //加载图片
+        val notificationTarget: NotificationTarget = NotificationTarget(this,R.id.iv_no_pic, remoteViews,  mNotification, NOTIFICATION_ID)
+        song?.let {
+            Glide.with(this.applicationContext).asBitmap().load(it.pic).into(notificationTarget)
+        }
+
         return mNotification as Notification
     }
 

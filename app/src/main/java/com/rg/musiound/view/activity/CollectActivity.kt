@@ -29,8 +29,8 @@ class CollectActivity : com.rg.musiound.view.BaseActivity() {
     private fun setSongs(song: List<Song>) {
         val tracks: MutableList<Track> = mutableListOf()
         for (x in song) {
-            val id = x.url.substring(x.url.indexOf("id=") + 3, x.url.indexOf("&"))
-            tracks.add(Track(id.toLong(), x.name, x.singer, Album("", "")))
+            tracks.add(Track(1L, x.name, x.singer, Album("", "")))
+
         }
         val adapter = ListDetailAdapter(this)
         adapter.list.addAll(tracks)
@@ -42,14 +42,6 @@ class CollectActivity : com.rg.musiound.view.BaseActivity() {
                 PlayManager.instance.startAsong(s)
                 val intent = Intent(this@CollectActivity, PlayDetailActivity::class.java)
                 startActivity(intent)
-//                val track = tracks[position]
-//                val song: Song = Song(track.name, "https://v1.itooi.cn/netease/url?id=${track.id}&quality=flac", track.album.picUrl, track.artists )
-//                val listSong = songs.data.tracks.map {
-//                    Song(it.name, "https://v1.itooi.cn/netease/url?id=${it.id}&quality=flac", it.album.picUrl, it.artists )
-//                }
-//                PlayManager.instance.deleteAll()
-//                PlayManager.instance.add(listSong)
-//                PlayManager.instance.dispatch(song)
 
             }
         })
@@ -78,12 +70,18 @@ class CollectActivity : com.rg.musiound.view.BaseActivity() {
         )
     }
 
-    fun checkIsDay()  {
+    fun checkIsDay() {
         val mode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         if (mode == Configuration.UI_MODE_NIGHT_YES) {
-            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_black as Int)))
+            StatusBarCompat.setStatusBarColor(
+                this,
+                Color.parseColor(BaseApp.context.getString(R.color.accent_always_black as Int))
+            )
         } else if (mode == Configuration.UI_MODE_NIGHT_NO) {
-            StatusBarCompat.setStatusBarColor(this, Color.parseColor(BaseApp.context.getString(R.color.accent_always_white as Int)))
+            StatusBarCompat.setStatusBarColor(
+                this,
+                Color.parseColor(BaseApp.context.getString(R.color.accent_always_white as Int))
+            )
         }
     }
 }
