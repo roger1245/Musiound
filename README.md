@@ -49,6 +49,6 @@
 
 
 
-[点我下载APK](https://github.com/roger1245/Musiound/blob/master/get/apk/app-release.apk)
+[点我下载APK](https://github.com/roger1245/Musiound/blob/master/get/apk/app-release.apk?raw=true)
 
 
