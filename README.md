@@ -32,17 +32,13 @@
 
 ## 软件运行截图
 
-![5.1.1运行效果](https://github.com/roger1245/Musiound/blob/master/get/gif/20190824_192545.gif)
-![6.0深色状态栏白色文字](https://github.com/roger1245/Musiound/blob/master/get/gif/20190824_192653.gif)
-![6.0浅色状态栏黑色文字](https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192137.jpg)
-
-
-![5.1.1运行效果](https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192144.jpg)
-![6.0深色状态栏白色文字](https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192153.jpg)
-![6.0浅色状态栏黑色文字](https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192159.jpg)
-
-
-![5.1.1运行效果](https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192217.jpg)
+<div align=start><img width="150" height="300" src="https://github.com/roger1245/Musiound/blob/master/get/gif/20190824_192545.gif"/></div>
+<div align=center><img width="150" height="300" src="https://github.com/roger1245/Musiound/blob/master/get/gif/20190824_192653.gif"/></div>
+<div align=center><img width="150" height="300" src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192137.jpg"/></div>
+<div align=center><img width="150" height="300" src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192144.jpg"/></div>
+<div align=center><img width="150" height="300" src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192153.jpg"/></div>
+<div align=center><img width="150" height="300" src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192159.jpg"/></div>
+<div align=center><img width="150" height="300" src="https://github.com/roger1245/Musiound/blob/master/get/gif/Screenshot_20190824_192217.jpg"/></div>
 
 
 
