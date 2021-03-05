@@ -2,11 +2,8 @@ package com.rg.musiound.db
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import android.util.Log
-import com.rg.musiound.bean.Artist
 import com.rg.musiound.bean.Song
 import com.rg.musiound.bean.songlistdetail.Ar
-import java.lang.StringBuilder
 
 /**
  * Create by roger
@@ -53,7 +50,7 @@ class PlayingSong {
             val values: ContentValues = ContentValues(5)
             values.let {
                 it.put(NAME, song.name)
-                it.put(URL, song.id)
+                it.put(URL, song.url)
                 it.put(PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {
@@ -77,7 +74,7 @@ class PlayingSong {
     }
     fun deletePlayingSong(song: Song) {
         val db = MusicDB.instance.writableDatabase
-        db.delete(PLAYING_SONG, "${URL} = ?", arrayOf(song.id))
+        db.delete(PLAYING_SONG, "${URL} = ?", arrayOf(song.url))
     }
     fun deleteAll() {
         val db = MusicDB.instance.writableDatabase

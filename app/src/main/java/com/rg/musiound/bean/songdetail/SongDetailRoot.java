@@ -5,20 +5,28 @@ package com.rg.musiound.bean.songdetail;
 import java.util.List;
 
 /**
- * Auto-generated: 2021-03-05 19:59:32
+ * Auto-generated: 2021-03-05 22:14:55
  *
  * @author bejson.com (i@bejson.com)
  * @website http://www.bejson.com/java2pojo/
  */
 public class SongDetailRoot {
 
-    private List<Data> data;
+    private List<Songs> songs;
+    private List<Privileges> privileges;
     private int code;
-    public void setData(List<Data> data) {
-         this.data = data;
+    public void setSongs(List<Songs> songs) {
+         this.songs = songs;
      }
-     public List<Data> getData() {
-         return data;
+     public List<Songs> getSongs() {
+         return songs;
+     }
+
+    public void setPrivileges(List<Privileges> privileges) {
+         this.privileges = privileges;
+     }
+     public List<Privileges> getPrivileges() {
+         return privileges;
      }
 
     public void setCode(int code) {

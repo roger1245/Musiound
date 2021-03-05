@@ -55,7 +55,7 @@ class RecentPlayedSong {
 
     fun deleteRecentPlayedSong(song: Song) {
         val db = MusicDB.instance.writableDatabase
-        db.delete(RECENT_PLAYING_SONG, "${RECENT_URL} = ?", arrayOf(song.id))
+        db.delete(RECENT_PLAYING_SONG, "${RECENT_URL} = ?", arrayOf(song.url))
     }
 
     fun deleteAll() {
@@ -97,7 +97,7 @@ class RecentPlayedSong {
     //基础方法
     private fun queryIfExist(song: Song): Boolean {
         val db = MusicDB.instance.writableDatabase
-        val cursor = db.query(RECENT_PLAYING_SONG, null, "$RECENT_URL = ?", arrayOf(song.id), null, null, null)
+        val cursor = db.query(RECENT_PLAYING_SONG, null, "$RECENT_URL = ?", arrayOf(song.url), null, null, null)
         if (cursor.moveToFirst()) {
             cursor.close()
             return true
@@ -116,7 +116,7 @@ class RecentPlayedSong {
             val values = ContentValues(5)
             values.let {
                 it.put(RECENT_NAME, song.name)
-                it.put(RECENT_URL, song.id)
+                it.put(RECENT_URL, song.url)
                 it.put(RECENT_PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {
@@ -128,7 +128,7 @@ class RecentPlayedSong {
                 it.put(RECENT_ARTIST, stringBuilder.toString())
                 it.put(RECENT_TIME, System.currentTimeMillis())
             }
-            db.update(RECENT_PLAYING_SONG, values, "${RECENT_URL} = ?", arrayOf(song.id))
+            db.update(RECENT_PLAYING_SONG, values, "${RECENT_URL} = ?", arrayOf(song.url))
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
@@ -144,7 +144,7 @@ class RecentPlayedSong {
             val values: ContentValues = ContentValues(5)
             values.let {
                 it.put(RECENT_NAME, song.name)
-                it.put(RECENT_URL, song.id)
+                it.put(RECENT_URL, song.url)
                 it.put(RECENT_PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {

@@ -52,7 +52,7 @@ class CollectSong {
             val values: ContentValues = ContentValues(5)
             values.let {
                 it.put(COLLECT_NAME, song.name)
-                it.put(COLLECT_URL, song.id)
+                it.put(COLLECT_URL, song.url)
                 it.put(COLLECT_PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {
@@ -78,7 +78,7 @@ class CollectSong {
 
     fun deleteCollectSong(song: Song) {
         val db = MusicDB.instance.writableDatabase
-        db.delete(COLLECT_PLAYING_SONG, "${COLLECT_URL} = ?", arrayOf(song.id))
+        db.delete(COLLECT_PLAYING_SONG, "${COLLECT_URL} = ?", arrayOf(song.url))
     }
 
     fun deleteAll() {
@@ -110,7 +110,7 @@ class CollectSong {
 
     fun queryIfExist(song: Song) : Boolean {
         val db = MusicDB.instance.writableDatabase
-        val cursor = db.query(COLLECT_PLAYING_SONG, null, COLLECT_URL + " = ?", arrayOf(song.id), null, null, null)
+        val cursor = db.query(COLLECT_PLAYING_SONG, null, COLLECT_URL + " = ?", arrayOf(song.url), null, null, null)
         if (cursor.moveToFirst()) {
             cursor.close()
             return true

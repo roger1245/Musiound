@@ -1,7 +1,7 @@
 /**
   * Copyright 2021 bejson.com 
   */
-package com.rg.musiound.bean.songdetail;
+package com.rg.musiound.bean.songurl;
 
 /**
  * Auto-generated: 2021-03-05 19:59:32

@@ -18,6 +18,8 @@ import com.rg.musiound.R
 import com.rg.musiound.base.BaseActivity
 import com.rg.musiound.bean.Song
 import com.rg.musiound.bean.songlistdetail.SongListDetailRoot
+import com.rg.musiound.bean.songlistdetail.Tracks
+import com.rg.musiound.bean.songurl.Data
 import com.rg.musiound.interfaces.model.IActivityListDetailModel
 import com.rg.musiound.interfaces.presenter.IActivityListDetailPresenter
 import com.rg.musiound.interfaces.view.IActivityListDetailView
@@ -26,7 +28,10 @@ import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.setImageFromUrl
 import com.rg.musiound.view.activity.PlayDetailActivity
 import com.rg.musiound.view.adapter.ListDetailAdapter
+import io.reactivex.Observable
+import io.reactivex.functions.BiFunction
 import org.jetbrains.anko.find
+import rx.functions.Func2
 
 class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDetailPresenter, IActivityListDetailModel>(), IActivityListDetailView {
     private lateinit var recyclerView: RecyclerView
@@ -42,6 +47,7 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
     private val songStr = "歌单"
     private lateinit var titleToolbar: TextView
 
+    private lateinit var songPlayViewModel: SongPlayViewModel
     override fun getViewToAttach(): IActivityListDetailView {
         return this
     }
@@ -59,28 +65,36 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
         description.text = songs.playlist.description
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
-                val track = songs.playlist.tracks[position]
-                val song: Song = Song(track.name, track.id.toString(), track.al.picUrl, track.ar )
-                val listSong = songs.playlist.tracks.map {
-                    Song(it.name, it.id.toString(), it.al.picUrl, it.ar )
+
+                val ids = songs.playlist.tracks.map {
+                    it.id.toString()
                 }
-                PlayManager.instance.deleteAll()
-                PlayManager.instance.add(listSong)
-                PlayManager.instance.dispatch(song)
+                songPlayViewModel.getSongUrl(ids)
+                songPlayViewModel.songDetailRoot.observe(this@ListDetailActivity, {
+                    val track = songs.playlist.tracks[position]
 
 
-//                val track = songs.playlist.tracks[position]
-//
-//                songPlayViewModel.getSongDetail(track.id)
-//                songPlayViewModel.songDetailRoot.observe(this@ListDetailActivity, {
-//                    val song: Song = Song(track.name, it.data[0].url, track.al.picUrl, track.ar )
-////                    val listSong = songs.playlist.tracks.map {
-////                        Song(it.name, it.id, it.al.picUrl, it.ar )
-////                    }
-//                    PlayManager.instance.deleteAll()
-//                    PlayManager.instance.add(listOf(song))
-//                    PlayManager.instance.dispatch(song)
-//                })
+                    val song: Song = Song(track.name, it.data[position].url, track.al.picUrl, track.ar )
+//                    val listSong = songs.playlist.tracks.map {_track ->
+//                        Song(_track.name, "" _track.al.picUrl, _track.ar )
+//                    }
+
+                    val ob1 = Observable.fromIterable(songs.playlist.tracks)
+                    val ob2 = Observable.fromIterable(it.data)
+                    val temp = Observable.zip(ob1, ob2, object : BiFunction<Tracks, Data, Song> {
+                        override fun apply(t1: Tracks, t2: Data): Song {
+                            return Song(t1.name, t2.url, t1.al.picUrl, t1.ar)
+                        }
+
+                    }).toList().subscribe { list ->
+                        PlayManager.instance.deleteAll()
+                        PlayManager.instance.add(list)
+                        PlayManager.instance.dispatch(song)
+                    }
+
+
+                })
+
                 val intent = Intent(this@ListDetailActivity, PlayDetailActivity::class.java)
                 startActivity(intent)
             }
@@ -99,6 +113,7 @@ class ListDetailActivity : BaseActivity<IActivityListDetailView, IActivityListDe
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_detail)
 
+        songPlayViewModel = ViewModelProvider(this).get(SongPlayViewModel::class.java)
         recyclerView = find(R.id.rv_activity_list_detail)
         cover = find(R.id.iv_activity_list_detail_cover)
         title = find(R.id.tv_list_detail_title)
