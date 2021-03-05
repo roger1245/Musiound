@@ -14,6 +14,7 @@ import com.rg.musiound.BaseApp
 import com.rg.musiound.R
 import com.rg.musiound.bean.Artist
 import com.rg.musiound.bean.Song
+import com.rg.musiound.bean.songlistdetail.Ar
 import com.rg.musiound.db.CollectSong
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.util.OnItemClickListener
@@ -83,9 +84,13 @@ class SongLocalActivity : BaseActivity() {
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val songLocal = list[position]
-                val song: Song = Song(songLocal.name, songLocal.path, "", listOf(Artist(songLocal.singer)) )
+                val a = Ar()
+                a.name = songLocal.singer
+                val song: Song = Song(songLocal.name, songLocal.path, "", listOf(a) )
                 val listSong = list.map {
-                    Song(it.name, it.path, "", listOf(Artist(it.singer)) )
+                    val a = Ar()
+                    a.name = songLocal.singer
+                    Song(it.name, it.path, "", listOf(a) )
 
                 }
                 PlayManager.instance.deleteAll()

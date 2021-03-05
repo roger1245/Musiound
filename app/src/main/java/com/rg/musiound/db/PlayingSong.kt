@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import com.rg.musiound.bean.Artist
 import com.rg.musiound.bean.Song
+import com.rg.musiound.bean.songlistdetail.Ar
 import java.lang.StringBuilder
 
 /**
@@ -52,7 +53,7 @@ class PlayingSong {
             val values: ContentValues = ContentValues(5)
             values.let {
                 it.put(NAME, song.name)
-                it.put(URL, song.url)
+                it.put(URL, song.id)
                 it.put(PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {
@@ -76,7 +77,7 @@ class PlayingSong {
     }
     fun deletePlayingSong(song: Song) {
         val db = MusicDB.instance.writableDatabase
-        db.delete(PLAYING_SONG, "${URL} = ?", arrayOf(song.url))
+        db.delete(PLAYING_SONG, "${URL} = ?", arrayOf(song.id))
     }
     fun deleteAll() {
         val db = MusicDB.instance.writableDatabase
@@ -94,7 +95,9 @@ class PlayingSong {
                 val pic = cursor.getString(cursor.getColumnIndex(PIC))
                 val artist = cursor.getString(cursor.getColumnIndex(ARTIST))
                 val artists = artist.split(",").map {
-                    Artist(it)
+                    val a = Ar()
+                    a.name = it
+                    a
                 }
                 list.add(Song(name, url, pic, artists))
             } while (cursor.moveToNext())

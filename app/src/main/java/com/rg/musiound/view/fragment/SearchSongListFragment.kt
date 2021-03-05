@@ -4,29 +4,21 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.lifecycle.Transformations.map
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
 import com.rg.musiound.base.BaseFragment
 import com.rg.musiound.bean.*
-import com.rg.musiound.db.CSList
 import com.rg.musiound.interfaces.generic.IActivityGenericModel
 import com.rg.musiound.interfaces.generic.IActivityGenericPresenter
 import com.rg.musiound.interfaces.generic.IActivityGenericView
 import com.rg.musiound.presenter.FragmentSongListSearchPresenter
-import com.rg.musiound.service.PlayManager
-import com.rg.musiound.service.ruler.Rulers
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.dp2px
-import com.rg.musiound.view.activity.ListDetailActivity
-import com.rg.musiound.view.activity.PlayDetailActivity
-import com.rg.musiound.view.adapter.ListDetailAdapter
-import com.rg.musiound.view.adapter.SongListAdapter
+import com.rg.musiound.view.songlistdetail.ListDetailActivity
+import com.rg.musiound.view.songlist.SongListAdapter
 import com.rg.musiound.view.widget.MessageEvent
-import kotlinx.android.synthetic.main.fragment_search_song.*
 import kotlinx.android.synthetic.main.fragment_search_song_list.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -71,7 +63,7 @@ class SearchSongListFragment :
             }
             srl_search_song_list.isRefreshing = false
         }
-        adapter.list.addAll(dataMapped)
+//        adapter.list.addAll(dataMapped)
         adapter.page = page
         adapter.let {
             if (page == 0) {
@@ -116,7 +108,7 @@ class SearchSongListFragment :
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val item = adapter.list[position - 1]
-                Rulers.mCSL = CSList(item.name, item.id, item.coverImgUrl)
+//                Rulers.mCSL = CSList(item.name, item.id, item.coverImgUrl)
                 val id = adapter.list[position - 1].id
                 val intent = Intent(activity, ListDetailActivity::class.java)
                 intent.putExtra("id", id)

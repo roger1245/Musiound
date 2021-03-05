@@ -1,10 +1,10 @@
-package com.rg.musiound.model
+package com.rg.musiound.view.songlist
 
 import android.util.Log
 import com.rg.musiound.base.BaseModel
-import com.rg.musiound.bean.SongListRaw
 import com.rg.musiound.interfaces.model.IFragmentSongListModel
 import com.rg.musiound.interfaces.network.SongListService
+import com.rg.musiound.model.safeSubscribeBy
 import com.rg.musiound.util.GenericPageCallback
 import com.rg.musiound.util.network.APIGenerator
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -16,25 +16,26 @@ import io.reactivex.schedulers.Schedulers
  */
 class FragmentSongListModel<T>: BaseModel(), IFragmentSongListModel<T> {
     override fun getData(callback: GenericPageCallback<T>, page: Int, category: String) {
-        Log.d("roger", category +"page = ${page}")
 
         APIGenerator.getApiService(SongListService::class.java)
-            .getSongList(category, page)
+            .getSongList(offset = ((page) * 50).toString())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .safeSubscribeBy(
                 onError = {
-                    callback.onFailed()
-                    Log.d("roger", "onError"  + it.toString())
+                    Log.d("roger", "wrong :" +  it.toString())
 
                 },
                 onComplete = {
-
                 },
                 onNext = {
+                    Log.d("roger", it.toString())
+
                     callback.onSuccess(it as T, page)
 
                 }
             )
     }
+
+
 }

@@ -61,7 +61,7 @@ class SearchSongFragment :
             }
             srl_search_song.isRefreshing = false
         }
-        adapter.list.addAll(dataMapped)
+//        adapter.list.addAll(dataMapped)
         adapter.page = page
         adapter.let {
             if (page == 0) {
@@ -106,22 +106,22 @@ class SearchSongFragment :
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val track = adapter.list[position]
-                val song: Song = Song(
-                    track.name,
-                    "https://v1.itooi.cn/netease/url?id=${track.id}&quality=192",
-                    track.album.picUrl,
-                    track.artists
-                )
-                val listSong = adapter.list.map {
-                    Song(
-                        it.name,
-                        "https://v1.itooi.cn/netease/url?id=${it.id}&quality=192",
-                        it.album.picUrl,
-                        it.artists
-                    )
-                }
-                PlayManager.instance.add(listSong)
-                PlayManager.instance.dispatch(song)
+//                val song: Song = Song(
+//                    track.name,
+//                    "https://v1.itooi.cn/netease/url?id=${track.id}&quality=192",
+////                    track.album.picUrl,
+////                    track.artists
+//                )
+//                val listSong = adapter.list.map {
+//                    Song(
+//                        it.name,
+//                        "https://v1.itooi.cn/netease/url?id=${it.id}&quality=192",
+//                        it.album.picUrl,
+//                        it.artists
+//                    )
+//                }
+//                PlayManager.instance.add(listSong)
+//                PlayManager.instance.dispatch(song)
                 val intent = Intent(activity as Context, PlayDetailActivity::class.java)
                 startActivity(intent)
 

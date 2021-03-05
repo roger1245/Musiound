@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
 import com.rg.musiound.bean.Track
+import com.rg.musiound.bean.songlistdetail.Tracks
 import com.rg.musiound.util.OnItemClickListener
 import org.jetbrains.anko.find
 
@@ -21,7 +22,7 @@ class ListDetailAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.Vi
     private val ITEM_COMMON = 1
     private var mOnItemClickListener: OnItemClickListener? = null
     var isLoadingMore: Boolean = true
-    var list: MutableList<Track> = mutableListOf()
+    var list: MutableList<Tracks> = mutableListOf()
     var page: Int = 0
 
     fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener) {
@@ -54,9 +55,9 @@ class ListDetailAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.Vi
                     mOnItemClickListener?.onItemClick(position)
                 }
                 val stringBuilder = StringBuilder()
-                for(x in list[position].artists.withIndex()) {
+                for(x in list[position].ar.withIndex()) {
                     stringBuilder.append(x.value.name)
-                    if (x.index != (list[position].artists.size - 1)) {
+                    if (x.index != (list[position].ar.size - 1)) {
                         stringBuilder.append("/")
                     }
                 }

@@ -25,7 +25,7 @@ fun <T> Observable<T>.safeSubscribeBy(
 class ActivitySongListModel : BaseModel(), IActivitySongListModel {
     override fun getData(callback: SongListCallback) {
         APIGenerator.getApiService(SongListService::class.java)
-            .getSongList("hot", 0)
+            .getSongList()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .safeSubscribeBy(
@@ -38,7 +38,7 @@ class ActivitySongListModel : BaseModel(), IActivitySongListModel {
 
                 },
                 onNext = {
-                    callback.onSuccess(it.data)
+//                    callback.onSuccess(it)
 
                 }
             )

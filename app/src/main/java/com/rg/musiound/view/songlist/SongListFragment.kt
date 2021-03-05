@@ -1,27 +1,23 @@
-package com.rg.musiound.view.fragment
+package com.rg.musiound.view.songlist
 
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
 import com.rg.musiound.base.BaseFragment
-import com.rg.musiound.bean.SongListRaw
+import com.rg.musiound.bean.songlist.SongList
 import com.rg.musiound.db.CSList
 import com.rg.musiound.interfaces.model.IFragmentSongListModel
 import com.rg.musiound.interfaces.presenter.IFragmentSongListPresenter
 import com.rg.musiound.interfaces.view.IFragmentSongListView
-import com.rg.musiound.presenter.FragmentSongListPresenter
 import com.rg.musiound.service.ruler.Rulers
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.dp2px
-import com.rg.musiound.view.activity.ListDetailActivity
-import com.rg.musiound.view.adapter.SongListAdapter
+import com.rg.musiound.view.songlistdetail.ListDetailActivity
 import kotlinx.android.synthetic.main.fragment_song_list.*
 import org.jetbrains.anko.find
 
@@ -29,8 +25,10 @@ import org.jetbrains.anko.find
  * Create by roger
  * on 2019/8/19
  */
-class SongListFragment : IFragmentSongListView<SongListRaw>,
-    BaseFragment<IFragmentSongListView<SongListRaw>, IFragmentSongListPresenter<SongListRaw>, IFragmentSongListModel<SongListRaw>>() {
+class SongListFragment : IFragmentSongListView<SongList>,
+    BaseFragment<IFragmentSongListView<SongList>, IFragmentSongListPresenter<SongList>, IFragmentSongListModel<SongList>>() {
+
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SongListAdapter
     private lateinit var category: String
@@ -38,7 +36,8 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
 
     }
 
-    override fun onLoadMoreData(t: SongListRaw, page: Int) {
+
+    override fun onLoadMoreData(t: SongList, page: Int) {
         adapter.list.let {
             if (page == 0 && it.isNotEmpty()) {
                 it.clear()
@@ -46,14 +45,14 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
             srl_song_list.isRefreshing = false
 
         }
-        adapter.list.addAll(t.data)
+        adapter.list.addAll(t.playlists)
 //        adapter.page = page
 //        adapter.isLoadingMore = t.data.more
 
         if (page == 0) {
             adapter.notifyDataSetChanged()
         } else {
-            adapter.notifyItemRangeInserted(adapter.itemCount - 1 - t.data.size, t.data.size - 1)
+            adapter.notifyItemRangeInserted(adapter.itemCount - 1 - t.playlists.size, t.playlists.size - 1)
         }
 
 
@@ -65,7 +64,7 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
             adapter.setOnItemClickListener(object : OnItemClickListener {
                 override fun onItemClick(position: Int) {
                     val item = adapter.list[position]
-                    Rulers.mCSL = CSList(item.name, item.id, item.coverImgUrl)
+                    Rulers.mCSL = CSList(item.name, item.id.toLong(), "")
                     val id = adapter.list[position - 1].id
                     val intent = Intent(activity, ListDetailActivity::class.java)
                     intent.putExtra("id", id)
@@ -95,7 +94,12 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
         }
         recyclerView.layoutManager = grid
         recyclerView.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
                 super.getItemOffsets(outRect, view, parent, state)
                 outRect.top = dp2px(25)
                 outRect.left = dp2px(7)
@@ -136,7 +140,7 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
 
     private fun initSwipe() {
         srl_song_list.setOnRefreshListener {
-            presenter?.loadMoreData( 0, category)
+            presenter?.loadMoreData(0, category)
         }
     }
 
@@ -144,12 +148,12 @@ class SongListFragment : IFragmentSongListView<SongListRaw>,
         return R.layout.fragment_song_list
     }
 
-    override fun getViewToAttach(): IFragmentSongListView<SongListRaw> {
+    override fun getViewToAttach(): IFragmentSongListView<SongList> {
         return this
 
     }
 
-    override fun createPresenter(): IFragmentSongListPresenter<SongListRaw> {
-        return FragmentSongListPresenter<SongListRaw>()
+    override fun createPresenter(): IFragmentSongListPresenter<SongList> {
+        return FragmentSongListPresenter()
     }
 }

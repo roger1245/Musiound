@@ -1,10 +1,9 @@
-package com.rg.musiound.presenter
+package com.rg.musiound.view.songlist
 
 import com.rg.musiound.base.BasePresenter
 import com.rg.musiound.interfaces.model.IFragmentSongListModel
 import com.rg.musiound.interfaces.presenter.IFragmentSongListPresenter
 import com.rg.musiound.interfaces.view.IFragmentSongListView
-import com.rg.musiound.model.FragmentSongListModel
 import com.rg.musiound.util.GenericPageCallback
 
 /**

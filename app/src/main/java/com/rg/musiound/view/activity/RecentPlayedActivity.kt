@@ -38,10 +38,10 @@ class RecentPlayedActivity : com.rg.musiound.view.BaseActivity() {
 //                id = x.url.substring(x.url.indexOf("id=") + 3, x.url.indexOf("&"))
 //            }
 
-            tracks.add(Track(1L, x.name, x.singer, Album("", "")))
+//            tracks.add(Track(1L, x.name, x.singer, Album("", "")))
         }
         val adapter = ListDetailAdapter(this)
-        adapter.list.addAll(tracks)
+//        adapter.list.addAll(tracks)
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val s = song[position]

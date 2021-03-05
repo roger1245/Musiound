@@ -16,6 +16,7 @@ import com.rg.musiound.bean.Song
 import com.rg.musiound.db.PlayingSong
 import com.rg.musiound.service.ruler.Rulers
 import com.rg.musiound.service.ruler.Rulers.mCurrentList
+import com.rg.musiound.view.songlistdetail.SongPlayViewModel
 import org.jetbrains.anko.notificationManager
 
 
@@ -271,7 +272,12 @@ class PlayManager private constructor(private val mContext: Context) : PlayState
                     mService?.releasePlayer()
                     if (AudioManager.AUDIOFOCUS_REQUEST_GRANTED == requestAudioFocus()) {
                         currentSong = song
-                        mService?.startPlayer(song.url)
+                        val thread = Thread()
+                        thread.run {
+                            SongPlayViewModel.getSongDetail(song.id.toString()) {
+                                mService?.startPlayer(song.id)
+                            }
+                        }
                     }
                 }
             } else {
@@ -281,7 +287,12 @@ class PlayManager private constructor(private val mContext: Context) : PlayState
                     Rulers.addRecentPlayedSong(song)
                     currentSong = song
                     song.let {
-                        mService?.startPlayer(it.url)
+                        val thread = Thread()
+                        thread.run {
+                            SongPlayViewModel.getSongDetail(song.id.toString()) {
+                                mService?.startPlayer(song.id)
+                            }
+                        }
                     }
                 }
             }

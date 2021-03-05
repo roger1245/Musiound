@@ -5,6 +5,7 @@ import com.rg.musiound.base.BasePresenter
 import com.rg.musiound.base.IBasePresenter
 import com.rg.musiound.bean.Song
 import com.rg.musiound.bean.SongList
+import com.rg.musiound.bean.songlistdetail.Playlist
 import com.rg.musiound.interfaces.model.IActivityPlayDetailModel
 import com.rg.musiound.interfaces.model.IActivitySongListModel
 import com.rg.musiound.interfaces.presenter.IActivitySongListPresenter

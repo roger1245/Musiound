@@ -1,4 +1,4 @@
-package com.rg.musiound.view.adapter
+package com.rg.musiound.view.songlist
 
 import android.content.Context
 import android.graphics.drawable.AnimationDrawable
@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.rg.musiound.R
-import com.rg.musiound.bean.SongList
+import com.rg.musiound.bean.songlist.Playlists
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.setImageFromUrl
 import org.jetbrains.anko.find
@@ -26,7 +26,7 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
     private val ITEM_SEACH_SONG_LIST = 4
     private var mOnItemClickListener: OnItemClickListener? = null
     var page: Int = 0
-    var list: MutableList<SongList> = mutableListOf()
+    var list: MutableList<Playlists> = mutableListOf()
     var isLoadingMore = true
     var isFromSearch = false
 
@@ -128,10 +128,11 @@ class SongListAdapter(val ctx: Context) : RecyclerView.Adapter<RecyclerView.View
                 val item = list[position - 1]
                 holder.imageView.setImageFromUrl(item.coverImgUrl)
                 if (item.tags.isNotEmpty()) {
-                    holder.title.text = StringBuilder().append(item.tags[0]).append("||").append(item.name)
-                } else if (item.tag != null) {
+                    holder.title.text =
+                        StringBuilder().append(item.tags[0]).append("||").append(item.name)
+                } else if (item.tags != null) {
                     //此处由于为反射，所以tag可能为null，编译器无法检查
-                    holder.title.text = StringBuilder().append(item.tag).append("||").append(item.name)
+                    holder.title.text = StringBuilder().append(item.tags).append("||").append(item.name)
                 }
                 holder.itemView.setOnClickListener {
 

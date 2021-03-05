@@ -1,6 +1,10 @@
 package com.rg.musiound.util
 
 import com.rg.musiound.bean.*
+import com.rg.musiound.bean.songlistdetail.Playlist
+import com.rg.musiound.bean.songlistdetail.SongListDetailRoot
+import com.rg.musiound.bean.songlisttag.SongListRoot
+import com.rg.musiound.bean.songlisttag.Tags
 
 /**
  * Create by roger
@@ -15,7 +19,7 @@ interface SongListCallback {
     fun onFailed()
 }
 interface SongsCallback {
-    fun onSuccess(songs: ListDetailRaw)
+    fun onSuccess(songs: SongListDetailRoot)
     fun onFailed()
 }
 interface MVListCallback {

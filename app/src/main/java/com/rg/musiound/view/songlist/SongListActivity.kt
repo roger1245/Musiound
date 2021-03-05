@@ -1,9 +1,8 @@
-package com.rg.musiound.view.activity
+package com.rg.musiound.view.songlist
 
 import android.content.Intent
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +15,7 @@ import com.rg.musiound.interfaces.view.IActivitySongListView
 import com.rg.musiound.presenter.ActivitySongListPresenter
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.dp2px
-import com.rg.musiound.view.adapter.SongListAdapter
+import com.rg.musiound.view.songlistdetail.ListDetailActivity
 import org.jetbrains.anko.find
 
 class SongListActivity : BaseActivity<IActivitySongListView, IActivitySongListPresenter, IActivitySongListModel>(), IActivitySongListView {
@@ -24,7 +23,7 @@ class SongListActivity : BaseActivity<IActivitySongListView, IActivitySongListPr
 
     override fun setSongList(songList: List<SongList>) {
         val adapter = SongListAdapter(this)
-        adapter.list.addAll(songList)
+//        adapter.list.addAll(songList)
         recyclerView.adapter = adapter
         adapter.setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClick(position: Int) {

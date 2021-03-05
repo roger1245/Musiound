@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import com.rg.musiound.bean.Artist
 import com.rg.musiound.bean.Song
+import com.rg.musiound.bean.songlistdetail.Ar
 
 /**
  * Create by roger
@@ -54,7 +55,7 @@ class RecentPlayedSong {
 
     fun deleteRecentPlayedSong(song: Song) {
         val db = MusicDB.instance.writableDatabase
-        db.delete(RECENT_PLAYING_SONG, "${RECENT_URL} = ?", arrayOf(song.url))
+        db.delete(RECENT_PLAYING_SONG, "${RECENT_URL} = ?", arrayOf(song.id))
     }
 
     fun deleteAll() {
@@ -73,7 +74,9 @@ class RecentPlayedSong {
                 val pic = cursor.getString(cursor.getColumnIndex(RECENT_PIC))
                 val artist = cursor.getString(cursor.getColumnIndex(RECENT_ARTIST))
                 val artists = artist.split(",").map {
-                    Artist(it)
+                    val a = Ar()
+                    a.name = it
+                    a
                 }
                 list.add(Song(name, url, pic, artists))
             } while (cursor.moveToNext())
@@ -94,7 +97,7 @@ class RecentPlayedSong {
     //基础方法
     private fun queryIfExist(song: Song): Boolean {
         val db = MusicDB.instance.writableDatabase
-        val cursor = db.query(RECENT_PLAYING_SONG, null, "$RECENT_URL = ?", arrayOf(song.url), null, null, null)
+        val cursor = db.query(RECENT_PLAYING_SONG, null, "$RECENT_URL = ?", arrayOf(song.id), null, null, null)
         if (cursor.moveToFirst()) {
             cursor.close()
             return true
@@ -113,7 +116,7 @@ class RecentPlayedSong {
             val values = ContentValues(5)
             values.let {
                 it.put(RECENT_NAME, song.name)
-                it.put(RECENT_URL, song.url)
+                it.put(RECENT_URL, song.id)
                 it.put(RECENT_PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {
@@ -125,7 +128,7 @@ class RecentPlayedSong {
                 it.put(RECENT_ARTIST, stringBuilder.toString())
                 it.put(RECENT_TIME, System.currentTimeMillis())
             }
-            db.update(RECENT_PLAYING_SONG, values, "${RECENT_URL} = ?", arrayOf(song.url))
+            db.update(RECENT_PLAYING_SONG, values, "${RECENT_URL} = ?", arrayOf(song.id))
             db.setTransactionSuccessful()
         } finally {
             db.endTransaction()
@@ -141,7 +144,7 @@ class RecentPlayedSong {
             val values: ContentValues = ContentValues(5)
             values.let {
                 it.put(RECENT_NAME, song.name)
-                it.put(RECENT_URL, song.url)
+                it.put(RECENT_URL, song.id)
                 it.put(RECENT_PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {

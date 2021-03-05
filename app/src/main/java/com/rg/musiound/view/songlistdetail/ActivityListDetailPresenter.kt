@@ -1,13 +1,11 @@
-package com.rg.musiound.presenter
+package com.rg.musiound.view.songlistdetail
 
 import com.rg.musiound.base.BasePresenter
-import com.rg.musiound.bean.ListDetailRaw
-import com.rg.musiound.bean.Song
-import com.rg.musiound.bean.SongList
+import com.rg.musiound.bean.songlistdetail.SongListDetailRoot
+import com.rg.musiound.bean.songlisttag.SongListRoot
 import com.rg.musiound.interfaces.model.IActivityListDetailModel
 import com.rg.musiound.interfaces.presenter.IActivityListDetailPresenter
 import com.rg.musiound.interfaces.view.IActivityListDetailView
-import com.rg.musiound.model.ActivityListDetailModel
 import com.rg.musiound.util.SongsCallback
 
 /**
@@ -19,7 +17,7 @@ class ActivityListDetailPresenter: BasePresenter<IActivityListDetailView, IActiv
         return ActivityListDetailModel()
     }
 
-    override fun onSongsLoad(song: ListDetailRaw) {
+    override fun onSongsLoad(song: SongListDetailRoot) {
         view?.setSongs(song)
     }
 
@@ -29,7 +27,7 @@ class ActivityListDetailPresenter: BasePresenter<IActivityListDetailView, IActiv
 
     override fun populateData(songList: Long) {
         model?.getData(object: SongsCallback {
-            override fun onSuccess(songs: ListDetailRaw) {
+            override fun onSuccess(songs: SongListDetailRoot) {
                 onSongsLoad(songs)
             }
 

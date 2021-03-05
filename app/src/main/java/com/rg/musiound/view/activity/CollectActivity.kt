@@ -13,6 +13,7 @@ import com.rg.musiound.R
 import com.rg.musiound.bean.Album
 import com.rg.musiound.bean.Song
 import com.rg.musiound.bean.Track
+import com.rg.musiound.bean.songlistdetail.Tracks
 import com.rg.musiound.db.CollectSong
 import com.rg.musiound.service.PlayManager
 import com.rg.musiound.util.OnItemClickListener
@@ -27,9 +28,9 @@ class CollectActivity : com.rg.musiound.view.BaseActivity() {
     private lateinit var recyclerView: RecyclerView
 
     private fun setSongs(song: List<Song>) {
-        val tracks: MutableList<Track> = mutableListOf()
+        val tracks: MutableList<Tracks> = mutableListOf()
         for (x in song) {
-            tracks.add(Track(1L, x.name, x.singer, Album("", "")))
+//            tracks.add(Tracks(1L, x.name, x.singer, Album("", "")))
 
         }
         val adapter = ListDetailAdapter(this)

@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,13 +12,12 @@ import com.githang.statusbar.StatusBarCompat
 import com.rg.musiound.BaseApp
 import com.rg.musiound.R
 import com.rg.musiound.bean.SongList
-import com.rg.musiound.bean.Subscriber
 import com.rg.musiound.db.CSList
 import com.rg.musiound.db.CollectSongList
 import com.rg.musiound.util.OnItemClickListener
 import com.rg.musiound.util.extensions.dp2px
 import com.rg.musiound.view.adapter.CSLAdapter
-import com.rg.musiound.view.adapter.SongListAdapter
+import com.rg.musiound.view.songlistdetail.ListDetailActivity
 import kotlinx.android.synthetic.main.fragment_search_song_list.*
 import org.jetbrains.anko.find
 

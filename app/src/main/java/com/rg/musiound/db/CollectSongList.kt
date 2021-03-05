@@ -2,7 +2,6 @@ package com.rg.musiound.db
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
-import com.rg.musiound.bean.SongList
 
 /**
  * Create by roger

@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import com.rg.musiound.bean.Artist
 import com.rg.musiound.bean.Song
+import com.rg.musiound.bean.songlistdetail.Ar
 
 /**
  * Create by roger
@@ -51,7 +52,7 @@ class CollectSong {
             val values: ContentValues = ContentValues(5)
             values.let {
                 it.put(COLLECT_NAME, song.name)
-                it.put(COLLECT_URL, song.url)
+                it.put(COLLECT_URL, song.id)
                 it.put(COLLECT_PIC, song.pic)
                 val stringBuilder = StringBuilder()
                 for (x in ar.withIndex()) {
@@ -77,7 +78,7 @@ class CollectSong {
 
     fun deleteCollectSong(song: Song) {
         val db = MusicDB.instance.writableDatabase
-        db.delete(COLLECT_PLAYING_SONG, "${COLLECT_URL} = ?", arrayOf(song.url))
+        db.delete(COLLECT_PLAYING_SONG, "${COLLECT_URL} = ?", arrayOf(song.id))
     }
 
     fun deleteAll() {
@@ -96,7 +97,9 @@ class CollectSong {
                 val pic = cursor.getString(cursor.getColumnIndex(COLLECT_PIC))
                 val artist = cursor.getString(cursor.getColumnIndex(COLLECT_ARTIST))
                 val artists = artist.split(",").map {
-                    Artist(it)
+                    val a = Ar()
+                    a.name = it
+                    a
                 }
                 list.add(Song(name, url, pic, artists))
             } while (cursor.moveToNext())
@@ -107,7 +110,7 @@ class CollectSong {
 
     fun queryIfExist(song: Song) : Boolean {
         val db = MusicDB.instance.writableDatabase
-        val cursor = db.query(COLLECT_PLAYING_SONG, null, COLLECT_URL + " = ?", arrayOf(song.url), null, null, null)
+        val cursor = db.query(COLLECT_PLAYING_SONG, null, COLLECT_URL + " = ?", arrayOf(song.id), null, null, null)
         if (cursor.moveToFirst()) {
             cursor.close()
             return true

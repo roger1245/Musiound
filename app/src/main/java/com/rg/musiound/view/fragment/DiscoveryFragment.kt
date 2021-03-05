@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.fragment.app.FragmentStatePagerAdapter
 import com.rg.musiound.R
+import com.rg.musiound.view.songlist.SongListFragment
 import kotlinx.android.synthetic.main.fragment_discovery.*
 
 /**

@@ -16,7 +16,7 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
-            android:usesCleartextTraffic="true">
+            android:networkSecurityConfig="@xml/network_security_config">
         <activity android:name=".view.activity.SongLocalActivity">
         </activity>
         <activity
@@ -47,12 +47,12 @@
                 android:screenOrientation="portrait">
         </activity>
         <activity
-                android:name=".view.activity.ListDetailActivity"
+                android:name=".view.songlistdetail.ListDetailActivity"
                 android:launchMode="singleTop"
                 android:screenOrientation="portrait">
         </activity>
         <activity
-                android:name=".view.activity.SongListActivity"
+                android:name=".view.songlist.SongListActivity"
                 android:launchMode="singleTop"
                 android:screenOrientation="portrait">
         </activity>
@@ -60,11 +60,6 @@
                 android:name=".view.activity.MainActivity"
                 android:launchMode="singleTop"
                 android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name=".view.activity.PlayDetailActivity"
