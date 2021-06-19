@@ -41,7 +41,7 @@ public class Tracks {
     private int s_id;
     private long mark;
     private int originCoverType;
-    private String originSongSimpleData;
+//    private String originSongSimpleData;
     private int single;
     private String noCopyrightRcmd;
     private int rtype;
@@ -253,12 +253,12 @@ public class Tracks {
          return originCoverType;
      }
 
-    public void setOriginSongSimpleData(String originSongSimpleData) {
-         this.originSongSimpleData = originSongSimpleData;
-     }
-     public String getOriginSongSimpleData() {
-         return originSongSimpleData;
-     }
+//    public void setOriginSongSimpleData(String originSongSimpleData) {
+//         this.originSongSimpleData = originSongSimpleData;
+//     }
+//     public String getOriginSongSimpleData() {
+//         return originSongSimpleData;
+//     }
 
     public void setSingle(int single) {
          this.single = single;
